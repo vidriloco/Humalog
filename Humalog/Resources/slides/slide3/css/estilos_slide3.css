@@ -1,0 +1,137 @@
+*{
+	margin:0;
+	padding:0;
+}
+
+
+#content{
+	width:1024px;
+	height:768px;
+	position: absolute;
+}
+
+
+/*
+Cierre
+ */
+
+#headerSlide{
+	width:1024px;
+	height:282px;
+	position: absolute;
+	top:0;
+	background:url("../images/fondo_top.png") no-repeat 0 0;
+	display:none;
+}
+
+#textoIntro{
+	display:none;
+	top:53px;
+	left:61px;
+	position: absolute;
+}
+
+#cuerpo{
+	height:668px;
+	position: absolute;
+	top:100px;
+	z-index:20;
+	width:1024px;
+}
+
+#texto1{
+	width:708px;
+	left:500px;
+	top:150px;
+	margin-left:-351px;
+	display:none;
+	position:absolute;
+	z-index:20;
+}	
+
+#tabla1{
+	position:absolute;
+	top:230px;
+	left:180px;
+	display:none;
+	z-index: 35;
+	
+}
+
+
+
+#content-barra1{
+	position:absolute;
+	left:158px;
+	bottom:47px;
+	height:141px;
+	width:69px;
+	overflow:hidden;}
+
+#barra1{
+position:absolute;
+background:url(../images/solobarra1.png) no-repeat;
+height: 0px;
+bottom: -20px; left:0px; width:69px;}
+
+#content-barra2{
+	position:absolute;
+	left:256px;
+	bottom:47px;
+	height:141px;
+	width:69px;
+	overflow:hidden;}
+
+#barra2{
+position:absolute;
+background:url(../images/solobarra2.png) no-repeat;
+height: 0px;
+bottom: -20px; left:0px; width:69px;}
+
+#content-barra3{
+	position:absolute;
+	left:357px;
+	bottom:47px;
+	height:175px;
+	width:69px;
+	overflow:hidden;}
+
+#barra3{
+position:absolute;
+background:url(../images/solobarra3.png) no-repeat;
+height: 0px;
+bottom: -20px; left:0px; width:69px;}
+
+#content-barra4{
+	position:absolute;
+	left:465px;
+	bottom:47px;
+	height:191px;
+	width:69px;
+	overflow:hidden;}
+
+#barra4{
+position:absolute;
+background:url(../images/solobarra4.png) no-repeat;
+height: 0px;
+bottom: -20px; left:0px; width:69px;}
+
+
+#content-barra5{
+	position:absolute;
+	left:563px;
+	bottom:47px;
+	height:286px;
+	width:69px;
+	overflow:hidden;}
+
+#barra5{
+position:absolute;
+background:url(../images/solobarra5.png) no-repeat;
+height: 0px;
+bottom: -20px; left:0px; width:69px;}
+
+
+#content-barra1 img, #content-barra2 img, #content-barra3 img, #content-barra4 img, #content-barra5 img{
+	display:none;
+	}

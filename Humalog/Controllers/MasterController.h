@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NavigationControlDelegate.h"
 
-@interface MasterController : UIViewController
+@interface MasterController : UIViewController<NavigationControlDelegate> {
+    int currentContentScreen;
+}
 
 @end

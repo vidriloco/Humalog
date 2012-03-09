@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		840BBB091509CFE200B681A7 /* slides in Resources */ = {isa = PBXBuildFile; fileRef = 840BBB081509CFE200B681A7 /* slides */; };
+		840BBB0C1509DE3500B681A7 /* over_btn_minis_abajo.png in Resources */ = {isa = PBXBuildFile; fileRef = 840BBB0A1509DE3400B681A7 /* over_btn_minis_abajo.png */; };
+		840BBB0D1509DE3500B681A7 /* over_btn_minis_izq.png in Resources */ = {isa = PBXBuildFile; fileRef = 840BBB0B1509DE3400B681A7 /* over_btn_minis_izq.png */; };
+		840BBB101509E09800B681A7 /* ContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 840BBB0F1509E09800B681A7 /* ContentProvider.m */; };
+		840BBB171509E42400B681A7 /* WebContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 840BBB161509E42400B681A7 /* WebContentView.m */; };
 		84C9DF8A15009F6700E16B3B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9DF8915009F6700E16B3B /* UIKit.framework */; };
 		84C9DF8C15009F6700E16B3B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9DF8B15009F6700E16B3B /* Foundation.framework */; };
 		84C9DF8E15009F6700E16B3B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9DF8D15009F6700E16B3B /* CoreGraphics.framework */; };
@@ -59,8 +64,6 @@
 		84C9E0161500A01000E16B3B /* over_menu5.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFE41500A01000E16B3B /* over_menu5.png */; };
 		84C9E0171500A01000E16B3B /* over_pluma.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFE51500A01000E16B3B /* over_pluma.png */; };
 		84C9E0181500A01000E16B3B /* pluma.png in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFE61500A01000E16B3B /* pluma.png */; };
-		84C9E0191500A01000E16B3B /* CompositeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C9DFE91500A01000E16B3B /* CompositeView.m */; };
-		84C9E01A1500A01000E16B3B /* ContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C9DFEB1500A01000E16B3B /* ContentView.m */; };
 		84C9E01B1500A01000E16B3B /* MenubarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C9DFED1500A01000E16B3B /* MenubarView.m */; };
 		84C9E01C1500A01000E16B3B /* ToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C9DFEF1500A01000E16B3B /* ToolbarView.m */; };
 /* End PBXBuildFile section */
@@ -76,6 +79,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		840BBB081509CFE200B681A7 /* slides */ = {isa = PBXFileReference; lastKnownFileType = folder; name = slides; path = Humalog/Resources/slides; sourceTree = SOURCE_ROOT; };
+		840BBB0A1509DE3400B681A7 /* over_btn_minis_abajo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = over_btn_minis_abajo.png; sourceTree = "<group>"; };
+		840BBB0B1509DE3400B681A7 /* over_btn_minis_izq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = over_btn_minis_izq.png; sourceTree = "<group>"; };
+		840BBB0E1509E09800B681A7 /* ContentProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentProvider.h; sourceTree = "<group>"; };
+		840BBB0F1509E09800B681A7 /* ContentProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentProvider.m; sourceTree = "<group>"; };
+		840BBB131509E39700B681A7 /* ContentControlProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentControlProtocol.h; path = Protocols/ContentControlProtocol.h; sourceTree = "<group>"; };
+		840BBB151509E42400B681A7 /* WebContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebContentView.h; sourceTree = "<group>"; };
+		840BBB161509E42400B681A7 /* WebContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebContentView.m; sourceTree = "<group>"; };
+		840BBB181509EB6000B681A7 /* NavigationControlDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NavigationControlDelegate.h; path = Protocols/NavigationControlDelegate.h; sourceTree = "<group>"; };
 		84C9DF8515009F6700E16B3B /* Humalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Humalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84C9DF8915009F6700E16B3B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		84C9DF8B15009F6700E16B3B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -135,10 +147,6 @@
 		84C9DFE41500A01000E16B3B /* over_menu5.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = over_menu5.png; sourceTree = "<group>"; };
 		84C9DFE51500A01000E16B3B /* over_pluma.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = over_pluma.png; sourceTree = "<group>"; };
 		84C9DFE61500A01000E16B3B /* pluma.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pluma.png; sourceTree = "<group>"; };
-		84C9DFE81500A01000E16B3B /* CompositeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CompositeView.h; sourceTree = "<group>"; };
-		84C9DFE91500A01000E16B3B /* CompositeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CompositeView.m; sourceTree = "<group>"; };
-		84C9DFEA1500A01000E16B3B /* ContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContentView.h; sourceTree = "<group>"; };
-		84C9DFEB1500A01000E16B3B /* ContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentView.m; sourceTree = "<group>"; };
 		84C9DFEC1500A01000E16B3B /* MenubarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenubarView.h; sourceTree = "<group>"; };
 		84C9DFED1500A01000E16B3B /* MenubarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenubarView.m; sourceTree = "<group>"; };
 		84C9DFEE1500A01000E16B3B /* ToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolbarView.h; sourceTree = "<group>"; };
@@ -169,6 +177,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		840BBB121509E35B00B681A7 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				840BBB131509E39700B681A7 /* ContentControlProtocol.h */,
+				840BBB181509EB6000B681A7 /* NavigationControlDelegate.h */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+		840BBB141509E42400B681A7 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				840BBB151509E42400B681A7 /* WebContentView.h */,
+				840BBB161509E42400B681A7 /* WebContentView.m */,
+			);
+			path = Content;
+			sourceTree = "<group>";
+		};
 		84C9DF7A15009F6700E16B3B = {
 			isa = PBXGroup;
 			children = (
@@ -202,6 +228,7 @@
 		84C9DF8F15009F6700E16B3B /* Humalog */ = {
 			isa = PBXGroup;
 			children = (
+				840BBB121509E35B00B681A7 /* Protocols */,
 				84C9DFB81500A01000E16B3B /* Controllers */,
 				84C9DFBB1500A01000E16B3B /* Helpers */,
 				84C9DFE71500A01000E16B3B /* Views */,
@@ -257,6 +284,8 @@
 			children = (
 				84C9DFBC1500A01000E16B3B /* GridLayout.h */,
 				84C9DFBD1500A01000E16B3B /* GridLayout.m */,
+				840BBB0E1509E09800B681A7 /* ContentProvider.h */,
+				840BBB0F1509E09800B681A7 /* ContentProvider.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -264,6 +293,10 @@
 		84C9DFBE1500A01000E16B3B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				84C9DFD11500A01000E16B3B /* minis */,
+				840BBB081509CFE200B681A7 /* slides */,
+				840BBB0A1509DE3400B681A7 /* over_btn_minis_abajo.png */,
+				840BBB0B1509DE3400B681A7 /* over_btn_minis_izq.png */,
 				84C9DFBF1500A01000E16B3B /* barra_herramientas.png */,
 				84C9DFC01500A01000E16B3B /* barra_menu.jpg */,
 				84C9DFC11500A01000E16B3B /* btn_apertura.png */,
@@ -282,7 +315,6 @@
 				84C9DFCE1500A01000E16B3B /* menu3.png */,
 				84C9DFCF1500A01000E16B3B /* menu4.png */,
 				84C9DFD01500A01000E16B3B /* menu5.png */,
-				84C9DFD11500A01000E16B3B /* minis */,
 				84C9DFDE1500A01000E16B3B /* over_goma.png */,
 				84C9DFDF1500A01000E16B3B /* over_marcador.png */,
 				84C9DFE01500A01000E16B3B /* over_menu1.png */,
@@ -318,10 +350,7 @@
 		84C9DFE71500A01000E16B3B /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				84C9DFE81500A01000E16B3B /* CompositeView.h */,
-				84C9DFE91500A01000E16B3B /* CompositeView.m */,
-				84C9DFEA1500A01000E16B3B /* ContentView.h */,
-				84C9DFEB1500A01000E16B3B /* ContentView.m */,
+				840BBB141509E42400B681A7 /* Content */,
 				84C9DFEC1500A01000E16B3B /* MenubarView.h */,
 				84C9DFED1500A01000E16B3B /* MenubarView.m */,
 				84C9DFEE1500A01000E16B3B /* ToolbarView.h */,
@@ -440,6 +469,9 @@
 				84C9E0161500A01000E16B3B /* over_menu5.png in Resources */,
 				84C9E0171500A01000E16B3B /* over_pluma.png in Resources */,
 				84C9E0181500A01000E16B3B /* pluma.png in Resources */,
+				840BBB091509CFE200B681A7 /* slides in Resources */,
+				840BBB0C1509DE3500B681A7 /* over_btn_minis_abajo.png in Resources */,
+				840BBB0D1509DE3500B681A7 /* over_btn_minis_izq.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -478,10 +510,10 @@
 				84C9DF9A15009F6700E16B3B /* AppDelegate.m in Sources */,
 				84C9DFF01500A01000E16B3B /* MasterController.m in Sources */,
 				84C9DFF11500A01000E16B3B /* GridLayout.m in Sources */,
-				84C9E0191500A01000E16B3B /* CompositeView.m in Sources */,
-				84C9E01A1500A01000E16B3B /* ContentView.m in Sources */,
 				84C9E01B1500A01000E16B3B /* MenubarView.m in Sources */,
 				84C9E01C1500A01000E16B3B /* ToolbarView.m in Sources */,
+				840BBB101509E09800B681A7 /* ContentProvider.m in Sources */,
+				840BBB171509E42400B681A7 /* WebContentView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -645,6 +677,7 @@
 				84C9DFB415009F6800E16B3B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		84C9DFB515009F6800E16B3B /* Build configuration list for PBXNativeTarget "HumalogTests" */ = {
 			isa = XCConfigurationList;
@@ -653,6 +686,7 @@
 				84C9DFB715009F6800E16B3B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

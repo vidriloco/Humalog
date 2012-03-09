@@ -11,6 +11,7 @@
 #define TOOLBAR_IMAGE @"barra_herramientas.png"
 
 @implementation ToolbarView
+@synthesize navigationDelegate;
 
 - (id)init
 {
@@ -24,6 +25,12 @@
                              @"btn_play.png",
                              @"btn_fw.png",
                              nil];
+
+        NSArray *playbackActions = [NSArray arrayWithObjects:
+                                    [NSValue valueWithPointer:@selector(toolbarViewDidPressBack)],
+                                    [NSValue valueWithPointer:@selector(toolbarViewDidPressPlay)],
+                                    [NSValue valueWithPointer:@selector(toolbarViewDidPressForward)],
+                                    nil];
         
         id playbackLayout = [GridLayout gridWithFrame:CGRectMake(0, 0, 196, self.frame.size.height) numRows:1 numCols:[playback count]];
         int i = 0;
@@ -34,6 +41,9 @@
             button.center = [v CGPointValue];
             button.frame = CGRectIntegral(button.frame);
             [button setImage:normalImage forState:UIControlStateNormal];
+            [button addTarget:navigationDelegate
+                       action:[[playbackActions objectAtIndex:i] pointerValue]
+             forControlEvents:UIControlEventTouchDown];
             [self addSubview:button];
             ++i;
         }
@@ -48,11 +58,14 @@
         i = 0;
         for (NSValue* v in miniLayout) {
             UIImage  *normalImage = [UIImage imageNamed:[miniOptions objectAtIndex:i]];
+            UIImage  *selectedImage = [UIImage imageNamed:[@"over_" stringByAppendingString:[miniOptions objectAtIndex:i]]];
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.frame = CGRectMake(0, 0, normalImage.size.width, normalImage.size.height);
             button.center = [v CGPointValue];
             button.frame = CGRectIntegral(button.frame);
             [button setImage:normalImage forState:UIControlStateNormal];
+            [button setImage:selectedImage forState:UIControlStateHighlighted];
+            [button setImage:selectedImage forState:UIControlStateSelected];
             [self addSubview:button];
             ++i;
         }
@@ -81,6 +94,41 @@
         }
     }
     return self;
+}
+
+- (void)hide
+{
+    if (self.hidden)
+        return;
+    
+    [UIView animateWithDuration:0.15
+                     animations:^{
+                         self.frame = CGRectOffset(self.frame, 0, -self.frame.size.height);
+                     }
+                     completion:^(BOOL finished) {
+                         self.hidden = YES;
+                     }];
+}
+
+- (void)show
+{
+    if (!self.hidden)
+        return;
+    
+    self.hidden = NO;
+    [UIView animateWithDuration:0.15
+                     animations:^{
+                         self.frame = CGRectOffset(self.frame, 0, self.frame.size.height);
+                     }];
+
+}
+
+- (void)toggle
+{
+   if (self.hidden)
+       [self show];
+    
+    [self hide];
 }
 
 /*

@@ -9,7 +9,13 @@
 #import <Foundation/Foundation.h>
 
 @protocol NavigationControlDelegate <NSObject>
+// Nav
 - (void)toolbarViewDidPressBack;
 - (void)toolbarViewDidPressForward;
 - (void)toolbarViewDidPressPlay;
+// Tools
+- (void)toolbarViewDidSelectPen;
+- (void)toolbarViewDidSelectMarker;
+- (void)toolbarViewDidSelectEraser;
+- (void)toolbarViewDidDeselectTool;
 @end

@@ -11,14 +11,21 @@
 #import "ContentProvider.h"
 #import "ToolbarView.h"
 #import "MenubarView.h"
+#import "AnnotationView.h"
+
+#define FADE_DURATION 0.5
 
 // Private
 @interface MasterController() {
     ContentProvider                *contentProvider;
     UIView<ContentControlProtocol> *contentView;
     ToolbarView                    *toolbarView;
+    AnnotationView                 *annotationView;
 }
 - (void)discardToolbar;
+- (void)fadeOut;
+- (void)fadeIn;
+- (void)loadContent;
 @end
 
 @implementation MasterController
@@ -33,7 +40,8 @@
         
         // Content management
         contentProvider = [[ContentProvider alloc] init];
-        currentContentScreen = 2;
+        contentProvider.delegate = self;
+        currentContentScreen = [contentProvider first];
     }
     return self;
 }
@@ -53,24 +61,28 @@
 {
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)]; //[[UIScreen mainScreen] bounds]];
     // Initialization code
-    self.view.backgroundColor = [UIColor purpleColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     // Subviews
     toolbarView = [[ToolbarView alloc] init];
     MenubarView *menubarView = [[MenubarView alloc] init];
-    contentView = [contentProvider viewForItemAtIndex:currentContentScreen];
+    contentView = [contentProvider viewForDocumentAtIndex:currentContentScreen];
     
-    menubarView.frame = CGRectMake(0, self.view.frame.size.height - menubarView.image.size.height, menubarView.image.size.width, menubarView.image.size.height);
-    contentView.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height - menubarView.bounds.size.height);
-    
+    menubarView.frame = CGRectMake(0, self.view.frame.size.height - menubarView.image.size.height,
+                                   menubarView.image.size.width, menubarView.image.size.height);
+    contentView.frame = CGRectMake(0, 0,
+                                   self.view.frame.size.width, self.view.frame.size.height - menubarView.bounds.size.height);
     [self.view addSubview:contentView];
     [self.view addSubview:menubarView];
-//    [self.view addSubview:toolbarView];
+    
+    // Annotations
+    annotationView = [[AnnotationView alloc] initWithFrame:contentView.frame andMasterView:[contentView getContentSubview]];
+    [self.view addSubview:annotationView];
     
     // Delegation
     toolbarView.navigationDelegate = self;
     
-    // Gestures
+    // Gestures & view for toolbar
     UIView *gestureView = [[UIView alloc] initWithFrame:toolbarView.frame];
     UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUp:)];
     [swipeUp setDirection:UISwipeGestureRecognizerDirectionUp];
@@ -83,13 +95,48 @@
     [gestureView addSubview:toolbarView];
 
     [self.view addSubview:gestureView];
+    
+    // Hide content views until content is loaded
+    contentView.alpha = 0.0;
+    annotationView.alpha = 0.0;
+}
+
+- (void)fadeOut
+{
+    [UIView animateWithDuration:FADE_DURATION
+                     animations:^{
+                         contentView.alpha = 0.0;
+                         annotationView.alpha = 0.0;
+                     }];
+}
+
+- (void)fadeIn
+{
+    [UIView animateWithDuration:FADE_DURATION
+                          delay:0.0
+                        options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         contentView.alpha = 1.0;
+                     }
+                     completion:^(BOOL finished) {
+                         
+                     }];
+
+    [UIView animateWithDuration:FADE_DURATION
+                          delay:FADE_DURATION / 2.0
+                        options:0
+                     animations:^{
+                         annotationView.alpha = 1.0;
+                     }
+                     completion:^(BOOL finished) {
+                         
+                     }];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self discardToolbar];
 }
 
 - (void)viewDidUnload
@@ -107,8 +154,40 @@
     return NO;
 }
 
-- (void)discardToolbar {
-    [toolbarView performSelector:@selector(hide) withObject:nil afterDelay:0.5];
+- (void)discardToolbar
+{
+    [toolbarView performSelector:@selector(hide) withObject:nil afterDelay:0.25];
+}
+
+- (void)saveAnnotations
+{
+    NSDictionary *annotations = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 annotationView.penPaths,    kPenPathsKey,
+                                 annotationView.markerPaths, kMarkerPathsKey,
+                                 nil];
+    [contentProvider setAnnotations:annotations forDocumentAtIndex:currentContentScreen];
+}
+
+- (void)loadAnnotations
+{
+    NSDictionary *annotations = [contentProvider annotationsForDocumentAtIndex:currentContentScreen];
+    annotationView.penPaths    = [annotations objectForKey:kPenPathsKey];
+    annotationView.markerPaths = [annotations objectForKey:kMarkerPathsKey];
+}
+
+- (void)loadContent
+{
+    [self fadeOut];
+    [self loadAnnotations];
+    contentView = [contentProvider viewForDocumentAtIndex:currentContentScreen];
+}
+
+// Delegation
+
+- (void)contentViewDidFinishLoad
+{
+    [self fadeIn];
+    [self discardToolbar];
 }
 
 - (void)swipeUp:(UISwipeGestureRecognizer *)recognizer
@@ -134,23 +213,46 @@
 
 - (void)toolbarViewDidPressBack
 {
+    [self saveAnnotations];
     currentContentScreen = MAX(--currentContentScreen, [contentProvider first]);
-    contentView = [contentProvider viewForItemAtIndex:currentContentScreen];
-    [self discardToolbar];
+    [self loadContent];
 }
 
 - (void)toolbarViewDidPressForward
 {
+    [self saveAnnotations];
     currentContentScreen = MIN(++currentContentScreen, [contentProvider count]);
-    contentView = [contentProvider viewForItemAtIndex:currentContentScreen];
-    [self discardToolbar];
+    [self loadContent];
 }
 
 - (void)toolbarViewDidPressPlay 
 {
+    [self fadeOut];
     [contentView playAction];
     [self discardToolbar];
 }
+
+- (void)toolbarViewDidSelectPen
+{
+    [annotationView startDrawing:PathTypePen];
+}
+
+- (void)toolbarViewDidSelectMarker
+{
+    [annotationView startDrawing:PathTypeMarker];
+}
+
+- (void)toolbarViewDidSelectEraser
+{
+    [annotationView startDrawing:PathTypeEraser];
+}
+
+- (void)toolbarViewDidDeselectTool
+{
+    [annotationView finishDrawing];
+    [self discardToolbar];
+}
+
 @end
     
 

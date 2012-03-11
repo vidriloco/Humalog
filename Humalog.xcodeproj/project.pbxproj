@@ -12,6 +12,8 @@
 		840BBB0D1509DE3500B681A7 /* over_btn_minis_izq.png in Resources */ = {isa = PBXBuildFile; fileRef = 840BBB0B1509DE3400B681A7 /* over_btn_minis_izq.png */; };
 		840BBB101509E09800B681A7 /* ContentProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 840BBB0F1509E09800B681A7 /* ContentProvider.m */; };
 		840BBB171509E42400B681A7 /* WebContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 840BBB161509E42400B681A7 /* WebContentView.m */; };
+		840BBB22150AF0BF00B681A7 /* plato.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 840BBB21150AF0BF00B681A7 /* plato.pdf */; };
+		840BBB26150AFAA900B681A7 /* AnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 840BBB25150AFAA900B681A7 /* AnnotationView.m */; };
 		84C9DF8A15009F6700E16B3B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9DF8915009F6700E16B3B /* UIKit.framework */; };
 		84C9DF8C15009F6700E16B3B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9DF8B15009F6700E16B3B /* Foundation.framework */; };
 		84C9DF8E15009F6700E16B3B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9DF8D15009F6700E16B3B /* CoreGraphics.framework */; };
@@ -88,6 +90,10 @@
 		840BBB151509E42400B681A7 /* WebContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebContentView.h; sourceTree = "<group>"; };
 		840BBB161509E42400B681A7 /* WebContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebContentView.m; sourceTree = "<group>"; };
 		840BBB181509EB6000B681A7 /* NavigationControlDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NavigationControlDelegate.h; path = Protocols/NavigationControlDelegate.h; sourceTree = "<group>"; };
+		840BBB21150AF0BF00B681A7 /* plato.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = plato.pdf; sourceTree = "<group>"; };
+		840BBB24150AFAA900B681A7 /* AnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationView.h; sourceTree = "<group>"; };
+		840BBB25150AFAA900B681A7 /* AnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationView.m; sourceTree = "<group>"; };
+		840BBB2A150C675D00B681A7 /* ContentDisplayDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; name = ContentDisplayDelegate.h; path = Protocols/ContentDisplayDelegate.h; sourceTree = "<group>"; };
 		84C9DF8515009F6700E16B3B /* Humalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Humalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84C9DF8915009F6700E16B3B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		84C9DF8B15009F6700E16B3B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -182,6 +188,7 @@
 			children = (
 				840BBB131509E39700B681A7 /* ContentControlProtocol.h */,
 				840BBB181509EB6000B681A7 /* NavigationControlDelegate.h */,
+				840BBB2A150C675D00B681A7 /* ContentDisplayDelegate.h */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";
@@ -293,6 +300,7 @@
 		84C9DFBE1500A01000E16B3B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				840BBB21150AF0BF00B681A7 /* plato.pdf */,
 				84C9DFD11500A01000E16B3B /* minis */,
 				840BBB081509CFE200B681A7 /* slides */,
 				840BBB0A1509DE3400B681A7 /* over_btn_minis_abajo.png */,
@@ -355,6 +363,8 @@
 				84C9DFED1500A01000E16B3B /* MenubarView.m */,
 				84C9DFEE1500A01000E16B3B /* ToolbarView.h */,
 				84C9DFEF1500A01000E16B3B /* ToolbarView.m */,
+				840BBB24150AFAA900B681A7 /* AnnotationView.h */,
+				840BBB25150AFAA900B681A7 /* AnnotationView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -472,6 +482,7 @@
 				840BBB091509CFE200B681A7 /* slides in Resources */,
 				840BBB0C1509DE3500B681A7 /* over_btn_minis_abajo.png in Resources */,
 				840BBB0D1509DE3500B681A7 /* over_btn_minis_izq.png in Resources */,
+				840BBB22150AF0BF00B681A7 /* plato.pdf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -514,6 +525,7 @@
 				84C9E01C1500A01000E16B3B /* ToolbarView.m in Sources */,
 				840BBB101509E09800B681A7 /* ContentProvider.m in Sources */,
 				840BBB171509E42400B681A7 /* WebContentView.m in Sources */,
+				840BBB26150AFAA900B681A7 /* AnnotationView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

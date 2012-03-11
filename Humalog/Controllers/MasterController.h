@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import "NavigationControlDelegate.h"
+#import "ContentDisplayDelegate.h"
 
-@interface MasterController : UIViewController<NavigationControlDelegate> {
+@interface MasterController : UIViewController<NavigationControlDelegate, ContentDisplayDelegate> {
     int currentContentScreen;
 }
 

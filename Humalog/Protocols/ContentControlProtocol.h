@@ -11,5 +11,6 @@
 @protocol ContentControlProtocol <NSObject>
 
 - (BOOL)playAction;
+- (UIView *)getContentSubview;
 
 @end

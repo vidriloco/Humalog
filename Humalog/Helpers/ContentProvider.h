@@ -7,13 +7,20 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "ContentDisplayDelegate.h"
 #import "ContentControlProtocol.h"
 
-@interface ContentProvider : NSObject {
+#define kMarkerPathsKey @"markers"
+#define kPenPathsKey    @"pens"
 
+@interface ContentProvider : NSObject<UIWebViewDelegate> {
+    id<ContentDisplayDelegate> delegate;
 }
+@property (nonatomic, retain) id<ContentDisplayDelegate> delegate;
 
-- (UIView<ContentControlProtocol> *)viewForItemAtIndex:(int)index;
+- (UIView<ContentControlProtocol> *)viewForDocumentAtIndex:(int)index;
+- (NSDictionary *)annotationsForDocumentAtIndex:(int)index;
+- (void)setAnnotations:(NSDictionary *)annotations forDocumentAtIndex:(int)index;
 - (int)count;
 - (int)first;
 

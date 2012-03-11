@@ -31,20 +31,31 @@ static WebContentView *sharedInstance = nil;
     self = [super init];
     
     if (self) {
-        // Work your initialising magic here as you normally would
+        // Permitir zoom
+        self.scalesPageToFit = YES;
     }
     
     return self;
 }
 
 // Equally, we don't want to generate multiple copies of the singleton.
-- (id)copyWithZone:(NSZone *)zone {
+- (id)copyWithZone:(NSZone *)zone
+{
     return self;
 }
 
-- (BOOL)playAction {
-    [self reload];
+// Content protocol methods
+
+- (BOOL)playAction
+{
+    [[WebContentView sharedInstance] reload];
     return YES;
 }
+
+- (UIView *)getContentSubview
+{
+    return [[WebContentView sharedInstance] scrollView];
+}
+
 
 @end

@@ -77,6 +77,27 @@ Cierre
 	z-index:25;
 }
 
+#referencia2{
+	width:324px;
+	left:870px;
+	top:450px;
+	margin-left:-21px;
+	display:none;
+	position:absolute;
+	z-index:75;
+}
+
+#referencia3{
+	width:324px;
+	left:430px;
+	top:320px;
+	margin-left:-21px;
+	display:none;
+	position:absolute;
+	z-index:75;
+}
+
+
 #tabla1{
  height: 292px;
     left: 130px;

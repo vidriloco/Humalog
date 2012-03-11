@@ -65,7 +65,38 @@ Cierre
 	display:none;
 	position:absolute;
 	z-index:20;
+}
+
+#referencia1{
+	width:708px;
+	left:1080px;
+	top:240px;
+	margin-left:-351px;
+	display:none;
+	position:absolute;
+	z-index:75;
 }	
+
+#referencia2{
+	width:708px;
+	left:1000px;
+	top:265px;
+	margin-left:-351px;
+	display:none;
+	position:absolute;
+	z-index:75;
+}	
+
+#referencia3{
+	width:708px;
+	left:1220px;
+	top:560px;
+	margin-left:-351px;
+	display:none;
+	position:absolute;
+	z-index:75;
+}	
+	
 	
 #texto2{
 	width:324px;
@@ -128,7 +159,7 @@ display: none;
 	margin-left:0px;
 	display:none;
 	position:absolute;
-	z-index:75;
+	z-index:70;
 }
 
 #tabla2{

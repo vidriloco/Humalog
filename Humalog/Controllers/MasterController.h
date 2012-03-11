@@ -9,9 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "NavigationControlDelegate.h"
 #import "ContentDisplayDelegate.h"
+#import "ToolControlDelegate.h"
 
-@interface MasterController : UIViewController<NavigationControlDelegate, ContentDisplayDelegate> {
-    int currentContentScreen;
-}
+@interface MasterController : UIViewController<NavigationControlDelegate, ToolControlDelegate, ContentDisplayDelegate, UIGestureRecognizerDelegate>
 
 @end

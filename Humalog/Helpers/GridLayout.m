@@ -14,7 +14,7 @@
 {
     NSMutableArray *output = [[NSMutableArray alloc] init];
     for (int i = 0; i < numRows; ++i) {
-        for (int j = 0; j < numCols; j++) {
+        for (int j = 0; j < numCols; ++j) {
             float x = CGRectGetMinX(frame) + (j + 0.5) * (CGRectGetMaxX(frame) - CGRectGetMinX(frame)) / numCols;
             float y = CGRectGetMinY(frame) + (i + 0.5) * (CGRectGetMaxY(frame) - CGRectGetMinY(frame)) / numRows;
             [output addObject:[NSValue valueWithCGPoint:CGPointMake(x, y)]];

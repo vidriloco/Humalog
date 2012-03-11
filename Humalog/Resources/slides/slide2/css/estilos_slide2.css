@@ -32,23 +32,6 @@ Cierre
 }
 
 
-#logoBrilinta{
-	position:absolute;
-	top:15px;
-	left:335px;
-	display:none;
-	z-index: 15;
-}
-
-#pelicula{
-	width:900px;
-	height:119px;
-	position: absolute;
-	top:-10px;
-	left:70px;
-	display:none;
-}
-
 #cuerpo{
 	height:668px;
 	position: absolute;
@@ -66,8 +49,18 @@ Cierre
 	position:absolute;
 	z-index:20;
 }	
-	
-#texto2{
+
+#texto3{
+	width:496px;
+	left:390px;
+	top:100px;
+	margin-left:0px;
+	display:none;
+	position:absolute;
+	z-index:45;
+}
+
+#texto5{
 	width:324px;
 	left:100px;
 	top:315px;
@@ -85,16 +78,6 @@ Cierre
 	z-index: 35;
 }
 
-#texto3{
-	width:496px;
-	left:390px;
-	top:100px;
-	margin-left:0px;
-	display:none;
-	position:absolute;
-	z-index:45;
-}
-
 #tabla2{
 	position:absolute;
 	top:200px;
@@ -110,3 +93,53 @@ Cierre
 	display:none;
 	z-index: 55;
 }
+
+#ondas{
+	position:absolute;
+	top:350px;
+	left:440px;
+	display:none;
+	z-index: 45;
+	opacity: .5;
+}
+
+#referencia1{
+	width:324px;
+	left:300px;
+	top:250px;
+	margin-left:-21px;
+	display:none;
+	position:absolute;
+	z-index:75;
+}
+
+#referencia2{
+	width:324px;
+	left:940px;
+	top:130px;
+	margin-left:-21px;
+	display:none;
+	position:absolute;
+	z-index:75;
+}
+
+#referencia3{
+	width:324px;
+	left:660px;
+	top:250px;
+	margin-left:-21px;
+	display:none;
+	position:absolute;
+	z-index:75;
+}
+
+#referencia4{
+	width:324px;
+	left:835px;
+	top:620px;
+	margin-left:-21px;
+	display:none;
+	position:absolute;
+	z-index:75;
+}
+

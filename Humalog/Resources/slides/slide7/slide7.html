@@ -60,7 +60,7 @@
 				$("#tabla1").fadeIn("slow")
 			});
 			//aparece el tercer texto
-			$(this).delay(2500, function() {
+			$(this).delay(4500, function() {
 				
 				$("#texto3").stop().animate({
 					top : '340px'
@@ -72,18 +72,30 @@
 				$("#texto3").fadeIn("slow")
 			});
 			//segunda tabla
-			$(this).delay(3000, function() {
+			$(this).delay(5000, function() {
 				
 				$("#tabla2").fadeIn("slow")
 			});
 			//tercer tabla
-			$(this).delay(3500, function() {
+			$(this).delay(5500, function() {
 				
 				$("#tabla3").fadeIn("slow")
 			});
 			
+			//tercer tabla
+			$(this).delay(500, function() {
+				
+				$("#referencia2").fadeIn("slow")
+			});
+			
+			//tercer tabla
+			$(this).delay(500, function() {
+				
+				$("#referencia3").fadeIn("slow")
+			});
+			
 			//barra1 y 3
-			$(this).delay(4000, function() {
+			$(this).delay(2500, function() {
 				
 				$("#barra1").stop().animate({
 					height : '41px'
@@ -103,7 +115,7 @@
 			});
 			
 			//barra2 y 4
-			$(this).delay(4500, function() {
+			$(this).delay(3500, function() {
 				
 				$("#barra1 img").fadeIn("slow")
 				$("#barra3 img").fadeIn("slow")
@@ -126,7 +138,7 @@
 			});
 			
 			//cifra barras2 y 4
-			$(this).delay(5000, function() {
+			$(this).delay(3500, function() {
 				
 				$("#barra2 img").fadeIn("slow")
 				$("#barra4 img").fadeIn("slow")
@@ -145,24 +157,22 @@
 <div id="content">			
 <div id="headerSlide">
 <div id="pelicula"><img src="images/pleca_slide7.gif" alt="pelicula"></div>
+<div id="referencia2"><img id="tooltip2" src="images/tooltip.png" alt="referencia2"></div>
+<div id="referencia3"><img id="tooltip3" src="images/tooltip.png" alt="referencia3"></div>
 		<div class="contenedor">
 		  <div id="texto1"><img src="images/text1.png" alt="texto1"></div>
-          <div id="texto2">
-          <img id="tooltip" src="images/text2.png" alt="texto2"></div>
-          
+          <div id="texto2"><img id="tooltip" src="images/text2.png" alt="texto2"></div>
           <div id="tabla1">
           <div id="barra1"><img src="images/cifrabarra1.png" ></div>
           <div id="barra2"><img src="images/cifrabarra2.png" ></div>
           <div id="barra3"><img src="images/cifrabarra3.png" ></div>
           <div id="barra4"><img src="images/cifrabarra4.png" ></div>
-          
           <img src="images/fondo_grafica_s7.png" alt="tabla1" style="display:block; position:absolute; top:0; left:0; z-index:1;">
           </div>
-          
-          
           <div id="texto3"><img src="images/text3.png" alt="texto3"></div>
           <div id="tabla2"><img src="images/sello_s7.png" alt="tabla2"></div>
           <div id="tabla3"><img src="images/text4.png" alt="tabla3"></div>
+          
 		</div>
   </div>
 
@@ -177,7 +187,7 @@
   <script type="text/javascript">
 // Create the tooltips only on document load
 jQuery("#tooltip").qtip({
-   content: "Some basic content for the tooltip",
+   content: "9. Gurbel PA, Bliden KP, Butler K, et al. Randomized double-blind assessment of the ONSET and OFFSET of the antiplatelet effects of ticagrelor versus clopidogrel in patients with stable coronary artery disease the ONSET/OFFSET study. Circulation 2009;120:2577-2585.",
    position: {
       corner: {
          target: 'topRight',
@@ -188,6 +198,7 @@ jQuery("#tooltip").qtip({
       padding: 5,
       color: '#666666',
       textAlign: 'left',
+	  fontSize: '10pt',
 	  fontFamily: 'Arial',
       border: {
          width: 2,
@@ -198,6 +209,55 @@ jQuery("#tooltip").qtip({
       name: 'light' 
    }
 });
+
+jQuery("#tooltip2").qtip({
+   content: "6. Páramo JA. Nueva era en la terapia antiplaquetaria basada en los resultados de ensayos clínicos recientes. Med Clin (Barc). 2010. doi:10.1016/j.medcli.2010.09.015. <br><br> 9. Gurbel PA, Bliden KP, Butler K, et al. Randomized double-blind assessment of the ONSET and OFFSET of the antiplatelet effects of ticagrelor versus clopidogrel in patients with stable coronary artery disease the ONSET/OFFSET study. Circulation 2009;120:2577-2585.",
+   position: {
+      corner: {
+         target: 'topRight',
+         tooltip: 'bottomRight'
+      }
+   },
+   style: { 
+      padding: 5,
+      color: '#666666',
+      textAlign: 'left',
+	  fontFamily: 'Arial',
+	  fontSize: '10pt',
+      border: {
+         width: 2,
+         radius: 5,
+         color: '#f15c22'
+      },
+      tip: 'bottomRight', //flecha
+      name: 'light' 
+   }
+});
+
+jQuery("#tooltip3").qtip({
+   content: "9. Gurbel PA, Bliden KP, Butler K, et al. Randomized double-blind assessment of the ONSET and OFFSET of the antiplatelet effects of ticagrelor versus clopidogrel in patients with stable coronary artery disease the ONSET/OFFSET study. Circulation 2009;120:2577-2585.",
+   position: {
+      corner: {
+         target: 'topRight',
+         tooltip: 'bottomLeft'
+      }
+   },
+   style: { 
+      padding: 5,
+      color: '#666666',
+      textAlign: 'left',
+	  fontSize: '10pt',
+	  fontFamily: 'Arial',
+      border: {
+         width: 2,
+         radius: 5,
+         color: '#f15c22'
+      },
+      tip: 'bottomLeft', //flecha
+      name: 'light' 
+   }
+});
+
 </script>
 
 </body>

@@ -28,9 +28,57 @@
 				});
 				$("#texto1").fadeIn("slow")
 			});
+			//aparece el primer texto
+			$(this).delay(500, function() {
+				
+				$("#luces").stop().animate({
+					top : '0px'
+				}, {
+					queue : false,
+					duration : 500,
+					easing : 'easeOutBack'
+				});
+				$("#luces").fadeIn("slow")
+			});
+			//aparece el primer texto
+			$(this).delay(1500, function() {
+				
+				$("#luz1").stop().animate({
+					top : '0px'
+				}, {
+					queue : false,
+					duration : 500,
+					easing : 'easeOutBack'
+				});
+				$("#luz1").fadeIn("slow")
+			});
+			//aparece el primer texto
+			$(this).delay(2500, function() {
+				
+				$("#luz2").stop().animate({
+					top : '0px'
+				}, {
+					queue : false,
+					duration : 500,
+					easing : 'easeOutBack'
+				});
+				$("#luz2").fadeIn("slow")
+			});
+			//aparece el primer texto
+			$(this).delay(3000, function() {
+				
+				$("#luz3").stop().animate({
+					top : '0px'
+				}, {
+					queue : false,
+					duration : 500,
+					easing : 'easeOutBack'
+				});
+				$("#luz3").fadeIn("slow")
+			});
 			
 			//aparece el segundo texto
-			$(this).delay(700, function() {
+			$(this).delay(2500, function() {
 				
 				$("#texto2").stop().animate({
 					top : '290px'
@@ -49,14 +97,16 @@
 </head>
 
 <body>
-<div id="content">			
+<div id="content">		
 <div id="headerSlide">
-
 		<div class="contenedor">
-		  <div id="texto1"><img src="images/text1.png" alt="texto1"></div>
-          <div id="texto2"><img src="images/text2.png" alt="texto2"></div>
-         
+		  <div id="texto1"><img src="images/text1.png" alt="texto1"></div>        
+          <div id="texto2"><img src="images/text2.png" alt="texto2"></div>         
 		</div>
+        <div id="luz1"><img src="images/luz1.png" alt="luz1"></div>
+        <div id="luz2"><img src="images/luz2.png" alt="luz2"></div>
+        <div id="luz3"><img src="images/luz3.png" alt="luz3"></div>
+        <div id="luces"><img src="images/fondo_slide4bis.png" alt="luces"></div>
   </div>
 
 </div>

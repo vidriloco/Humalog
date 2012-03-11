@@ -70,7 +70,7 @@ Cierre
 #texto2{
 	width:324px;
 	left:340px;
-	top:305px;
+	top:430px;
 	margin-left:-21px;
 	display:none;
 	position:absolute;
@@ -81,7 +81,7 @@ Cierre
 #texto3{
 	width:496px;
 	left:255px;
-	top:300px;
+	top:460px;
 	margin-left:0px;
 	display:none;
 	position:absolute;
@@ -91,7 +91,7 @@ Cierre
 #texto4{
 	width:496px;
 	left:345px;
-	top:300px;
+	top:500px;
 	margin-left:0px;
 	display:none;
 	position:absolute;
@@ -105,4 +105,12 @@ Cierre
 	display:none;
 	z-index: 35;
 }
-
+#ref{
+	width:708px;
+	left:1130px;
+	top:250px;
+	margin-left:-351px;
+	display:none;
+	position:absolute;
+	z-index:60;
+}	

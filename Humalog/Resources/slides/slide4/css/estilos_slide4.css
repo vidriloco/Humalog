@@ -46,8 +46,48 @@ Cierre
 	margin-left:-351px;
 	display:none;
 	position:absolute;
+	z-index:25;
+}
+
+#luces{
+	width:708px;
+	left:350px;
+	top:0px;
+	margin-left:-351px;
+	display:none;
+	position:absolute;
+	z-index:30;
+}
+
+#luz1{
+	width:708px;
+	left:330px;
+	top:0px;
+	margin-left:-351px;
+	display:none;
+	position:absolute;
 	z-index:20;
-}	
+}
+
+#luz2{
+	width:708px;
+	left:600px;
+	top:0px;
+	margin-left:-351px;
+	display:none;
+	position:absolute;
+	z-index:20;
+}
+
+#luz3{
+	width:708px;
+	left:900px;
+	top:0px;
+	margin-left:-351px;
+	display:none;
+	position:absolute;
+	z-index:20;
+}		
 	
 #texto2{
 	width:324px;

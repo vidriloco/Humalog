@@ -1,5 +1,5 @@
 //
-//  CompositeView.m
+//  WebContentView.m
 //  Humalog
 //
 //  Created by Workstation on 3/1/12.
@@ -25,27 +25,20 @@ static WebContentView *sharedInstance = nil;
     return sharedInstance;
 }
 
-// We can still have a regular init method, that will get called the first time the Singleton is used.
 - (id)init
 {
-    self = [super init];
-    
-    if (self) {
-        // Permitir zoom
-        self.scalesPageToFit = YES;
+    if ((self = [super init])) {
+        // Init
     }
-    
     return self;
 }
 
-// Equally, we don't want to generate multiple copies of the singleton.
 - (id)copyWithZone:(NSZone *)zone
 {
     return self;
 }
 
 // Content protocol methods
-
 - (BOOL)playAction
 {
     [[WebContentView sharedInstance] reload];

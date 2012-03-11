@@ -1,5 +1,5 @@
 //
-//  CompositeView.m
+//  WebContentView.h
 //  Humalog
 //
 //  Created by Workstation on 3/1/12.

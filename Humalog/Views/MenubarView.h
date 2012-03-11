@@ -7,7 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "NavigationControlDelegate.h"
+#import "ContentNotificationDelegate.h"
 
-@interface MenubarView : UIImageView
+@interface MenubarView : UIImageView<ContentNotificationDelegate> {
+    id<NavigationControlDelegate> navigationDelegate;
+}
+
+@property (nonatomic, retain) id<NavigationControlDelegate> navigationDelegate;
 
 @end

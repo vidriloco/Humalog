@@ -21,7 +21,9 @@
 @end
 
 @implementation ToolbarView
-@synthesize navigationDelegate;
+@synthesize navigationDelegate, toolControlDelegate;
+
+// TODO: Beautify
 
 - (id)init
 {
@@ -32,6 +34,8 @@
         hiddenArea = CGRectOffset(displayArea, 0, -displayArea.size.height);
         
         // Playback buttons
+        navButtons = [NSMutableArray array];
+        
         NSArray *playback = [NSArray arrayWithObjects:
                              @"btn_rw.png",
                              @"btn_play.png",
@@ -51,7 +55,7 @@
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.frame = CGRectMake(0, 0, normalImage.size.width, normalImage.size.height);
             button.center = [v CGPointValue];
-            button.frame = CGRectIntegral(button.frame);
+            button.frame = CGRectIntegral(button.frame);            
             [button setImage:normalImage forState:UIControlStateNormal];
             [button addTarget:navigationDelegate
                        action:[[playbackActions objectAtIndex:i] pointerValue]
@@ -65,6 +69,8 @@
         }
         
         // Mini layout buttons
+        miniButtons = [NSMutableArray array];
+        
         NSArray *miniOptions = [NSArray arrayWithObjects:
                              @"btn_minis_izq.png",
                              @"btn_minis_abajo.png",
@@ -89,6 +95,7 @@
         
         // Tool buttons
         toolButtons = [NSMutableArray array];
+        
         NSArray *tools = [NSArray arrayWithObjects:
                           @"pluma.png",
                           @"marcador.png",
@@ -113,7 +120,7 @@
             [button setImage:normalImage forState:UIControlStateNormal];
 //            [button setImage:selectedImage forState:UIControlStateHighlighted];
             [button setImage:selectedImage forState:UIControlStateSelected];
-            [button addTarget:navigationDelegate
+            [button addTarget:toolControlDelegate
                        action:[[toolActions objectAtIndex:i] pointerValue]
              forControlEvents:UIControlEventTouchDown];
             [button addTarget:self
@@ -132,7 +139,7 @@
     // Deselect tool buttons
     for (UIButton *i in toolButtons) {
         if (i.selected) {
-            [navigationDelegate toolbarViewDidDeselectTool];
+            [toolControlDelegate toolbarViewDidDeselectTool];
             i.selected = NO;
         }
     }
@@ -142,7 +149,7 @@
 {
     if (button.selected) {
         button.selected = NO;
-        [navigationDelegate toolbarViewDidDeselectTool];
+        [toolControlDelegate toolbarViewDidDeselectTool];
         return;
     }
     
@@ -150,6 +157,24 @@
         i.selected = NO;
     
     button.selected = YES;
+}
+
+- (void)contentStarted
+{
+    UIButton *prev = [navButtons objectAtIndex:0];
+    prev.enabled = NO;
+}
+
+- (void)contentFinished
+{
+    UIButton *next = [navButtons lastObject];
+    next.enabled = NO;
+}
+
+- (void)contentChanged
+{
+    for (UIButton *i in navButtons)
+        i.enabled = YES;
 }
 
 - (void)hide

@@ -93,7 +93,9 @@
 		840BBB21150AF0BF00B681A7 /* plato.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = plato.pdf; sourceTree = "<group>"; };
 		840BBB24150AFAA900B681A7 /* AnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationView.h; sourceTree = "<group>"; };
 		840BBB25150AFAA900B681A7 /* AnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationView.m; sourceTree = "<group>"; };
-		840BBB2A150C675D00B681A7 /* ContentDisplayDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; name = ContentDisplayDelegate.h; path = Protocols/ContentDisplayDelegate.h; sourceTree = "<group>"; };
+		840BBB2A150C675D00B681A7 /* ContentDisplayDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentDisplayDelegate.h; path = Protocols/ContentDisplayDelegate.h; sourceTree = "<group>"; };
+		840BBB3A150C945F00B681A7 /* ToolControlDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToolControlDelegate.h; path = Protocols/ToolControlDelegate.h; sourceTree = "<group>"; };
+		840BBB3C150C9EA900B681A7 /* ContentNotificationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentNotificationDelegate.h; path = Protocols/ContentNotificationDelegate.h; sourceTree = "<group>"; };
 		84C9DF8515009F6700E16B3B /* Humalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Humalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84C9DF8915009F6700E16B3B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		84C9DF8B15009F6700E16B3B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -189,6 +191,8 @@
 				840BBB131509E39700B681A7 /* ContentControlProtocol.h */,
 				840BBB181509EB6000B681A7 /* NavigationControlDelegate.h */,
 				840BBB2A150C675D00B681A7 /* ContentDisplayDelegate.h */,
+				840BBB3A150C945F00B681A7 /* ToolControlDelegate.h */,
+				840BBB3C150C9EA900B681A7 /* ContentNotificationDelegate.h */,
 			);
 			name = Protocols;
 			sourceTree = "<group>";

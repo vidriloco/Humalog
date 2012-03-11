@@ -11,7 +11,13 @@
 #define MENUBAR_IMAGE @"barra_menu.jpg"
 #define MARGIN 15
 
+@interface MenubarView() {
+    NSMutableArray *navButtons;
+}
+@end
+
 @implementation MenubarView
+@synthesize navigationDelegate;
 
 - (id)init
 {
@@ -45,6 +51,8 @@
         }
         
         // Nav buttons
+        navButtons = [NSMutableArray array];
+        
         NSArray *buttons = [NSArray arrayWithObjects:
                             @"btn_apertura.png",
                             @"btn_cierre.png",
@@ -52,7 +60,13 @@
                             @"btn_ipp.png",
                             nil];
 
-        
+        NSArray *playbackActions = [NSArray arrayWithObjects:
+                                    [NSValue valueWithPointer:@selector(menubarViewDidPressApertura)],
+                                    [NSValue valueWithPointer:@selector(menubarViewDidPressCierre)],
+                                    [NSValue valueWithPointer:@selector(menubarViewDidPressEstudios)],
+                                    [NSValue valueWithPointer:@selector(menubarViewDidPressIPP)],
+                                    nil];
+
         id buttonLayout = [GridLayout gridWithFrame:CGRectMake(2 * MARGIN + self.frame.size.width * 2 / 3, 0, self.frame.size.width * 1 / 5, self.frame.size.height) numRows:1 numCols:[buttons count]];
         i = 0;
         for (NSValue* v in buttonLayout) {
@@ -62,12 +76,38 @@
             button.center = [v CGPointValue];
             button.frame = CGRectIntegral(button.frame);
             [button setImage:normalImage forState:UIControlStateNormal];
+            [button addTarget:navigationDelegate
+                       action:[[playbackActions objectAtIndex:i] pointerValue]
+             forControlEvents:UIControlEventTouchDown];
+//            [button addTarget:self
+//                       action:@selector(navButtonPressed:)
+//             forControlEvents:UIControlEventTouchDown];
             [self addSubview:button];
+            [navButtons addObject:button];
+
             ++i;
         }
 
     }
     return self;
+}
+
+- (void)contentStarted
+{
+    UIButton *apertura = [navButtons objectAtIndex:0];
+    apertura.enabled = NO;
+}
+
+- (void)contentFinished
+{
+    UIButton *cierre = [navButtons objectAtIndex:1];
+    cierre.enabled = NO;
+}
+
+- (void)contentChanged
+{
+    for (UIButton *i in navButtons)
+        i.enabled = YES;
 }
 
 /*

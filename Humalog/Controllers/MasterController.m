@@ -13,17 +13,19 @@
 #import "MenubarView.h"
 #import "AnnotationView.h"
 
-#define FADE_DURATION 0.5
+#define FADE_DURATION 0.25
 
 // Private
 @interface MasterController() {
     ContentProvider                *contentProvider;
     UIView<ContentControlProtocol> *contentView;
     ToolbarView                    *toolbarView;
+    MenubarView                    *menubarView;
     AnnotationView                 *annotationView;
+    int currentContentScreen;
 }
 - (void)discardToolbar;
-- (void)fadeOut;
+- (void)fadeOutToAction:(void(^)(void))action;
 - (void)fadeIn;
 - (void)loadContent;
 @end
@@ -61,11 +63,11 @@
 {
     self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)]; //[[UIScreen mainScreen] bounds]];
     // Initialization code
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor purpleColor];
     
     // Subviews
     toolbarView = [[ToolbarView alloc] init];
-    MenubarView *menubarView = [[MenubarView alloc] init];
+    menubarView = [[MenubarView alloc] init];
     contentView = [contentProvider viewForDocumentAtIndex:currentContentScreen];
     
     menubarView.frame = CGRectMake(0, self.view.frame.size.height - menubarView.image.size.height,
@@ -80,7 +82,8 @@
     [self.view addSubview:annotationView];
     
     // Delegation
-    toolbarView.navigationDelegate = self;
+    toolbarView.navigationDelegate  = self;
+    toolbarView.toolControlDelegate = self;
     
     // Gestures & view for toolbar
     UIView *gestureView = [[UIView alloc] initWithFrame:toolbarView.frame];
@@ -96,40 +99,43 @@
 
     [self.view addSubview:gestureView];
     
+    // Navigation gestures
+    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft:)];
+    [swipeLeft setDirection:UISwipeGestureRecognizerDirectionLeft];
+    [swipeLeft setNumberOfTouchesRequired:2];
+    [contentView addGestureRecognizer:swipeLeft];
+    swipeLeft.delegate = self;
+    
+    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight:)];
+    [swipeRight setDirection:UISwipeGestureRecognizerDirectionRight];
+    [swipeRight setNumberOfTouchesRequired:2];
+    [contentView addGestureRecognizer:swipeRight];
+    swipeRight.delegate = self;
+
     // Hide content views until content is loaded
     contentView.alpha = 0.0;
     annotationView.alpha = 0.0;
 }
 
-- (void)fadeOut
+- (void)fadeOutToAction:(void(^)(void))action
 {
     [UIView animateWithDuration:FADE_DURATION
                      animations:^{
-                         contentView.alpha = 0.0;
+                         contentView.alpha    = 0.0;
                          annotationView.alpha = 0.0;
+                     }
+                     completion:^(BOOL finished) {
+                         action();
                      }];
 }
 
 - (void)fadeIn
 {
     [UIView animateWithDuration:FADE_DURATION
-                          delay:0.0
-                        options:UIViewAnimationOptionBeginFromCurrentState
                      animations:^{
-                         contentView.alpha = 1.0;
-                     }
-                     completion:^(BOOL finished) {
-                         
-                     }];
-
-    [UIView animateWithDuration:FADE_DURATION
-                          delay:FADE_DURATION / 2.0
-                        options:0
-                     animations:^{
+                         contentView.alpha    = 1.0;
                          annotationView.alpha = 1.0;
-                     }
-                     completion:^(BOOL finished) {
-                         
+
                      }];
 }
 
@@ -159,6 +165,8 @@
     [toolbarView performSelector:@selector(hide) withObject:nil afterDelay:0.25];
 }
 
+// Document navigation
+
 - (void)saveAnnotations
 {
     NSDictionary *annotations = [NSDictionary dictionaryWithObjectsAndKeys:
@@ -177,15 +185,55 @@
 
 - (void)loadContent
 {
-    [self fadeOut];
-    [self loadAnnotations];
-    contentView = [contentProvider viewForDocumentAtIndex:currentContentScreen];
+    [self fadeOutToAction:^{
+        [self loadAnnotations];
+        contentView = [contentProvider viewForDocumentAtIndex:currentContentScreen];
+    }];
+}
+
+- (void)loadPreviousDocument
+{
+    [self saveAnnotations];
+    currentContentScreen = MAX(--currentContentScreen, [contentProvider first]);
+    [self loadContent];
+}
+
+- (void)loadNextDocument
+{
+    [self saveAnnotations];
+    currentContentScreen = MIN(++currentContentScreen, [contentProvider count]);
+    [self loadContent];
+}
+
+- (void)loadFirstDocument
+{
+    [self saveAnnotations];
+    currentContentScreen = [contentProvider first];
+    [self loadContent];
+}
+
+- (void)loadLastDocument
+{
+    [self saveAnnotations];
+    currentContentScreen = [contentProvider count];
+    [self loadContent];
 }
 
 // Delegation
-
 - (void)contentViewDidFinishLoad
 {
+    [toolbarView contentChanged];
+    [menubarView contentChanged];
+    
+    if (currentContentScreen == [contentProvider first]) {
+        [toolbarView contentStarted];
+        [menubarView contentStarted];
+    }
+    else if (currentContentScreen == [contentProvider count]) {
+        [toolbarView contentFinished];
+        [menubarView contentFinished];
+    }
+         
     [self fadeIn];
     [self discardToolbar];
 }
@@ -204,6 +252,20 @@
         [toolbarView show];
 }
 
+- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+    return YES;
+}
+
+- (void)swipeLeft:(UISwipeGestureRecognizer *)recognizer
+{
+    [self loadNextDocument];
+}
+
+- (void)swipeRight:(UISwipeGestureRecognizer *)recognizer
+{
+    [self loadPreviousDocument];
+}
+
 - (void)tap:(UISwipeGestureRecognizer *)recognizer
 {
     CGPoint point = [recognizer locationInView:self.view];
@@ -211,25 +273,42 @@
         [toolbarView toggle];
 }
 
+- (void)menubarViewDidPressApertura
+{
+    [self loadFirstDocument];
+}
+
+- (void)menubarViewDidPressCierre
+{
+    [self loadLastDocument];
+}
+
+- (void)menubarViewDidPressEstudios
+{
+    NSLog(@"Estudios");
+}
+
+- (void)menubarViewDidPressIPP
+{
+    NSLog(@"IPP");
+}
+
 - (void)toolbarViewDidPressBack
 {
-    [self saveAnnotations];
-    currentContentScreen = MAX(--currentContentScreen, [contentProvider first]);
-    [self loadContent];
+    [self loadPreviousDocument];
 }
 
 - (void)toolbarViewDidPressForward
 {
-    [self saveAnnotations];
-    currentContentScreen = MIN(++currentContentScreen, [contentProvider count]);
-    [self loadContent];
+    [self loadNextDocument];
 }
 
 - (void)toolbarViewDidPressPlay 
 {
-    [self fadeOut];
-    [contentView playAction];
-    [self discardToolbar];
+    [self fadeOutToAction:^{
+        [contentView playAction];
+        [self discardToolbar];
+    }];
 }
 
 - (void)toolbarViewDidSelectPen

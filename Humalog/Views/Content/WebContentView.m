@@ -10,45 +10,44 @@
 
 @implementation WebContentView
 
-static WebContentView *sharedInstance = nil;
-
-+ (WebContentView *)sharedInstance {
-    if (nil != sharedInstance) {
-        return sharedInstance;
-    }
-    
-    static dispatch_once_t pred;        // Lock
-    dispatch_once(&pred, ^{             // This code is called at most once per app
-        sharedInstance = [[WebContentView alloc] init];
-    });
-    
-    return sharedInstance;
-}
-
-- (id)init
-{
-    if ((self = [super init])) {
-        // Init
-    }
-    return self;
-}
-
-- (id)copyWithZone:(NSZone *)zone
-{
-    return self;
-}
+//static WebContentView *sharedInstance = nil;
+//
+//+ (WebContentView *)sharedInstance {
+//    if (nil != sharedInstance) {
+//        return sharedInstance;
+//    }
+//    
+//    static dispatch_once_t pred;        // Lock
+//    dispatch_once(&pred, ^{             // This code is called at most once per app
+//        sharedInstance = [[WebContentView alloc] init];
+//    });
+//    
+//    return sharedInstance;
+//}
+//
+//- (id)init
+//{
+//    if ((self = [super init])) {
+//        // Init
+//    }
+//    return self;
+//}
+//
+//- (id)copyWithZone:(NSZone *)zone
+//{
+//    return self;
+//}
 
 // Content protocol methods
 - (BOOL)playAction
 {
-    [[WebContentView sharedInstance] reload];
+    [self reload];
     return YES;
 }
 
 - (UIView *)getContentSubview
 {
-    return [[WebContentView sharedInstance] scrollView];
+    return self.scrollView;
 }
-
 
 @end

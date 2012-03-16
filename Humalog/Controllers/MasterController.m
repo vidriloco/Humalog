@@ -8,20 +8,23 @@
 
 #import "ContentControlProtocol.h"
 #import "MasterController.h"
-#import "ContentProvider.h"
+#import "SlideProvider.h"
 #import "ToolbarView.h"
 #import "MenubarView.h"
 #import "AnnotationView.h"
+#import "WhitepaperController.h"
+#import "Viewport.h"
 
 #define FADE_DURATION 0.25
 
 // Private
 @interface MasterController() {
-    ContentProvider                *contentProvider;
+    SlideProvider                  *contentProvider;
     UIView<ContentControlProtocol> *contentView;
     ToolbarView                    *toolbarView;
     MenubarView                    *menubarView;
     AnnotationView                 *annotationView;
+    WhitepaperController           *whitepaperController; 
     int currentContentScreen;
 }
 - (void)discardToolbar;
@@ -41,9 +44,13 @@
         [UIApplication sharedApplication].statusBarHidden = YES;
         
         // Content management
-        contentProvider = [[ContentProvider alloc] init];
+        contentProvider = [[SlideProvider alloc] init];
         contentProvider.delegate = self;
-        currentContentScreen = [contentProvider first];
+        currentContentScreen = 0;
+        
+        // Whitepaper controller
+        whitepaperController = [[WhitepaperController alloc] init];
+        [self addChildViewController:whitepaperController];
     }
     return self;
 }
@@ -61,7 +68,7 @@
 // Implement loadView to create a view hierarchy programmatically, without using a nib.
 - (void)loadView
 {
-    self.view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1024, 768)]; //[[UIScreen mainScreen] bounds]];
+    self.view = [[UIView alloc] initWithFrame:[Viewport screenArea]];
     // Initialization code
     self.view.backgroundColor = [UIColor purpleColor];
     
@@ -194,28 +201,28 @@
 - (void)loadPreviousDocument
 {
     [self saveAnnotations];
-    currentContentScreen = MAX(--currentContentScreen, [contentProvider first]);
+    currentContentScreen = MAX(--currentContentScreen, 0);
     [self loadContent];
 }
 
 - (void)loadNextDocument
 {
     [self saveAnnotations];
-    currentContentScreen = MIN(++currentContentScreen, [contentProvider count]);
+    currentContentScreen = MIN(++currentContentScreen, [contentProvider numberOfDocuments] - 1);
     [self loadContent];
 }
 
 - (void)loadFirstDocument
 {
     [self saveAnnotations];
-    currentContentScreen = [contentProvider first];
+    currentContentScreen = 0;
     [self loadContent];
 }
 
 - (void)loadLastDocument
 {
     [self saveAnnotations];
-    currentContentScreen = [contentProvider count];
+    currentContentScreen = [contentProvider numberOfDocuments] - 1;
     [self loadContent];
 }
 
@@ -225,11 +232,11 @@
     [toolbarView contentChanged];
     [menubarView contentChanged];
     
-    if (currentContentScreen == [contentProvider first]) {
+    if (currentContentScreen == 0) {
         [toolbarView contentStarted];
         [menubarView contentStarted];
     }
-    else if (currentContentScreen == [contentProvider count]) {
+    else if (currentContentScreen == [contentProvider numberOfDocuments] - 1) {
         [toolbarView contentFinished];
         [menubarView contentFinished];
     }
@@ -285,7 +292,8 @@
 
 - (void)menubarViewDidPressEstudios
 {
-    NSLog(@"Estudios");
+    whitepaperController.view.frame = contentView.frame;
+    [self.view addSubview:whitepaperController.view];
 }
 
 - (void)menubarViewDidPressIPP

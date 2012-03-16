@@ -76,7 +76,7 @@
     CGPoint point = [self transformPoint:[[pointArray objectAtIndex:0] CGPointValue]];
     [bezierPath moveToPoint:point];
     
-    // Collect the remaining ones
+    // Connect the remaining ones
     for (int i = 1; i < [pointArray count]; ++i) {
         point = [self transformPoint:[[pointArray objectAtIndex:i] CGPointValue]];
         [bezierPath addLineToPoint:point];
@@ -97,7 +97,7 @@
         [strokeColor setStroke];
         
         // Paint with no off-screen drawing
-        if (CGRectIntersectsRect(rect, CGRectInset(CGPathGetBoundingBox(bezierPath.CGPath), -bezierPath.lineWidth / 2.0, -bezierPath.lineWidth / 2.0)))
+        if (CGRectIntersectsRect(rect, CGRectInset(bezierPath.bounds, -bezierPath.lineWidth / 2.0, -bezierPath.lineWidth / 2.0)))
             [bezierPath stroke];
     }
 }
@@ -177,20 +177,28 @@
 - (void)checkAndErasePath:(NSMutableArray *)paths
 {
     NSMutableArray *markedForDeletion = [NSMutableArray array];
+
+    // Need only check the last eraser path's line segment for intersection
+    CGPoint eraserA = [[currentPath objectAtIndex:currentPath.count - 2] CGPointValue];
+    CGPoint eraserB = [[currentPath lastObject] CGPointValue];
+    CGRect eraserBB = CGRectMake(eraserA.x, eraserA.y, eraserB.x - eraserA.x, eraserB.y - eraserA.y);
+    
     for (NSArray *path in paths) {
         for (int i = 0; i < path.count - 1; ++i) {
             CGPoint line1A = [[path objectAtIndex:i] CGPointValue];
             CGPoint line1B = [[path objectAtIndex:i + 1] CGPointValue];
-            for (int j = 0; j < currentPath.count - 1; ++j) {
-                CGPoint line2A = [[currentPath objectAtIndex:j] CGPointValue];
-                CGPoint line2B = [[currentPath objectAtIndex:j + 1] CGPointValue];
-                if ([self lineSegmentsIntersectWithFirstPoint:line1A
-                                                       second:line1B
-                                                        third:line2A
-                                                       fourth:line2B]) {
-                    [markedForDeletion addObject:path];
-                }
-            }
+            CGRect  lineBB = CGRectMake(line1A.x, line1A.y, line1B.x - line1A.x, line1B.y - line1A.y);
+            
+            // Broad-phase intersection check
+            if (!CGRectIntersectsRect(lineBB, eraserBB))
+                continue;
+            
+            // Refined line-segment intersection
+            if ([self lineSegmentsIntersectWithFirstPoint:line1A
+                                                   second:line1B
+                                                    third:eraserA
+                                                   fourth:eraserB])
+                [markedForDeletion addObject:path];
         }
     } 
     [paths removeObjectsInArray:markedForDeletion];

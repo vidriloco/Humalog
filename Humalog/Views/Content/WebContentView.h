@@ -9,5 +9,5 @@
 #include "ContentControlProtocol.h"
 
 @interface WebContentView : UIWebView<ContentControlProtocol>
-+ (id)sharedInstance;
+//+ (id)sharedInstance;
 @end

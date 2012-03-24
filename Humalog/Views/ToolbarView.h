@@ -7,17 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "NavigationControlDelegate.h"
-#import "ContentNotificationDelegate.h"
-#import "ToolControlDelegate.h"
+#import "InterfaceControlDelegate.h"
 
-@interface ToolbarView : UIImageView<ContentNotificationDelegate> {
-    id<NavigationControlDelegate> navigationDelegate;
-    id<ToolControlDelegate>       toolControlDelegate;
+@interface ToolbarView : UIImageView {
+    id<InterfaceControlDelegate> delegate;
 }
-
-@property (nonatomic, retain) id<NavigationControlDelegate> navigationDelegate;
-@property (nonatomic, retain) id<ToolControlDelegate>       toolControlDelegate;
+@property (nonatomic, retain) id<InterfaceControlDelegate> delegate;
 
 - (void)hide;
 - (void)show;

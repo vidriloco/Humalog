@@ -15,13 +15,17 @@
     NSMutableArray *navButtons;
     NSMutableArray *miniButtons;
     NSMutableArray *toolButtons;
+    
+    NSArray *navActions;
+    NSArray *toolActions;
+    
     CGRect hiddenArea;
     CGRect displayArea;
 }
 @end
 
 @implementation ToolbarView
-@synthesize navigationDelegate, toolControlDelegate;
+@synthesize delegate;
 
 // TODO: Beautify
 
@@ -41,12 +45,12 @@
                              @"btn_play.png",
                              @"btn_fw.png",
                              nil];
-
-        NSArray *playbackActions = [NSArray arrayWithObjects:
-                                    [NSValue valueWithPointer:@selector(toolbarViewDidPressBack)],
-                                    [NSValue valueWithPointer:@selector(toolbarViewDidPressPlay)],
-                                    [NSValue valueWithPointer:@selector(toolbarViewDidPressForward)],
-                                    nil];
+        
+        navActions = [NSArray arrayWithObjects:
+                      [NSValue valueWithPointer:@selector(toolbarViewDidPressBack)],
+                      [NSValue valueWithPointer:@selector(toolbarViewDidPressPlay)],
+                      [NSValue valueWithPointer:@selector(toolbarViewDidPressForward)],
+                      nil];
         
         id playbackLayout = [GridLayout gridWithFrame:CGRectMake(0, 0, 196, self.frame.size.height) numRows:1 numCols:[playback count]];
         int i = 0;
@@ -57,12 +61,6 @@
             button.center = [v CGPointValue];
             button.frame = CGRectIntegral(button.frame);            
             [button setImage:normalImage forState:UIControlStateNormal];
-            [button addTarget:navigationDelegate
-                       action:[[playbackActions objectAtIndex:i] pointerValue]
-             forControlEvents:UIControlEventTouchDown];
-            [button addTarget:self
-                       action:@selector(navButtonPressed:)
-             forControlEvents:UIControlEventTouchDown];
             [self addSubview:button];
             [navButtons addObject:button];
             ++i;
@@ -85,6 +83,7 @@
             button.frame = CGRectMake(0, 0, normalImage.size.width, normalImage.size.height);
             button.center = [v CGPointValue];
             button.frame = CGRectIntegral(button.frame);
+            button.enabled = NO;
             [button setImage:normalImage forState:UIControlStateNormal];
             [button setImage:selectedImage forState:UIControlStateHighlighted];
             [button setImage:selectedImage forState:UIControlStateSelected];
@@ -101,12 +100,12 @@
                           @"marcador.png",
                           @"goma.png",
                           nil];
-
-        NSArray *toolActions = [NSArray arrayWithObjects:
-                                [NSValue valueWithPointer:@selector(toolbarViewDidSelectPen)],
-                                [NSValue valueWithPointer:@selector(toolbarViewDidSelectMarker)],
-                                [NSValue valueWithPointer:@selector(toolbarViewDidSelectEraser)],
-                                nil];
+        
+        toolActions = [NSArray arrayWithObjects:
+                       [NSValue valueWithPointer:@selector(toolbarViewDidSelectPen)],
+                       [NSValue valueWithPointer:@selector(toolbarViewDidSelectMarker)],
+                       [NSValue valueWithPointer:@selector(toolbarViewDidSelectEraser)],
+                       nil];
         
         id toolsLayout = [GridLayout gridWithFrame:CGRectMake(1024 - 300, 0, 250, self.frame.size.height) numRows:1 numCols:[tools count]];
         i = 0;
@@ -120,12 +119,11 @@
             [button setImage:normalImage forState:UIControlStateNormal];
 //            [button setImage:selectedImage forState:UIControlStateHighlighted];
             [button setImage:selectedImage forState:UIControlStateSelected];
-            [button addTarget:toolControlDelegate
-                       action:[[toolActions objectAtIndex:i] pointerValue]
-             forControlEvents:UIControlEventTouchDown];
+            
             [button addTarget:self
                        action:@selector(toolButtonPressed:)
              forControlEvents:UIControlEventTouchDown];
+            
             [self addSubview:button];
             [toolButtons addObject:button];
             ++i;
@@ -134,22 +132,105 @@
     return self;
 }
 
-- (void)navButtonPressed:(UIButton *)button
+- (void)setDelegate:(id<InterfaceControlDelegate>)newDelegate
 {
+    // Update navigation
+    NSArray *buttons = navButtons;
+    NSArray *actions = navActions;
+    for (UIButton *button in buttons) {
+        if (self.delegate) {
+            [button removeTarget:self.delegate
+                          action:NULL
+                forControlEvents:UIControlEventTouchDown];
+        }
+        SEL action = [[actions objectAtIndex:[buttons indexOfObject:button]] pointerValue];
+        if ([newDelegate respondsToSelector:action]) {
+            [button addTarget:newDelegate
+                       action:action
+             forControlEvents:UIControlEventTouchDown];
+        } else {
+            button.enabled = NO;
+        }
+    }
+    
+    // Update tools
+    buttons = toolButtons;
+    actions = toolActions;
+    for (UIButton *button in buttons) {
+        if (self.delegate) {
+            [button removeTarget:self.delegate
+                          action:NULL
+                forControlEvents:UIControlEventTouchDown];
+        }
+        SEL action = [[actions objectAtIndex:[buttons indexOfObject:button]] pointerValue];
+        if ([newDelegate respondsToSelector:action]) {
+            [button addTarget:newDelegate
+                       action:action
+             forControlEvents:UIControlEventTouchDown];
+        } else {
+            button.enabled = NO;
+        }
+    }
+    
+    [(NSObject *)delegate removeObserver:self
+                              forKeyPath:@"navigationPosition"];
+    
+    [(NSObject *)newDelegate addObserver:self
+                              forKeyPath:@"navigationPosition"
+                                 options:NSKeyValueObservingOptionNew
+                                 context:nil];
+    
+    delegate = newDelegate;
+}
+     
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    if (![keyPath isEqualToString:@"navigationPosition"])
+        return;
+
+    enum NavigationPosition navigationPositionValue = [[change objectForKey:NSKeyValueChangeNewKey] intValue];
+    
+    UIButton *prevButton = [navButtons objectAtIndex:0];
+    UIButton *nextButton = [navButtons lastObject];
+    switch (navigationPositionValue) {
+        case NavigationPositionFirstDocument:
+            prevButton.enabled = NO;
+            nextButton.enabled = YES;
+            break;
+        case NavigationPositionLastDocument:
+            prevButton.enabled = YES;
+            nextButton.enabled = NO;
+            break;
+        case NavigationPositionOtherDocument:
+            prevButton.enabled = YES;
+            nextButton.enabled = YES;
+            break;
+        case NavigationPositionUndefined:
+        default:
+            prevButton.enabled = NO;
+            nextButton.enabled = NO;
+            break;
+    }
+    
     // Deselect tool buttons
     for (UIButton *i in toolButtons) {
         if (i.selected) {
-            [toolControlDelegate toolbarViewDidDeselectTool];
+            [self.delegate toolbarViewDidDeselectTool];
             i.selected = NO;
         }
     }
+    [self hide];
 }
 
 - (void)toolButtonPressed:(UIButton *)button
 {
     if (button.selected) {
         button.selected = NO;
-        [toolControlDelegate toolbarViewDidDeselectTool];
+        [self.delegate toolbarViewDidDeselectTool];
+        [self hide];
         return;
     }
     
@@ -157,24 +238,6 @@
         i.selected = NO;
     
     button.selected = YES;
-}
-
-- (void)contentStarted
-{
-    UIButton *prev = [navButtons objectAtIndex:0];
-    prev.enabled = NO;
-}
-
-- (void)contentFinished
-{
-    UIButton *next = [navButtons lastObject];
-    next.enabled = NO;
-}
-
-- (void)contentChanged
-{
-    for (UIButton *i in navButtons)
-        i.enabled = YES;
 }
 
 - (void)hide

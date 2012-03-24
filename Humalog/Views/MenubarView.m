@@ -13,11 +13,12 @@
 
 @interface MenubarView() {
     NSMutableArray *navButtons;
+    NSArray        *navActions;
 }
 @end
 
 @implementation MenubarView
-@synthesize navigationDelegate;
+@synthesize delegate;
 
 - (id)init
 {
@@ -43,6 +44,7 @@
             button.frame = CGRectMake(0, 0, normalImage.size.width, normalImage.size.height);
             button.center = [v CGPointValue];
             button.frame = CGRectIntegral(button.frame);
+            button.enabled = NO;
             [button setImage:normalImage forState:UIControlStateNormal];
             [button setImage:selectedImage forState:UIControlStateHighlighted];
             [button setImage:selectedImage forState:UIControlStateSelected];
@@ -59,13 +61,13 @@
                             @"btn_estudios.png",
                             @"btn_ipp.png",
                             nil];
-
-        NSArray *playbackActions = [NSArray arrayWithObjects:
-                                    [NSValue valueWithPointer:@selector(menubarViewDidPressApertura)],
-                                    [NSValue valueWithPointer:@selector(menubarViewDidPressCierre)],
-                                    [NSValue valueWithPointer:@selector(menubarViewDidPressEstudios)],
-                                    [NSValue valueWithPointer:@selector(menubarViewDidPressIPP)],
-                                    nil];
+        
+        navActions = [NSArray arrayWithObjects:
+                      [NSValue valueWithPointer:@selector(menubarViewDidPressApertura)],
+                      [NSValue valueWithPointer:@selector(menubarViewDidPressCierre)],
+                      [NSValue valueWithPointer:@selector(menubarViewDidPressEstudios)],
+                      [NSValue valueWithPointer:@selector(menubarViewDidPressIPP)],
+                      nil];
 
         id buttonLayout = [GridLayout gridWithFrame:CGRectMake(2 * MARGIN + self.frame.size.width * 2 / 3, 0, self.frame.size.width * 1 / 5, self.frame.size.height) numRows:1 numCols:[buttons count]];
         i = 0;
@@ -76,39 +78,42 @@
             button.center = [v CGPointValue];
             button.frame = CGRectIntegral(button.frame);
             [button setImage:normalImage forState:UIControlStateNormal];
-            [button addTarget:navigationDelegate
-                       action:[[playbackActions objectAtIndex:i] pointerValue]
-             forControlEvents:UIControlEventTouchDown];
-//            [button addTarget:self
-//                       action:@selector(navButtonPressed:)
-//             forControlEvents:UIControlEventTouchDown];
             [self addSubview:button];
             [navButtons addObject:button];
-
             ++i;
         }
-
+        
+        // Disable E, IPP
+        ((UIButton *)[navButtons objectAtIndex:2]).enabled = NO;
+        ((UIButton *)[navButtons objectAtIndex:3]).enabled = NO;
     }
     return self;
 }
 
-- (void)contentStarted
+- (void)setDelegate:(id<InterfaceControlDelegate>)newDelegate
 {
-    UIButton *apertura = [navButtons objectAtIndex:0];
-    apertura.enabled = NO;
+    // Update navigation
+    NSArray *buttons = navButtons;
+    NSArray *actions = navActions;
+    for (UIButton *button in buttons) {
+        if (self.delegate) {
+            [button removeTarget:self.delegate
+                          action:NULL
+                forControlEvents:UIControlEventTouchDown];
+        }
+        SEL action = [[actions objectAtIndex:[buttons indexOfObject:button]] pointerValue];
+        if ([newDelegate respondsToSelector:action]) {
+            [button addTarget:newDelegate
+                       action:action
+             forControlEvents:UIControlEventTouchDown];
+        } else {
+            button.enabled = NO;
+        }
+    }
+    
+    delegate = newDelegate;
 }
 
-- (void)contentFinished
-{
-    UIButton *cierre = [navButtons objectAtIndex:1];
-    cierre.enabled = NO;
-}
-
-- (void)contentChanged
-{
-    for (UIButton *i in navButtons)
-        i.enabled = YES;
-}
 
 /*
 // Only override drawRect: if you perform custom drawing.

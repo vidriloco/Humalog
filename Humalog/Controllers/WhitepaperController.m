@@ -9,9 +9,11 @@
 #import "WhitepaperController.h"
 #import "WhitepaperProvider.h"
 #import "Viewport.h"
+#import "AnnotationView.h"
 
 @interface WhitepaperController () {
     WhitepaperProvider *whitepaperProvider;
+    AnnotationView     *annotationView;
 }
 @end
 

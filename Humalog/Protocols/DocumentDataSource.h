@@ -14,4 +14,6 @@
 - (UIView<ContentControlProtocol> *)viewForDocumentAtIndex:(NSUInteger)index;
 @optional
 - (UIImageView *)previewForDocumentAtIndex:(NSUInteger)index;
+- (NSArray *)categoryNames;
+- (NSArray *)documentIndicesForCategoryNamed:(NSString *)categoryName;
 @end

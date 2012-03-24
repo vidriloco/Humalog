@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "NavigationControlDelegate.h"
 #import "ContentDisplayDelegate.h"
-#import "ToolControlDelegate.h"
 
-@interface MasterController : UIViewController<NavigationControlDelegate, ToolControlDelegate, ContentDisplayDelegate, UIGestureRecognizerDelegate>
+
+@interface MasterController : UIViewController<UIGestureRecognizerDelegate>
 
 @end

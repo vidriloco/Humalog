@@ -8,8 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
-@protocol NavigationControlDelegate <NSObject>
+enum NavigationPosition {
+    NavigationPositionFirstDocument,
+    NavigationPositionLastDocument,
+    NavigationPositionOtherDocument,
+    NavigationPositionUndefined
+};
+
+@protocol InterfaceControlDelegate <NSObject>
 // Nav
+@optional
 - (void)toolbarViewDidPressBack;
 - (void)toolbarViewDidPressForward;
 - (void)toolbarViewDidPressPlay;
@@ -18,5 +26,11 @@
 - (void)menubarViewDidPressCierre;
 - (void)menubarViewDidPressEstudios;
 - (void)menubarViewDidPressIPP;
+
+// Toolbar
+- (void)toolbarViewDidSelectPen;
+- (void)toolbarViewDidSelectMarker;
+- (void)toolbarViewDidSelectEraser;
+- (void)toolbarViewDidDeselectTool;
 
 @end

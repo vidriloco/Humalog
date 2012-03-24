@@ -11,6 +11,7 @@
 
 @interface SlideProvider() {
     NSMutableDictionary *documentAnnotations;
+    NSDictionary        *categoriesAndIndices;
     WebContentView      *webContentView;
 }
 
@@ -28,6 +29,35 @@
         webContentView.scrollView.scrollEnabled = NO;
         
         documentAnnotations = [NSMutableDictionary dictionary];
+        
+        categoriesAndIndices = [NSDictionary dictionaryWithObjectsAndKeys:
+                                [NSArray arrayWithObjects:
+                                 [NSNumber numberWithUnsignedInt:1],
+                                 [NSNumber numberWithUnsignedInt:2],
+                                 [NSNumber numberWithUnsignedInt:3],
+                                 nil], @"Epidemiología",
+                                
+                                [NSArray arrayWithObjects:
+                                 [NSNumber numberWithUnsignedInt:4],
+                                 [NSNumber numberWithUnsignedInt:5],
+                                 [NSNumber numberWithUnsignedInt:6],
+                                 nil], @"Brilinta",
+                                
+                                [NSArray arrayWithObjects:
+                                 [NSNumber numberWithUnsignedInt:7],
+                                 [NSNumber numberWithUnsignedInt:8],
+                                 [NSNumber numberWithUnsignedInt:9],
+                                 nil], @"Eficacia",
+                                
+                                [NSArray arrayWithObjects:
+                                 [NSNumber numberWithUnsignedInt:10],
+                                 nil], @"Seguridad",
+                                
+                                [NSArray arrayWithObjects:
+                                 [NSNumber numberWithUnsignedInt:11],
+                                 [NSNumber numberWithUnsignedInt:12],
+                                 nil], @"Posología",
+                                nil];
     }
     return self;
 }
@@ -55,6 +85,12 @@
     return webContentView;
 }
 
+- (UIImageView *)previewForDocumentAtIndex:(NSUInteger)index
+{
+    NSString *fileName = [[@"brilinta_" stringByAppendingString:[NSNumber numberWithUnsignedInt:index + 1].stringValue] stringByAppendingString:@".jpg"];
+    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:fileName]];
+}
+
 - (NSDictionary *)annotationsForDocumentAtIndex:(NSUInteger)index
 {
     return [documentAnnotations objectForKey:[NSNumber numberWithUnsignedInt:index]];
@@ -63,6 +99,16 @@
 - (void)setAnnotations:(NSDictionary *)annotations forDocumentAtIndex:(NSUInteger)index
 {
     [documentAnnotations setObject:annotations forKey:[NSNumber numberWithUnsignedInt:index]];
+}
+
+- (NSArray *)categoryNames
+{
+    return [categoriesAndIndices allKeys];
+}
+
+- (NSArray *)documentIndicesForCategoryNamed:(NSString *)categoryName
+{
+    return [categoriesAndIndices objectForKey:categoryName];
 }
 
 // Delegation

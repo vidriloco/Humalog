@@ -24,18 +24,6 @@
 		84C9DFAF15009F6800E16B3B /* HumalogTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C9DFAE15009F6800E16B3B /* HumalogTests.m */; };
 		84C9DFF01500A01000E16B3B /* MasterController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C9DFBA1500A01000E16B3B /* MasterController.m */; };
 		84C9DFF11500A01000E16B3B /* GridLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C9DFBD1500A01000E16B3B /* GridLayout.m */; };
-		84C9E0041500A01000E16B3B /* brilinta_01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFD21500A01000E16B3B /* brilinta_01.jpg */; };
-		84C9E0051500A01000E16B3B /* brilinta_02.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFD31500A01000E16B3B /* brilinta_02.jpg */; };
-		84C9E0061500A01000E16B3B /* brilinta_03.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFD41500A01000E16B3B /* brilinta_03.jpg */; };
-		84C9E0071500A01000E16B3B /* brilinta_04.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFD51500A01000E16B3B /* brilinta_04.jpg */; };
-		84C9E0081500A01000E16B3B /* brilinta_05.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFD61500A01000E16B3B /* brilinta_05.jpg */; };
-		84C9E0091500A01000E16B3B /* brilinta_06.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFD71500A01000E16B3B /* brilinta_06.jpg */; };
-		84C9E00A1500A01000E16B3B /* brilinta_07.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFD81500A01000E16B3B /* brilinta_07.jpg */; };
-		84C9E00B1500A01000E16B3B /* brilinta_08.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFD91500A01000E16B3B /* brilinta_08.jpg */; };
-		84C9E00C1500A01000E16B3B /* brilinta_09.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFDA1500A01000E16B3B /* brilinta_09.jpg */; };
-		84C9E00D1500A01000E16B3B /* brilinta_10.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFDB1500A01000E16B3B /* brilinta_10.jpg */; };
-		84C9E00E1500A01000E16B3B /* brilinta_11.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFDC1500A01000E16B3B /* brilinta_11.jpg */; };
-		84C9E00F1500A01000E16B3B /* brilinta_12.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84C9DFDD1500A01000E16B3B /* brilinta_12.jpg */; };
 		84C9E01B1500A01000E16B3B /* MenubarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C9DFED1500A01000E16B3B /* MenubarView.m */; };
 		84C9E01C1500A01000E16B3B /* ToolbarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C9DFEF1500A01000E16B3B /* ToolbarView.m */; };
 		84E05FB9151298FC009FE5AF /* iCarousel.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E05FB8151298FC009FE5AF /* iCarousel.m */; };
@@ -75,6 +63,20 @@
 		84E0600B1512BFF0009FE5AF /* WhitepaperProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E0600A1512BFF0009FE5AF /* WhitepaperProvider.m */; };
 		84E0602015131827009FE5AF /* WhitepaperController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E0601F15131827009FE5AF /* WhitepaperController.m */; };
 		84E06023151319A8009FE5AF /* Viewport.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E06022151319A8009FE5AF /* Viewport.m */; };
+		84E64C27151D1388001F7E0A /* ThumbnailStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E64C26151D1388001F7E0A /* ThumbnailStackView.m */; };
+		84E64C2A151D141B001F7E0A /* SlideController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E64C29151D141B001F7E0A /* SlideController.m */; };
+		84E64C3B151D4D2E001F7E0A /* brilinta_1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C2F151D4D2E001F7E0A /* brilinta_1.jpg */; };
+		84E64C3C151D4D2E001F7E0A /* brilinta_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C30151D4D2E001F7E0A /* brilinta_2.jpg */; };
+		84E64C3D151D4D2E001F7E0A /* brilinta_3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C31151D4D2E001F7E0A /* brilinta_3.jpg */; };
+		84E64C3E151D4D2E001F7E0A /* brilinta_4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C32151D4D2E001F7E0A /* brilinta_4.jpg */; };
+		84E64C3F151D4D2E001F7E0A /* brilinta_5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C33151D4D2E001F7E0A /* brilinta_5.jpg */; };
+		84E64C40151D4D2E001F7E0A /* brilinta_6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C34151D4D2E001F7E0A /* brilinta_6.jpg */; };
+		84E64C41151D4D2E001F7E0A /* brilinta_7.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C35151D4D2E001F7E0A /* brilinta_7.jpg */; };
+		84E64C42151D4D2E001F7E0A /* brilinta_8.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C36151D4D2E001F7E0A /* brilinta_8.jpg */; };
+		84E64C43151D4D2E001F7E0A /* brilinta_9.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C37151D4D2E001F7E0A /* brilinta_9.jpg */; };
+		84E64C44151D4D2E001F7E0A /* brilinta_10.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C38151D4D2E001F7E0A /* brilinta_10.jpg */; };
+		84E64C45151D4D2E001F7E0A /* brilinta_11.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C39151D4D2E001F7E0A /* brilinta_11.jpg */; };
+		84E64C46151D4D2E001F7E0A /* brilinta_12.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C3A151D4D2E001F7E0A /* brilinta_12.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,12 +96,10 @@
 		840BBB131509E39700B681A7 /* ContentControlProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentControlProtocol.h; path = Protocols/ContentControlProtocol.h; sourceTree = "<group>"; };
 		840BBB151509E42400B681A7 /* WebContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebContentView.h; sourceTree = "<group>"; };
 		840BBB161509E42400B681A7 /* WebContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebContentView.m; sourceTree = "<group>"; };
-		840BBB181509EB6000B681A7 /* NavigationControlDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = NavigationControlDelegate.h; path = Protocols/NavigationControlDelegate.h; sourceTree = "<group>"; };
+		840BBB181509EB6000B681A7 /* InterfaceControlDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InterfaceControlDelegate.h; path = Protocols/InterfaceControlDelegate.h; sourceTree = "<group>"; };
 		840BBB24150AFAA900B681A7 /* AnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationView.h; sourceTree = "<group>"; };
 		840BBB25150AFAA900B681A7 /* AnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationView.m; sourceTree = "<group>"; };
 		840BBB2A150C675D00B681A7 /* ContentDisplayDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentDisplayDelegate.h; path = Protocols/ContentDisplayDelegate.h; sourceTree = "<group>"; };
-		840BBB3A150C945F00B681A7 /* ToolControlDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToolControlDelegate.h; path = Protocols/ToolControlDelegate.h; sourceTree = "<group>"; };
-		840BBB3C150C9EA900B681A7 /* ContentNotificationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentNotificationDelegate.h; path = Protocols/ContentNotificationDelegate.h; sourceTree = "<group>"; };
 		84C9DF8515009F6700E16B3B /* Humalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Humalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84C9DF8915009F6700E16B3B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		84C9DF8B15009F6700E16B3B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -120,18 +120,6 @@
 		84C9DFBA1500A01000E16B3B /* MasterController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MasterController.m; sourceTree = "<group>"; };
 		84C9DFBC1500A01000E16B3B /* GridLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GridLayout.h; sourceTree = "<group>"; };
 		84C9DFBD1500A01000E16B3B /* GridLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GridLayout.m; sourceTree = "<group>"; };
-		84C9DFD21500A01000E16B3B /* brilinta_01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_01.jpg; sourceTree = "<group>"; };
-		84C9DFD31500A01000E16B3B /* brilinta_02.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_02.jpg; sourceTree = "<group>"; };
-		84C9DFD41500A01000E16B3B /* brilinta_03.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_03.jpg; sourceTree = "<group>"; };
-		84C9DFD51500A01000E16B3B /* brilinta_04.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_04.jpg; sourceTree = "<group>"; };
-		84C9DFD61500A01000E16B3B /* brilinta_05.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_05.jpg; sourceTree = "<group>"; };
-		84C9DFD71500A01000E16B3B /* brilinta_06.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_06.jpg; sourceTree = "<group>"; };
-		84C9DFD81500A01000E16B3B /* brilinta_07.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_07.jpg; sourceTree = "<group>"; };
-		84C9DFD91500A01000E16B3B /* brilinta_08.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_08.jpg; sourceTree = "<group>"; };
-		84C9DFDA1500A01000E16B3B /* brilinta_09.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_09.jpg; sourceTree = "<group>"; };
-		84C9DFDB1500A01000E16B3B /* brilinta_10.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_10.jpg; sourceTree = "<group>"; };
-		84C9DFDC1500A01000E16B3B /* brilinta_11.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_11.jpg; sourceTree = "<group>"; };
-		84C9DFDD1500A01000E16B3B /* brilinta_12.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_12.jpg; sourceTree = "<group>"; };
 		84C9DFEC1500A01000E16B3B /* MenubarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MenubarView.h; sourceTree = "<group>"; };
 		84C9DFED1500A01000E16B3B /* MenubarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MenubarView.m; sourceTree = "<group>"; };
 		84C9DFEE1500A01000E16B3B /* ToolbarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolbarView.h; sourceTree = "<group>"; };
@@ -179,6 +167,22 @@
 		84E0601F15131827009FE5AF /* WhitepaperController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhitepaperController.m; sourceTree = "<group>"; };
 		84E06021151319A8009FE5AF /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
 		84E06022151319A8009FE5AF /* Viewport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Viewport.m; sourceTree = "<group>"; };
+		84E64C25151D1388001F7E0A /* ThumbnailStackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailStackView.h; sourceTree = "<group>"; };
+		84E64C26151D1388001F7E0A /* ThumbnailStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailStackView.m; sourceTree = "<group>"; };
+		84E64C28151D141B001F7E0A /* SlideController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideController.h; sourceTree = "<group>"; };
+		84E64C29151D141B001F7E0A /* SlideController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideController.m; sourceTree = "<group>"; };
+		84E64C2F151D4D2E001F7E0A /* brilinta_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_1.jpg; sourceTree = "<group>"; };
+		84E64C30151D4D2E001F7E0A /* brilinta_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_2.jpg; sourceTree = "<group>"; };
+		84E64C31151D4D2E001F7E0A /* brilinta_3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_3.jpg; sourceTree = "<group>"; };
+		84E64C32151D4D2E001F7E0A /* brilinta_4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_4.jpg; sourceTree = "<group>"; };
+		84E64C33151D4D2E001F7E0A /* brilinta_5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_5.jpg; sourceTree = "<group>"; };
+		84E64C34151D4D2E001F7E0A /* brilinta_6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_6.jpg; sourceTree = "<group>"; };
+		84E64C35151D4D2E001F7E0A /* brilinta_7.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_7.jpg; sourceTree = "<group>"; };
+		84E64C36151D4D2E001F7E0A /* brilinta_8.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_8.jpg; sourceTree = "<group>"; };
+		84E64C37151D4D2E001F7E0A /* brilinta_9.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_9.jpg; sourceTree = "<group>"; };
+		84E64C38151D4D2E001F7E0A /* brilinta_10.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_10.jpg; sourceTree = "<group>"; };
+		84E64C39151D4D2E001F7E0A /* brilinta_11.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_11.jpg; sourceTree = "<group>"; };
+		84E64C3A151D4D2E001F7E0A /* brilinta_12.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_12.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,10 +214,8 @@
 			isa = PBXGroup;
 			children = (
 				840BBB131509E39700B681A7 /* ContentControlProtocol.h */,
-				840BBB181509EB6000B681A7 /* NavigationControlDelegate.h */,
+				840BBB181509EB6000B681A7 /* InterfaceControlDelegate.h */,
 				840BBB2A150C675D00B681A7 /* ContentDisplayDelegate.h */,
-				840BBB3A150C945F00B681A7 /* ToolControlDelegate.h */,
-				840BBB3C150C9EA900B681A7 /* ContentNotificationDelegate.h */,
 				84E060001512B1EB009FE5AF /* DocumentDataSource.h */,
 				84E060011512B511009FE5AF /* AnnotationDataSource.h */,
 			);
@@ -313,6 +315,8 @@
 				84C9DFBA1500A01000E16B3B /* MasterController.m */,
 				84E0601E15131827009FE5AF /* WhitepaperController.h */,
 				84E0601F15131827009FE5AF /* WhitepaperController.m */,
+				84E64C28151D141B001F7E0A /* SlideController.h */,
+				84E64C29151D141B001F7E0A /* SlideController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -346,18 +350,18 @@
 		84C9DFD11500A01000E16B3B /* minis */ = {
 			isa = PBXGroup;
 			children = (
-				84C9DFD21500A01000E16B3B /* brilinta_01.jpg */,
-				84C9DFD31500A01000E16B3B /* brilinta_02.jpg */,
-				84C9DFD41500A01000E16B3B /* brilinta_03.jpg */,
-				84C9DFD51500A01000E16B3B /* brilinta_04.jpg */,
-				84C9DFD61500A01000E16B3B /* brilinta_05.jpg */,
-				84C9DFD71500A01000E16B3B /* brilinta_06.jpg */,
-				84C9DFD81500A01000E16B3B /* brilinta_07.jpg */,
-				84C9DFD91500A01000E16B3B /* brilinta_08.jpg */,
-				84C9DFDA1500A01000E16B3B /* brilinta_09.jpg */,
-				84C9DFDB1500A01000E16B3B /* brilinta_10.jpg */,
-				84C9DFDC1500A01000E16B3B /* brilinta_11.jpg */,
-				84C9DFDD1500A01000E16B3B /* brilinta_12.jpg */,
+				84E64C2F151D4D2E001F7E0A /* brilinta_1.jpg */,
+				84E64C30151D4D2E001F7E0A /* brilinta_2.jpg */,
+				84E64C31151D4D2E001F7E0A /* brilinta_3.jpg */,
+				84E64C32151D4D2E001F7E0A /* brilinta_4.jpg */,
+				84E64C33151D4D2E001F7E0A /* brilinta_5.jpg */,
+				84E64C34151D4D2E001F7E0A /* brilinta_6.jpg */,
+				84E64C35151D4D2E001F7E0A /* brilinta_7.jpg */,
+				84E64C36151D4D2E001F7E0A /* brilinta_8.jpg */,
+				84E64C37151D4D2E001F7E0A /* brilinta_9.jpg */,
+				84E64C38151D4D2E001F7E0A /* brilinta_10.jpg */,
+				84E64C39151D4D2E001F7E0A /* brilinta_11.jpg */,
+				84E64C3A151D4D2E001F7E0A /* brilinta_12.jpg */,
 			);
 			path = minis;
 			sourceTree = "<group>";
@@ -372,6 +376,8 @@
 				84C9DFEF1500A01000E16B3B /* ToolbarView.m */,
 				840BBB24150AFAA900B681A7 /* AnnotationView.h */,
 				840BBB25150AFAA900B681A7 /* AnnotationView.m */,
+				84E64C25151D1388001F7E0A /* ThumbnailStackView.h */,
+				84E64C26151D1388001F7E0A /* ThumbnailStackView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -510,18 +516,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				84C9DF9415009F6700E16B3B /* InfoPlist.strings in Resources */,
-				84C9E0041500A01000E16B3B /* brilinta_01.jpg in Resources */,
-				84C9E0051500A01000E16B3B /* brilinta_02.jpg in Resources */,
-				84C9E0061500A01000E16B3B /* brilinta_03.jpg in Resources */,
-				84C9E0071500A01000E16B3B /* brilinta_04.jpg in Resources */,
-				84C9E0081500A01000E16B3B /* brilinta_05.jpg in Resources */,
-				84C9E0091500A01000E16B3B /* brilinta_06.jpg in Resources */,
-				84C9E00A1500A01000E16B3B /* brilinta_07.jpg in Resources */,
-				84C9E00B1500A01000E16B3B /* brilinta_08.jpg in Resources */,
-				84C9E00C1500A01000E16B3B /* brilinta_09.jpg in Resources */,
-				84C9E00D1500A01000E16B3B /* brilinta_10.jpg in Resources */,
-				84C9E00E1500A01000E16B3B /* brilinta_11.jpg in Resources */,
-				84C9E00F1500A01000E16B3B /* brilinta_12.jpg in Resources */,
 				840BBB091509CFE200B681A7 /* slides in Resources */,
 				84E05FC115129B3B009FE5AF /* ONSET and OFFSET study, 2009.pdf in Resources */,
 				84E05FC215129B3B009FE5AF /* PLATO trial, 2009.pdf in Resources */,
@@ -555,6 +549,18 @@
 				84E05FFC15129FC1009FE5AF /* over_menu5.png in Resources */,
 				84E05FFD15129FC1009FE5AF /* over_pluma.png in Resources */,
 				84E05FFE15129FC1009FE5AF /* pluma.png in Resources */,
+				84E64C3B151D4D2E001F7E0A /* brilinta_1.jpg in Resources */,
+				84E64C3C151D4D2E001F7E0A /* brilinta_2.jpg in Resources */,
+				84E64C3D151D4D2E001F7E0A /* brilinta_3.jpg in Resources */,
+				84E64C3E151D4D2E001F7E0A /* brilinta_4.jpg in Resources */,
+				84E64C3F151D4D2E001F7E0A /* brilinta_5.jpg in Resources */,
+				84E64C40151D4D2E001F7E0A /* brilinta_6.jpg in Resources */,
+				84E64C41151D4D2E001F7E0A /* brilinta_7.jpg in Resources */,
+				84E64C42151D4D2E001F7E0A /* brilinta_8.jpg in Resources */,
+				84E64C43151D4D2E001F7E0A /* brilinta_9.jpg in Resources */,
+				84E64C44151D4D2E001F7E0A /* brilinta_10.jpg in Resources */,
+				84E64C45151D4D2E001F7E0A /* brilinta_11.jpg in Resources */,
+				84E64C46151D4D2E001F7E0A /* brilinta_12.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -602,6 +608,8 @@
 				84E0600B1512BFF0009FE5AF /* WhitepaperProvider.m in Sources */,
 				84E0602015131827009FE5AF /* WhitepaperController.m in Sources */,
 				84E06023151319A8009FE5AF /* Viewport.m in Sources */,
+				84E64C27151D1388001F7E0A /* ThumbnailStackView.m in Sources */,
+				84E64C2A151D141B001F7E0A /* SlideController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

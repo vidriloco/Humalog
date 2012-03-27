@@ -11,7 +11,7 @@
 
 @interface SlideProvider() {
     NSMutableDictionary *documentAnnotations;
-    NSDictionary        *categoriesAndIndices;
+    NSArray             *categoriesAndIndices;
     WebContentView      *webContentView;
 }
 
@@ -29,34 +29,13 @@
         webContentView.scrollView.scrollEnabled = NO;
         
         documentAnnotations = [NSMutableDictionary dictionary];
-        
-        categoriesAndIndices = [NSDictionary dictionaryWithObjectsAndKeys:
-                                [NSArray arrayWithObjects:
-                                 [NSNumber numberWithUnsignedInt:1],
-                                 [NSNumber numberWithUnsignedInt:2],
-                                 [NSNumber numberWithUnsignedInt:3],
-                                 nil], @"Epidemiología",
-                                
-                                [NSArray arrayWithObjects:
-                                 [NSNumber numberWithUnsignedInt:4],
-                                 [NSNumber numberWithUnsignedInt:5],
-                                 [NSNumber numberWithUnsignedInt:6],
-                                 nil], @"Brilinta",
-                                
-                                [NSArray arrayWithObjects:
-                                 [NSNumber numberWithUnsignedInt:7],
-                                 [NSNumber numberWithUnsignedInt:8],
-                                 [NSNumber numberWithUnsignedInt:9],
-                                 nil], @"Eficacia",
-                                
-                                [NSArray arrayWithObjects:
-                                 [NSNumber numberWithUnsignedInt:10],
-                                 nil], @"Seguridad",
-                                
-                                [NSArray arrayWithObjects:
-                                 [NSNumber numberWithUnsignedInt:11],
-                                 [NSNumber numberWithUnsignedInt:12],
-                                 nil], @"Posología",
+                
+        categoriesAndIndices = [NSArray arrayWithObjects:
+                                [NSValue valueWithRange:NSMakeRange(0, 3)],  // Epidemiología
+                                [NSValue valueWithRange:NSMakeRange(3, 3)],  // Brilinta
+                                [NSValue valueWithRange:NSMakeRange(6, 3)],  // Eficacia
+                                [NSValue valueWithRange:NSMakeRange(9, 1)],  // Seguridad
+                                [NSValue valueWithRange:NSMakeRange(10, 2)], // Posología
                                 nil];
     }
     return self;
@@ -98,17 +77,21 @@
 
 - (void)setAnnotations:(NSDictionary *)annotations forDocumentAtIndex:(NSUInteger)index
 {
-    [documentAnnotations setObject:annotations forKey:[NSNumber numberWithUnsignedInt:index]];
+    [documentAnnotations setObject:annotations forKey:[NSNumber numberWithUnsignedInteger:index]];
 }
 
-- (NSArray *)categoryNames
+- (NSRange)rangeForCategoryIndex:(NSUInteger)categoryIndex
 {
-    return [categoriesAndIndices allKeys];
+    return [[categoriesAndIndices objectAtIndex:categoryIndex] rangeValue];
 }
 
-- (NSArray *)documentIndicesForCategoryNamed:(NSString *)categoryName
+- (NSUInteger)categoryIndexForDocumentAtIndex:(NSUInteger)documentIndex
 {
-    return [categoriesAndIndices objectForKey:categoryName];
+    for (NSValue *value in categoriesAndIndices)
+        if (NSLocationInRange(documentIndex, [value rangeValue]))
+            return [categoriesAndIndices indexOfObject:value];
+    
+    return NSUIntegerMax;
 }
 
 // Delegation

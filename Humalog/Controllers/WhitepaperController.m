@@ -14,6 +14,7 @@
 @interface WhitepaperController () {
     WhitepaperProvider *whitepaperProvider;
     AnnotationView     *annotationView;
+    UIView             *documentView;
 }
 @end
 
@@ -41,7 +42,10 @@
   viewForItemAtIndex:(NSUInteger)index
          reusingView:(UIView *)view
 {
-    return [whitepaperProvider viewForDocumentAtIndex:index];
+    UIView *preview = [whitepaperProvider previewForDocumentAtIndex:index];
+    preview.clipsToBounds = YES;
+    preview.layer.cornerRadius = 30.0;
+    return preview;
 }
 
 // Delegate
@@ -57,23 +61,42 @@
 
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
 {
-    self.view = [whitepaperProvider viewForDocumentAtIndex:index];
+    documentView = [whitepaperProvider viewForDocumentAtIndex:index];
+    documentView.frame = self.view.bounds;
+    documentView.alpha = 0.0;
+    [self.view addSubview:documentView];
+    [UIView animateWithDuration:1.0
+                     animations:^{
+                         documentView.alpha = 1.0;
+                     }];
+}
+
+#pragma mark - Menubar delegate methods
+- (void)menubarViewDidPressEstudios
+{
+    [documentView removeFromSuperview];
+}
+
+- (void)menubarViewDidPressApertura
+{
+    if ([self.parentViewController respondsToSelector:@selector(loadSlides)])
+        [self.parentViewController performSelector:@selector(loadSlides)];
+    
 }
 
 #pragma mark - View lifecycle
 
 - (void)loadView
 {
-    UIView *grayView = [[UIView alloc] init];
-    grayView.backgroundColor = [UIColor colorWithRed:0.1 green:0.1 blue:0.1 alpha:0.88];
+    self.view = [[UIView alloc] initWithFrame:[Viewport contentArea]];
+    self.view.backgroundColor = [UIColor purpleColor];
     
-    iCarousel *carousel = [[iCarousel alloc] initWithFrame:[Viewport screenArea]];
+    iCarousel *carousel = [[iCarousel alloc] initWithFrame:self.view.bounds];
     carousel.type = iCarouselTypeRotary;
     carousel.delegate   = self;
     carousel.dataSource = self;
     
-    [grayView addSubview:carousel];
-    self.view = grayView;
+    [self.view addSubview:carousel];
 }
 
 - (void)viewDidLoad

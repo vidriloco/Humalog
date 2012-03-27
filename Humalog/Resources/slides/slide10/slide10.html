@@ -3,7 +3,7 @@
 <head>
 		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
 		<title>Seguridad</title>
-		<script type="text/javascript" src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+		<script type="text/javascript" src="js/jquery-1.6.4.min.js"></script>
 		<script src="js/jquery.easing.1.3.js" type="text/javascript"></script>
 		<script src="js/jquery.delay.js" type="text/javascript" charset="utf-8"></script>
         <script src="js/jquery.qtip-1.0.0-rc3.min.js" type="text/javascript"></script>
@@ -104,13 +104,17 @@
 <div id="headerSlide">
 <div id="pelicula"><img src="images/pleca_slide10.gif" alt="pelicula"></div>
 		<div class="contenedor">
-		  <div id="texto1"><img id="tooltip" src="images/text1.png" alt="texto1"></div>
+		  <div id="texto1">
+          <img id="tooltip" src="images/tooltip.png">
+          <img src="images/text1.png" alt="texto1"></div>
           <div id="texto2"><img src="images/text2.png" alt="texto2"></div>
           <div id="tabla1">
           <img src="images/barragris.png" id="img1">
           <img src="images/barramorada.png" id="img2">
           </div>
-          <div id="texto3"><img src="images/text3.png" alt="texto3"></div>
+          <div id="texto3">
+          <img id="tooltip2" src="images/tooltip.png">
+          <img src="images/text3.png" alt="texto3"></div>
          
 		</div>
   </div>
@@ -129,8 +133,8 @@ jQuery("#tooltip").qtip({
    content: "10. Wallentin L, Becker R, Budaj A, et al. Ticagrelor versus Clopidogrel in patients with acute coronary syndromes. N Engl J Med 2009;361(11):1045-1057.",
    position: {
       corner: {
-         target: 'topRight',
-         tooltip: 'bottomLeft'
+         target: 'topLeft',
+         tooltip: 'bottomRight'
       }
    },
    style: { 
@@ -138,12 +142,37 @@ jQuery("#tooltip").qtip({
       color: '#666666',
       textAlign: 'left',
 	  fontFamily: 'Arial',
+	  fontSize: '10pt',
       border: {
          width: 2,
          radius: 5,
          color: '#f15c22'
       },
-      tip: 'bottomLeft', //flecha
+      tip: 'bottomRight', //flecha
+      name: 'light' 
+   }
+});
+
+jQuery("#tooltip2").qtip({
+   content: "10. Wallentin L, Becker R, Budaj A, et al. Ticagrelor versus Clopidogrel in patients with acute coronary syndromes. N Engl J Med 2009;361(11):1045-1057.",
+   position: {
+      corner: {
+         target: 'topLeft',
+         tooltip: 'bottomRight'
+      }
+   },
+   style: { 
+      padding: 5,
+      color: '#666666',
+      textAlign: 'left',
+	  fontFamily: 'Arial',
+	  fontSize: '10pt',
+      border: {
+         width: 2,
+         radius: 5,
+         color: '#f15c22'
+      },
+      tip: 'bottomRight', //flecha
       name: 'light' 
    }
 });

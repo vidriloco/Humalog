@@ -148,6 +148,7 @@
             [button addTarget:newDelegate
                        action:action
              forControlEvents:UIControlEventTouchDown];
+            button.enabled = YES;
         } else {
             button.enabled = NO;
         }
@@ -167,6 +168,7 @@
             [button addTarget:newDelegate
                        action:action
              forControlEvents:UIControlEventTouchDown];
+            button.enabled = YES;
         } else {
             button.enabled = NO;
         }

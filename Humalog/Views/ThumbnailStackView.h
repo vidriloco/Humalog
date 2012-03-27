@@ -10,4 +10,7 @@
 
 @interface ThumbnailStackView : iCarousel
 
+- (void)setBaseline:(CGPoint)baselineCenterPoint;
+- (void)show;
+- (void)hide;
 @end

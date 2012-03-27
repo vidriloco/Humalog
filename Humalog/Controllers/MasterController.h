@@ -12,4 +12,7 @@
 
 @interface MasterController : UIViewController<UIGestureRecognizerDelegate>
 
+- (void)loadWhitepapers;
+- (void)loadSlides;
+
 @end

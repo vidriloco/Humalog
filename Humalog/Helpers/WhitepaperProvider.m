@@ -83,7 +83,9 @@
 
 - (UIImageView *)previewForDocumentAtIndex:(NSUInteger)index
 {
-    return [previewList objectAtIndex:index];
+//    return [previewList objectAtIndex:index];
+    NSString *fileName = [[whitepaperList objectAtIndex:index] stringByAppendingString:@".png"];
+    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:fileName]];
 }
 
 - (NSUInteger)numberOfDocuments

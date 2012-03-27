@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "iCarousel.h"
 #import "ContentControlProtocol.h"
+#import "InterfaceControlDelegate.h"
 
-@interface WhitepaperController : UIViewController<iCarouselDataSource, iCarouselDelegate> {
+@interface WhitepaperController : UIViewController<iCarouselDataSource, iCarouselDelegate, InterfaceControlDelegate> {
 }
 
 @end

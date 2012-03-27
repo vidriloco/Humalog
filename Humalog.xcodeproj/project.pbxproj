@@ -11,6 +11,9 @@
 		840BBB101509E09800B681A7 /* SlideProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 840BBB0F1509E09800B681A7 /* SlideProvider.m */; };
 		840BBB171509E42400B681A7 /* WebContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 840BBB161509E42400B681A7 /* WebContentView.m */; };
 		840BBB26150AFAA900B681A7 /* AnnotationView.m in Sources */ = {isa = PBXBuildFile; fileRef = 840BBB25150AFAA900B681A7 /* AnnotationView.m */; };
+		849891F2152151200038DAA7 /* ONSET and OFFSET study, 2009.png in Resources */ = {isa = PBXBuildFile; fileRef = 849891EF152151200038DAA7 /* ONSET and OFFSET study, 2009.png */; };
+		849891F3152151200038DAA7 /* PLATO trial, 2009.png in Resources */ = {isa = PBXBuildFile; fileRef = 849891F0152151200038DAA7 /* PLATO trial, 2009.png */; };
+		849891F4152151200038DAA7 /* Wallentin Spanish.png in Resources */ = {isa = PBXBuildFile; fileRef = 849891F1152151200038DAA7 /* Wallentin Spanish.png */; };
 		84C9DF8A15009F6700E16B3B /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9DF8915009F6700E16B3B /* UIKit.framework */; };
 		84C9DF8C15009F6700E16B3B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9DF8B15009F6700E16B3B /* Foundation.framework */; };
 		84C9DF8E15009F6700E16B3B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 84C9DF8D15009F6700E16B3B /* CoreGraphics.framework */; };
@@ -100,6 +103,9 @@
 		840BBB24150AFAA900B681A7 /* AnnotationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnotationView.h; sourceTree = "<group>"; };
 		840BBB25150AFAA900B681A7 /* AnnotationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnotationView.m; sourceTree = "<group>"; };
 		840BBB2A150C675D00B681A7 /* ContentDisplayDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ContentDisplayDelegate.h; path = Protocols/ContentDisplayDelegate.h; sourceTree = "<group>"; };
+		849891EF152151200038DAA7 /* ONSET and OFFSET study, 2009.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ONSET and OFFSET study, 2009.png"; sourceTree = "<group>"; };
+		849891F0152151200038DAA7 /* PLATO trial, 2009.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "PLATO trial, 2009.png"; sourceTree = "<group>"; };
+		849891F1152151200038DAA7 /* Wallentin Spanish.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Wallentin Spanish.png"; sourceTree = "<group>"; };
 		84C9DF8515009F6700E16B3B /* Humalog.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Humalog.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		84C9DF8915009F6700E16B3B /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		84C9DF8B15009F6700E16B3B /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -229,6 +235,16 @@
 				840BBB161509E42400B681A7 /* WebContentView.m */,
 			);
 			path = Content;
+			sourceTree = "<group>";
+		};
+		849891EE152151200038DAA7 /* previews */ = {
+			isa = PBXGroup;
+			children = (
+				849891EF152151200038DAA7 /* ONSET and OFFSET study, 2009.png */,
+				849891F0152151200038DAA7 /* PLATO trial, 2009.png */,
+				849891F1152151200038DAA7 /* Wallentin Spanish.png */,
+			);
+			path = previews;
 			sourceTree = "<group>";
 		};
 		84C9DF7A15009F6700E16B3B = {
@@ -402,6 +418,7 @@
 		84E05FBD15129B3B009FE5AF /* pdfs */ = {
 			isa = PBXGroup;
 			children = (
+				849891EE152151200038DAA7 /* previews */,
 				84E05FBE15129B3B009FE5AF /* ONSET and OFFSET study, 2009.pdf */,
 				84E05FBF15129B3B009FE5AF /* PLATO trial, 2009.pdf */,
 				84E05FC015129B3B009FE5AF /* Wallentin Spanish.pdf */,
@@ -490,7 +507,7 @@
 		84C9DF7C15009F6700E16B3B /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0420;
+				LastUpgradeCheck = 0430;
 			};
 			buildConfigurationList = 84C9DF7F15009F6700E16B3B /* Build configuration list for PBXProject "Humalog" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -561,6 +578,9 @@
 				84E64C44151D4D2E001F7E0A /* brilinta_10.jpg in Resources */,
 				84E64C45151D4D2E001F7E0A /* brilinta_11.jpg in Resources */,
 				84E64C46151D4D2E001F7E0A /* brilinta_12.jpg in Resources */,
+				849891F2152151200038DAA7 /* ONSET and OFFSET study, 2009.png in Resources */,
+				849891F3152151200038DAA7 /* PLATO trial, 2009.png in Resources */,
+				849891F4152151200038DAA7 /* Wallentin Spanish.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,6 +15,11 @@ enum NavigationPosition {
     NavigationPositionUndefined
 };
 
+enum ThumbnailNavigationType {
+    ThumbnailNavigationTypeGeneral,
+    ThumbnailNavigationTypePerCategory
+};
+
 @protocol InterfaceControlDelegate <NSObject>
 // Nav
 @optional
@@ -26,6 +31,10 @@ enum NavigationPosition {
 - (void)menubarViewDidPressCierre;
 - (void)menubarViewDidPressEstudios;
 - (void)menubarViewDidPressIPP;
+
+- (void)menubarViewDidSelectCategoryButton:(UIButton *)button withIndex:(NSUInteger)index;
+- (void)menubarViewDidDeselectCategoryButton:(UIButton *)button withIndex:(NSUInteger)index;
+
 
 // Toolbar
 - (void)toolbarViewDidSelectPen;

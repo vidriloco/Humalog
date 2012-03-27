@@ -53,19 +53,27 @@ Cierre
 	height:668px;
 	position: absolute;
 	top:100px;
-	z-index:20;
+	
 	width:1024px;
 }
 
 #texto1{
-	width:708px;
+	width:741px;
 	left:510px;
 	top:220px;
 	margin-left:-351px;
 	display:none;
 	position:absolute;
 	z-index:20;
+	height:49px;
 }	
+
+#texto1 img{
+	position:absolute;
+	z-index:1;}
+	
+#texto1 img#tooltip{
+	bottom:3px; right:0px; z-index:10;}
 	
 #texto2{
 	width:324px;
@@ -97,14 +105,22 @@ Cierre
 
 
 #texto3{
-	width:496px;
+	width:373px;
 	left:595px;
 	top:300px;
 	margin-left:0px;
 	display:none;
 	position:absolute;
 	z-index:45;
+	height:164px;
 }
+
+#texto3 img{
+	position:absolute; z-index:1;
+	}
+	
+#texto3 img#tooltip2{
+	z-index:10; bottom:16px; right:44px;}
 
 #tabla2{
 	position:absolute;

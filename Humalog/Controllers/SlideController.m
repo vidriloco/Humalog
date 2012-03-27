@@ -13,6 +13,7 @@
 #import "ThumbnailStackView.h"
 
 #define FADE_DURATION 0.25
+#define STACK_OFFSET  -15
 
 @interface SlideController () {
 @private
@@ -20,7 +21,8 @@
     AnnotationView                 *annotationView;
     UIView<ContentControlProtocol> *contentView;
     ThumbnailStackView             *stackView;
-    int currentSlide;
+    NSUInteger                     currentSlide;
+    NSUInteger                     currentCategoryIndex;
     enum NavigationPosition        navigationPosition;
 }
 @property (nonatomic, assign) enum NavigationPosition navigationPosition;
@@ -37,13 +39,14 @@
         // Custom initialization
         slideProvider = [[SlideProvider alloc] init];
         slideProvider.delegate = self;
-        currentSlide = 0;
     }
     return self;
 }
 
 - (void)loadView
 {
+    currentSlide = 0;
+    
     self.view = [[UIView alloc] initWithFrame:[Viewport contentArea]];
     self.view.opaque = YES;
     self.view.backgroundColor = [UIColor purpleColor];
@@ -74,7 +77,12 @@
     stackView = [[ThumbnailStackView alloc] initWithFrame:CGRectInset(CGRectMake(0, 0, stackWidth, self.view.frame.size.height), 0, 30)];
     stackView.delegate   = self;
     stackView.dataSource = self;
+    stackView.hidden = YES;
+    stackView.alpha = 0.0;
     [self.view addSubview:stackView];
+    
+//    currentCategoryName = [[slideProvider categoryNames] objectAtIndex:0];
+//    currentCategoryDocumentIndices = [slideProvider documentIndicesForCategoryNamed:currentCategoryName];
     
     // Hide content views until content is loaded
     contentView.alpha    = 0.0;
@@ -151,7 +159,7 @@
     
     else self.navigationPosition = NavigationPositionOtherDocument;
     
-    [stackView scrollToItemAtIndex:currentSlide animated:YES];
+//    [stackView scrollToItemAtIndex:currentSlide animated:YES];
 }
 
 - (void)loadContent
@@ -195,22 +203,18 @@
 
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
-    return [slideProvider numberOfDocuments];
+//    return [slideProvider numberOfDocuments];
+    return [slideProvider rangeForCategoryIndex:currentCategoryIndex].length;
 }
 
 - (UIView *)carousel:(iCarousel *)carousel
   viewForItemAtIndex:(NSUInteger)index
          reusingView:(UIView *)view
 {
-    UIView *thumb = [slideProvider previewForDocumentAtIndex:index];
+    UIView *thumb = [slideProvider previewForDocumentAtIndex:[slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index];
+    
     thumb.clipsToBounds = YES;
     thumb.layer.cornerRadius = 8.0f;
-//    if (carousel.currentItemIndex == index) {
-//        thumb.layer.borderColor = [UIColor purpleColor].CGColor;
-//        thumb.layer.borderWidth = 3.0f;
-//    } else {
-//        thumb.layer.borderWidth = 0.0;
-//    }
     return thumb;
 }
 
@@ -232,7 +236,7 @@
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
 {
     // Feed document view
-    currentSlide = index;
+    currentSlide = [slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index;
     [self loadContent];
 }
 
@@ -251,11 +255,29 @@
     [self loadPreviousDocument];
 }
 
-- (BOOL) gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
     return YES;
 }
 
 // Tool & Nav
+- (void)menubarViewDidSelectCategoryButton:(UIButton *)button withIndex:(NSUInteger)index
+{
+    currentCategoryIndex = index;
+//    currentSlide = [slideProvider rangeForCategoryIndex:index].location;
+//    [self loadContent];
+    
+    // Move stack
+    [stackView reloadData];
+    [stackView setBaseline:CGPointMake(button.center.x, self.view.bounds.size.height + STACK_OFFSET)];
+    [stackView show];
+}
+
+- (void)menubarViewDidDeselectCategoryButton:(UIButton *)button withIndex:(NSUInteger)index
+{
+    // Hide stack
+    [stackView hide];
+}
 
 - (void)menubarViewDidPressApertura
 {
@@ -269,14 +291,14 @@
 
 - (void)menubarViewDidPressEstudios
 {
-    //    whitepaperController.view.frame = contentView.frame;
-    //    [self.view addSubview:whitepaperController.view];
+    if ([self.parentViewController respondsToSelector:@selector(loadWhitepapers)])
+        [self.parentViewController performSelector:@selector(loadWhitepapers)];
 }
 
-- (void)menubarViewDidPressIPP
-{
-    NSLog(@"IPP");
-}
+//- (void)menubarViewDidPressIPP
+//{
+//    NSLog(@"IPP");
+//}
 
 - (void)toolbarViewDidPressBack
 {

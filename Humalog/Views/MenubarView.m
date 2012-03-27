@@ -13,6 +13,7 @@
 
 @interface MenubarView() {
     NSMutableArray *navButtons;
+    NSMutableArray *sectionButtons;
     NSArray        *navActions;
 }
 @end
@@ -34,7 +35,7 @@
                              @"menu4.png",
                              @"menu5.png",
                              nil];
-        
+        sectionButtons = [NSMutableArray array];
         id sectionLayout = [GridLayout gridWithFrame:CGRectMake(MARGIN, 0, self.frame.size.width * 2 / 3, self.frame.size.height) numRows:1 numCols:[sections count]];
         int i = 0;
         for (NSValue* v in sectionLayout) {
@@ -44,10 +45,9 @@
             button.frame = CGRectMake(0, 0, normalImage.size.width, normalImage.size.height);
             button.center = [v CGPointValue];
             button.frame = CGRectIntegral(button.frame);
-            button.enabled = NO;
             [button setImage:normalImage forState:UIControlStateNormal];
-            [button setImage:selectedImage forState:UIControlStateHighlighted];
             [button setImage:selectedImage forState:UIControlStateSelected];
+            [sectionButtons addObject:button];
             [self addSubview:button];
             ++i;
         }
@@ -82,18 +82,46 @@
             [navButtons addObject:button];
             ++i;
         }
-        
-        // Disable E, IPP
-        ((UIButton *)[navButtons objectAtIndex:2]).enabled = NO;
-        ((UIButton *)[navButtons objectAtIndex:3]).enabled = NO;
     }
     return self;
 }
 
+- (void)sectionPressed:(UIButton *)button
+{
+    if (button.selected) {
+        button.selected = NO;
+        [self.delegate menubarViewDidDeselectCategoryButton:button withIndex:[sectionButtons indexOfObject:button]];
+        return;
+    }
+    
+    for (UIButton *buttons in sectionButtons)
+        buttons.selected = NO;
+        
+    button.selected = YES;
+    [self.delegate menubarViewDidSelectCategoryButton:button withIndex:[sectionButtons indexOfObject:button]];
+}
+
 - (void)setDelegate:(id<InterfaceControlDelegate>)newDelegate
 {
+    // Update sections
+    NSArray *buttons = sectionButtons;
+    for (UIButton *button in buttons) {
+        if (self.delegate) {
+            [button removeTarget:self
+                          action:NULL
+                forControlEvents:UIControlEventTouchDown];
+        }
+        if ([newDelegate respondsToSelector:@selector(menubarViewDidSelectCategoryButton:withIndex:)]) {
+            [button addTarget:self
+                       action:@selector(sectionPressed:)
+             forControlEvents:UIControlEventTouchDown];
+            button.enabled = YES;
+        } else {
+            button.enabled = NO;
+        }
+    }
     // Update navigation
-    NSArray *buttons = navButtons;
+    buttons = navButtons;
     NSArray *actions = navActions;
     for (UIButton *button in buttons) {
         if (self.delegate) {
@@ -106,13 +134,58 @@
             [button addTarget:newDelegate
                        action:action
              forControlEvents:UIControlEventTouchDown];
+            button.enabled = YES;
         } else {
             button.enabled = NO;
         }
     }
+
+    // Navigation
+    [(NSObject *)delegate removeObserver:self
+                              forKeyPath:@"navigationPosition"];
     
+    [(NSObject *)newDelegate addObserver:self
+                              forKeyPath:@"navigationPosition"
+                                 options:NSKeyValueObservingOptionNew
+                                 context:nil];
+        
     delegate = newDelegate;
+
 }
+
+- (void)observeValueForKeyPath:(NSString *)keyPath
+                      ofObject:(id)object
+                        change:(NSDictionary *)change
+                       context:(void *)context
+{
+    if ([keyPath isEqualToString:@"navigationPosition"]) {
+        
+        enum NavigationPosition navigationPositionValue = [[change objectForKey:NSKeyValueChangeNewKey] intValue];
+        
+        UIButton *aperturaButton = [navButtons objectAtIndex:0];
+        UIButton *cierreButton = [navButtons objectAtIndex:1];
+        switch (navigationPositionValue) {
+            case NavigationPositionFirstDocument:
+                aperturaButton.enabled = NO;
+                cierreButton.enabled = YES;
+                break;
+            case NavigationPositionLastDocument:
+                aperturaButton.enabled = YES;
+                cierreButton.enabled = NO;
+                break;
+            case NavigationPositionOtherDocument:
+                aperturaButton.enabled = YES;
+                cierreButton.enabled = YES;
+                break;
+            case NavigationPositionUndefined:
+            default:
+                aperturaButton.enabled = NO;
+                cierreButton.enabled = NO;
+                break;
+        }
+    }
+}
+
 
 
 /*

@@ -68,13 +68,8 @@
     toolbarView = [[ToolbarView alloc] init];
     menubarView = [[MenubarView alloc] init];
     
-    // Delegation
-    toolbarView.delegate = slideController;
-    menubarView.delegate = slideController;
-            
     menubarView.frame = [Viewport menuArea];
     [self.view addSubview:menubarView];
-    [self.view addSubview:slideController.view];
     
     // Gestures & view for toolbar
     gestureView = [[UIView alloc] initWithFrame:toolbarView.bounds];
@@ -89,6 +84,8 @@
     [gestureView addSubview:toolbarView];
 
     [self.view addSubview:gestureView];
+    
+    [self loadSlides];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -112,7 +109,7 @@
     return NO;
 }
 
-// Toolbar gestures
+#pragma mark - Gesture control
 
 - (void)swipeUp:(UISwipeGestureRecognizer *)recognizer
 {
@@ -133,6 +130,29 @@
     CGPoint point = [recognizer locationInView:self.view];
     if (CGRectContainsPoint(CGRectMake(0, 0, gestureView.bounds.size.width, gestureView.bounds.size.height), point))
         [toolbarView toggle];
+}
+
+#pragma mark - Content control
+- (void)loadSlides
+{
+    [whitepaperController.view removeFromSuperview];
+    [self.view insertSubview:slideController.view belowSubview:gestureView];
+    
+    // Delegation
+    toolbarView.delegate = slideController;
+    menubarView.delegate = slideController;
+    [toolbarView hide];
+}
+
+- (void)loadWhitepapers
+{
+    [slideController.view removeFromSuperview];
+    [self.view insertSubview:whitepaperController.view belowSubview:gestureView];
+    
+    // Delegation
+    toolbarView.delegate = whitepaperController;
+    menubarView.delegate = whitepaperController;
+    [toolbarView hide];
 }
 
 @end

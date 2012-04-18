@@ -24,6 +24,7 @@
     NSUInteger                     currentSlide;
     NSUInteger                     currentCategoryIndex;
     enum NavigationPosition        navigationPosition;
+    BOOL                           drawThumbnails;
 }
 @property (nonatomic, assign) enum NavigationPosition navigationPosition;
 - (void)updateNavigationPosition;
@@ -39,6 +40,8 @@
         // Custom initialization
         slideProvider = [[SlideProvider alloc] init];
         slideProvider.delegate = self;
+        
+        drawThumbnails = YES;
     }
     return self;
 }
@@ -73,8 +76,8 @@
     swipeRight.delegate = self;
     
     // Thumbnail stack
-    NSUInteger stackWidth = [slideProvider previewForDocumentAtIndex:0].bounds.size.width + 30;
-    stackView = [[ThumbnailStackView alloc] initWithFrame:CGRectInset(CGRectMake(0, 0, stackWidth, self.view.frame.size.height), 0, 30)];
+    NSUInteger stackWidth = [slideProvider previewForDocumentAtIndex:0].bounds.size.width + 64.0;
+    stackView = [[ThumbnailStackView alloc] initWithFrame:CGRectInset(CGRectMake(0, 0, stackWidth, self.view.frame.size.height * 0.75), 0, 30)];
     stackView.delegate   = self;
     stackView.dataSource = self;
     stackView.hidden = YES;
@@ -204,23 +207,50 @@
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
 //    return [slideProvider numberOfDocuments];
-    return [slideProvider rangeForCategoryIndex:currentCategoryIndex].length;
+    NSUInteger num = [slideProvider rangeForCategoryIndex:currentCategoryIndex].length;
+    return num;
 }
 
 - (UIView *)carousel:(iCarousel *)carousel
   viewForItemAtIndex:(NSUInteger)index
          reusingView:(UIView *)view
 {
+    // Image
     UIView *thumb = [slideProvider previewForDocumentAtIndex:[slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index];
     
     thumb.clipsToBounds = YES;
     thumb.layer.cornerRadius = 8.0f;
-    return thumb;
+    
+    // Hilight selected
+//    if (carousel.currentItemIndex == index) {
+//        thumb.layer.borderColor = [UIColor blueColor].CGColor;
+//        thumb.layer.borderWidth = 8.0f;
+//    }
+        
+    
+    // Title
+    UILabel *title = [[UILabel alloc] init];
+    title.backgroundColor = [UIColor clearColor];
+    title.textColor = [UIColor whiteColor];
+    title.text = [slideProvider titleForDocumentAtIndex:[slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index];
+    title.font = [UIFont boldSystemFontOfSize:15.0];
+    CGSize titleSize = [title.text sizeWithFont:title.font];
+    title.frame = CGRectMake(0, 0, titleSize.width, titleSize.height); 
+    title.center = CGPointMake(thumb.bounds.size.width / 2.0, title.center.y);
+    
+    // Container
+    UIView *v = [[UIView alloc] initWithFrame:thumb.frame];
+    if (drawThumbnails) {
+        title.center = CGPointMake(title.center.x, thumb.bounds.size.height + 12.0);
+        [v addSubview:thumb];
+    }
+    [v addSubview:title];
+    return v;
 }
 
 - (CGFloat)carouselItemWidth:(iCarousel *)carousel
 {
-    return [slideProvider previewForDocumentAtIndex:0].bounds.size.height + 16.0f;
+    return 36.0 + (drawThumbnails? [slideProvider previewForDocumentAtIndex:0].bounds.size.height : 0.0);
 }
 
 - (BOOL)carouselShouldWrap:(iCarousel *)carousel
@@ -230,7 +260,7 @@
 
 - (NSUInteger)numberOfVisibleItemsInCarousel:(iCarousel *)carousel
 {
-    return 9;
+    return 5;
 }
 
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
@@ -315,6 +345,22 @@
     [self fadeOutToAction:^{
         [contentView playAction];
     }];
+}
+
+- (void)toolbarViewDidPressThumbnailsLeft
+{
+    drawThumbnails = NO;
+    stackView.bounds = CGRectMake(0, 0, stackView.bounds.size.width, self.view.frame.size.height * 0.25);
+    [stackView setBaseline:CGPointMake(stackView.center.x, self.view.bounds.size.height + STACK_OFFSET)];
+    [stackView reloadData];
+}
+
+- (void)toolbarViewDidPressThumbnailsBottom
+{
+    drawThumbnails = YES;
+    stackView.bounds = CGRectMake(0, 0, stackView.bounds.size.width, self.view.frame.size.height * 0.75);
+    [stackView setBaseline:CGPointMake(stackView.center.x, self.view.bounds.size.height + STACK_OFFSET)];
+    [stackView reloadData];
 }
 
 - (void)toolbarViewDidSelectPen

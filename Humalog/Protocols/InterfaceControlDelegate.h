@@ -42,4 +42,7 @@ enum ThumbnailNavigationType {
 - (void)toolbarViewDidSelectEraser;
 - (void)toolbarViewDidDeselectTool;
 
+- (void)toolbarViewDidPressThumbnailsLeft;
+- (void)toolbarViewDidPressThumbnailsBottom;
+
 @end

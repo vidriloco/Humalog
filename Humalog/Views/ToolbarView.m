@@ -17,6 +17,7 @@
     NSMutableArray *toolButtons;
     
     NSArray *navActions;
+    NSArray *miniActions;
     NSArray *toolActions;
     
     CGRect hiddenArea;
@@ -74,6 +75,11 @@
                              @"btn_minis_abajo.png",
                              nil];
         
+        miniActions = [NSArray arrayWithObjects:
+                       [NSValue valueWithPointer:@selector(toolbarViewDidPressThumbnailsLeft)],
+                       [NSValue valueWithPointer:@selector(toolbarViewDidPressThumbnailsBottom)],
+                       nil];
+        
         id miniLayout = [GridLayout gridWithFrame:CGRectMake(196 + 10, 0, 120, self.frame.size.height) numRows:1 numCols:[miniOptions count]];
         i = 0;
         for (NSValue* v in miniLayout) {
@@ -85,7 +91,6 @@
             button.frame = CGRectIntegral(button.frame);
             button.enabled = NO;
             [button setImage:normalImage forState:UIControlStateNormal];
-            [button setImage:selectedImage forState:UIControlStateHighlighted];
             [button setImage:selectedImage forState:UIControlStateSelected];
             [self addSubview:button];
             [miniButtons addObject:button];
@@ -137,6 +142,26 @@
     // Update navigation
     NSArray *buttons = navButtons;
     NSArray *actions = navActions;
+    for (UIButton *button in buttons) {
+        if (self.delegate) {
+            [button removeTarget:self.delegate
+                          action:NULL
+                forControlEvents:UIControlEventTouchDown];
+        }
+        SEL action = [[actions objectAtIndex:[buttons indexOfObject:button]] pointerValue];
+        if ([newDelegate respondsToSelector:action]) {
+            [button addTarget:newDelegate
+                       action:action
+             forControlEvents:UIControlEventTouchDown];
+            button.enabled = YES;
+        } else {
+            button.enabled = NO;
+        }
+    }
+
+    // Update thumbnail
+    buttons = miniButtons;
+    actions = miniActions;
     for (UIButton *button in buttons) {
         if (self.delegate) {
             [button removeTarget:self.delegate

@@ -11,6 +11,7 @@
 
 @interface SlideProvider() {
     NSMutableDictionary *documentAnnotations;
+    NSArray             *documentTitles;
     NSArray             *categoriesAndIndices;
     WebContentView      *webContentView;
 }
@@ -37,6 +38,21 @@
                                 [NSValue valueWithRange:NSMakeRange(9, 1)],  // Seguridad
                                 [NSValue valueWithRange:NSMakeRange(10, 2)], // Posología
                                 nil];
+        
+        documentTitles = [NSArray arrayWithObjects:
+                          @"Apertura",
+                          @"Epidemiología",
+                          @"Riesgo",
+                          @"Director",
+                          @"Indicaciones",
+                          @"Mecanismo de acción",
+                          @"Rapidez de acción",
+                          @"Eficacia",
+                          @"Mantenimiento",
+                          @"Seguridad",
+                          @"Dosis",
+                          @"Cierre",
+                          nil];
     }
     return self;
 }
@@ -44,6 +60,11 @@
 - (NSUInteger)numberOfDocuments
 {
     return 12;
+}
+
+- (NSString *)titleForDocumentAtIndex:(NSUInteger)index
+{
+    return [documentTitles objectAtIndex:index];
 }
 
 - (UIView<ContentControlProtocol> *)viewForDocumentAtIndex:(NSUInteger)index

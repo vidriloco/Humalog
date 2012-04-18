@@ -122,7 +122,6 @@
             button.center = [v CGPointValue];
             button.frame = CGRectIntegral(button.frame);
             [button setImage:normalImage forState:UIControlStateNormal];
-//            [button setImage:selectedImage forState:UIControlStateHighlighted];
             [button setImage:selectedImage forState:UIControlStateSelected];
             
             [button addTarget:self
@@ -180,24 +179,24 @@
     }
     
     // Update tools
-    buttons = toolButtons;
-    actions = toolActions;
-    for (UIButton *button in buttons) {
-        if (self.delegate) {
-            [button removeTarget:self.delegate
-                          action:NULL
-                forControlEvents:UIControlEventTouchDown];
-        }
-        SEL action = [[actions objectAtIndex:[buttons indexOfObject:button]] pointerValue];
-        if ([newDelegate respondsToSelector:action]) {
-            [button addTarget:newDelegate
-                       action:action
-             forControlEvents:UIControlEventTouchDown];
-            button.enabled = YES;
-        } else {
-            button.enabled = NO;
-        }
-    }
+//    buttons = toolButtons;
+//    actions = toolActions;
+//    for (UIButton *button in buttons) {
+//        if (self.delegate) {
+//            [button removeTarget:self.delegate
+//                          action:NULL
+//                forControlEvents:UIControlEventTouchDown];
+//        }
+//        SEL action = [[actions objectAtIndex:[buttons indexOfObject:button]] pointerValue];
+//        if ([newDelegate respondsToSelector:action]) {
+//            [button addTarget:newDelegate
+//                       action:action
+//             forControlEvents:UIControlEventTouchDown];
+//            button.enabled = YES;
+//        } else {
+//            button.enabled = NO;
+//        }
+//    }
     
     [(NSObject *)delegate removeObserver:self
                               forKeyPath:@"navigationPosition"];
@@ -265,6 +264,7 @@
         i.selected = NO;
     
     button.selected = YES;
+    [self.delegate performSelector:[[toolActions objectAtIndex:[toolButtons indexOfObject:button]] pointerValue]];
 }
 
 - (void)hide

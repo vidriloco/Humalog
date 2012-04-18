@@ -82,6 +82,7 @@
                                                   isDirectory: YES]];
     
     [webContentView loadRequest:[NSURLRequest requestWithURL:url]];
+    webContentView.scalesPageToFit = YES;
     return webContentView;
 }
 

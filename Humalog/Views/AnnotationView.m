@@ -150,8 +150,8 @@
 
 - (void)finishDrawing
 {
-    creatingPathOfType = PathTypeNone;
     self.userInteractionEnabled = NO;
+    creatingPathOfType = PathTypeNone;
 }
 
 - (BOOL)lineSegmentsIntersectWithFirstPoint:(CGPoint)p1

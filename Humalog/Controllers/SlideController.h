@@ -13,4 +13,6 @@
 
 @interface SlideController : UIViewController<iCarouselDataSource, iCarouselDelegate, UIGestureRecognizerDelegate, ContentDisplayDelegate, InterfaceControlDelegate>
 
+- (void) assignArrays:(NSArray *)categories withSlides:(NSArray *)slides withUpdate:(BOOL)update;
+
 @end

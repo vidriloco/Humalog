@@ -23,10 +23,20 @@
 
 - (id)init
 {
-    self = [super initWithImage:[UIImage imageNamed:MENUBAR_IMAGE]];
+    NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                  NSUserDomainMask,
+                                                                  YES) objectAtIndex:0];
+
+    NSString *newDir = [documentsDir stringByAppendingPathComponent:@"resources/"];
+    
+    NSString *menuBar=@"/backs/";
+    menuBar = [menuBar stringByAppendingString:MENUBAR_IMAGE];
+    self = [super initWithImage:[UIImage imageWithContentsOfFile:[newDir stringByAppendingString:menuBar]]];
+    
     if (self) {
         self.userInteractionEnabled = YES;
-        
+
+
         // Section buttons
         NSArray *sections = [NSArray arrayWithObjects:
                              @"menu1.png",
@@ -36,11 +46,17 @@
                              @"menu5.png",
                              nil];
         sectionButtons = [NSMutableArray array];
+
         id sectionLayout = [GridLayout gridWithFrame:CGRectMake(MARGIN, 0, self.frame.size.width * 2 / 3, self.frame.size.height) numRows:1 numCols:[sections count]];
         int i = 0;
         for (NSValue* v in sectionLayout) {
-            UIImage  *normalImage = [UIImage imageNamed:[sections objectAtIndex:i]];
-            UIImage  *selectedImage = [UIImage imageNamed:[@"over_" stringByAppendingString:[sections objectAtIndex:i]]];
+            //UIImage  *normalImage = [UIImage imageNamed:[sections objectAtIndex:i]];
+            NSString *menu=@"/menu_btns/";
+            menu=[menu stringByAppendingString:[sections objectAtIndex:i]];
+            NSString *overMenu=@"/over_btns/";
+            overMenu=[overMenu stringByAppendingString:[@"over_" stringByAppendingString:[sections objectAtIndex:i]]];
+            UIImage  *normalImage = [UIImage imageWithContentsOfFile:[newDir stringByAppendingString:menu]];
+            UIImage  *selectedImage = [UIImage imageWithContentsOfFile:[newDir stringByAppendingString:overMenu]];
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.frame = CGRectMake(0, 0, normalImage.size.width, normalImage.size.height);
             button.center = [v CGPointValue];
@@ -72,7 +88,9 @@
         id buttonLayout = [GridLayout gridWithFrame:CGRectMake(2 * MARGIN + self.frame.size.width * 2 / 3, 0, self.frame.size.width * 1 / 5, self.frame.size.height) numRows:1 numCols:[buttons count]];
         i = 0;
         for (NSValue* v in buttonLayout) {
-            UIImage  *normalImage = [UIImage imageNamed:[buttons objectAtIndex:i]];
+            NSString *nav=@"/nav_btns/";
+            nav = [nav stringByAppendingString:[buttons objectAtIndex:i]];
+            UIImage  *normalImage = [UIImage imageWithContentsOfFile:[newDir stringByAppendingString:nav]];
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.frame = CGRectMake(0, 0, normalImage.size.width, normalImage.size.height);
             button.center = [v CGPointValue];

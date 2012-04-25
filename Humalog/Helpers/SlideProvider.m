@@ -31,29 +31,85 @@
         
         documentAnnotations = [NSMutableDictionary dictionary];
                 
-        categoriesAndIndices = [NSArray arrayWithObjects:
-                                [NSValue valueWithRange:NSMakeRange(0, 3)],  // Epidemiología
-                                [NSValue valueWithRange:NSMakeRange(3, 3)],  // Brilinta
-                                [NSValue valueWithRange:NSMakeRange(6, 3)],  // Eficacia
-                                [NSValue valueWithRange:NSMakeRange(9, 1)],  // Seguridad
-                                [NSValue valueWithRange:NSMakeRange(10, 2)], // Posología
-                                nil];
-        
-        documentTitles = [NSArray arrayWithObjects:
-                          @"Apertura",
-                          @"Epidemiología",
-                          @"Riesgo",
-                          @"Director",
-                          @"Indicaciones",
-                          @"Mecanismo de acción",
-                          @"Rapidez de acción",
-                          @"Eficacia",
-                          @"Mantenimiento",
-                          @"Seguridad",
-                          @"Dosis",
-                          @"Cierre",
-                          nil];
+            }
+    return self;
+}
+
+- (id)initWithCategories:(NSArray *)categories andSlides:(NSArray *)slides withUpdate:(BOOL)update
+{
+
+    self = [self init];
+    
+    if (update) {
+
+
+    
+    NSMutableArray *temp = [NSMutableArray array];
+
+    int length = [[categories valueForKey:@"orden"] count];
+    for (int i=1; i<length-1;i++) {
+        int cat;
+        int nSlide;
+        if (i==1) {
+            cat = i;
+            nSlide = [[[categories valueForKey:@"number_of_slides"] objectAtIndex:i]intValue] ;
+        }else {
+            cat = cat + nSlide ;
+            nSlide = [[[categories valueForKey:@"number_of_slides"] objectAtIndex:i]intValue] ;
+        }
+        [temp addObject:[NSValue valueWithRange:NSMakeRange(cat,nSlide)]];
     }
+
+    categoriesAndIndices = [NSArray arrayWithArray:temp];
+        NSMutableArray *dict = [NSMutableArray array];
+        int len = [categoriesAndIndices count];
+        for (int i=0; i<len; i++) {
+            NSValue *tmp = [categoriesAndIndices objectAtIndex:i];
+            NSNumber *val=[NSNumber numberWithInt:[tmp rangeValue].length] ;
+            
+            NSString *key=[NSString stringWithFormat:@"%d",[tmp rangeValue].location];
+            NSString *cadena = key;
+            cadena = [cadena stringByAppendingString:@","];
+            cadena = [cadena stringByAppendingString:[val stringValue]];
+            
+            [dict addObject:cadena];
+        }
+
+        [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"categories_preference"];
+      
+    
+    NSMutableArray *tempo = [NSMutableArray array];;
+    for (int i=0; i<[[slides valueForKey:@"name"] count]; i++) {
+        for (int j=0; j<[[[slides valueForKey:@"name"] objectAtIndex:i]count]; j++) {
+            [tempo addObject:[[[slides valueForKey:@"name"] objectAtIndex:i]objectAtIndex:j]];
+        }
+    }
+    
+    documentTitles = tempo;
+        [[NSUserDefaults standardUserDefaults] setObject:documentTitles forKey:@"slides_preference"];
+    
+        NSLog(@"%@",documentTitles);    
+        NSLog(@"%@",categoriesAndIndices);        
+        
+    }else {
+         NSMutableArray *temp = [NSMutableArray array];
+        
+        for (int i=0; i<[categories count]; i++) {
+            NSRange match;
+            NSString *cadena = [categories objectAtIndex:i];
+
+            match = [cadena rangeOfString:@","];
+            NSString *string1 = [cadena substringToIndex:match.location];
+            NSString *string2 = [cadena substringFromIndex:match.location+1];
+
+            [temp addObject:[NSValue valueWithRange:NSMakeRange([string1 intValue], [string2 intValue])]];
+        }
+        categoriesAndIndices = temp;
+        documentTitles = slides;
+        NSLog(@"%@",documentTitles);    
+        NSLog(@"%@",categoriesAndIndices);        
+    }
+        
     return self;
 }
 
@@ -69,10 +125,18 @@
 
 - (UIView<ContentControlProtocol> *)viewForDocumentAtIndex:(NSUInteger)index
 {
+    
+    NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                  NSUserDomainMask,
+                                                                  YES) objectAtIndex:0];
+    
+    NSString *newDir = [documentsDir stringByAppendingPathComponent:@"slides/"];    
     NSString *slideName = [@"slide" stringByAppendingString:[[NSNumber numberWithUnsignedInt:index + 1] stringValue]];
-    NSString *path = [[NSBundle mainBundle] pathForResource:slideName
-                                                     ofType:@"html"
-                                                inDirectory:[@"slides/" stringByAppendingString:slideName]];
+    newDir = [newDir stringByAppendingPathComponent:slideName];
+    NSMutableString *path=[NSMutableString string];
+    slideName = [slideName stringByAppendingString:@".html"];
+    [path appendString:[newDir stringByAppendingPathComponent:slideName]];
+
     
     if (!path)
         return nil;
@@ -88,8 +152,15 @@
 
 - (UIImageView *)previewForDocumentAtIndex:(NSUInteger)index
 {
+    NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                  NSUserDomainMask,
+                                                                  YES) objectAtIndex:0];
+    
+    NSString *newDir = [documentsDir stringByAppendingPathComponent:@"resources/backs/"];
     NSString *fileName = [[@"brilinta_" stringByAppendingString:[NSNumber numberWithUnsignedInt:index + 1].stringValue] stringByAppendingString:@".jpg"];
-    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:fileName]];
+    //return [[UIImageView alloc] initWithImage:[UIImage imageNamed:fileName]];
+    NSLog(@"%@",[newDir stringByAppendingPathComponent:fileName]);
+    return [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:[newDir stringByAppendingPathComponent:fileName]]];
 }
 
 - (NSDictionary *)annotationsForDocumentAtIndex:(NSUInteger)index

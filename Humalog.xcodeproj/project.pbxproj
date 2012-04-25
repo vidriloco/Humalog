@@ -80,6 +80,15 @@
 		84E64C44151D4D2E001F7E0A /* brilinta_10.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C38151D4D2E001F7E0A /* brilinta_10.jpg */; };
 		84E64C45151D4D2E001F7E0A /* brilinta_11.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C39151D4D2E001F7E0A /* brilinta_11.jpg */; };
 		84E64C46151D4D2E001F7E0A /* brilinta_12.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C3A151D4D2E001F7E0A /* brilinta_12.jpg */; };
+		AA5524B91544B01B0027253E /* Downloader.m in Sources */ = {isa = PBXBuildFile; fileRef = AA5524B81544B01B0027253E /* Downloader.m */; };
+		AA5524E31544CF1A0027253E /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = AA5524D91544CF1A0027253E /* ioapi.c */; };
+		AA5524E41544CF1A0027253E /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = AA5524DB1544CF1A0027253E /* mztools.c */; };
+		AA5524E51544CF1A0027253E /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = AA5524DD1544CF1A0027253E /* unzip.c */; };
+		AA5524E61544CF1A0027253E /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = AA5524DF1544CF1A0027253E /* zip.c */; };
+		AA5524E71544CF1A0027253E /* ZipArchive.mm in Sources */ = {isa = PBXBuildFile; fileRef = AA5524E21544CF1A0027253E /* ZipArchive.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc "; }; };
+		AA5524E91544E7280027253E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5524E81544E7270027253E /* libz.dylib */; };
+		AAA377B815447F7A0078359D /* Brand.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA377B715447F7A0078359D /* Brand.m */; };
+		AAA377BE154491DB0078359D /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AAA377BD154491DB0078359D /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -189,6 +198,24 @@
 		84E64C38151D4D2E001F7E0A /* brilinta_10.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_10.jpg; sourceTree = "<group>"; };
 		84E64C39151D4D2E001F7E0A /* brilinta_11.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_11.jpg; sourceTree = "<group>"; };
 		84E64C3A151D4D2E001F7E0A /* brilinta_12.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_12.jpg; sourceTree = "<group>"; };
+		AA5524B71544B01B0027253E /* Downloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Downloader.h; sourceTree = "<group>"; };
+		AA5524B81544B01B0027253E /* Downloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Downloader.m; sourceTree = "<group>"; };
+		AA5524D81544CF1A0027253E /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
+		AA5524D91544CF1A0027253E /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
+		AA5524DA1544CF1A0027253E /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
+		AA5524DB1544CF1A0027253E /* mztools.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = mztools.c; sourceTree = "<group>"; };
+		AA5524DC1544CF1A0027253E /* mztools.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mztools.h; sourceTree = "<group>"; };
+		AA5524DD1544CF1A0027253E /* unzip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = unzip.c; sourceTree = "<group>"; };
+		AA5524DE1544CF1A0027253E /* unzip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = unzip.h; sourceTree = "<group>"; };
+		AA5524DF1544CF1A0027253E /* zip.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = zip.c; sourceTree = "<group>"; };
+		AA5524E01544CF1A0027253E /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
+		AA5524E11544CF1A0027253E /* ZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZipArchive.h; sourceTree = "<group>"; };
+		AA5524E21544CF1A0027253E /* ZipArchive.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ZipArchive.mm; sourceTree = "<group>"; };
+		AA5524E81544E7270027253E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		AAA377B615447F7A0078359D /* Brand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Brand.h; path = Models/Brand.h; sourceTree = "<group>"; };
+		AAA377B715447F7A0078359D /* Brand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Brand.m; path = Models/Brand.m; sourceTree = "<group>"; };
+		AAA377BD154491DB0078359D /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		AAC3484F1547B11C00B2D3E7 /* DownloadControlDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DownloadControlDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +223,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA5524E91544E7280027253E /* libz.dylib in Frameworks */,
 				84E05FBC151299AD009FE5AF /* QuartzCore.framework in Frameworks */,
 				84C9DF8A15009F6700E16B3B /* UIKit.framework in Frameworks */,
 				84C9DF8C15009F6700E16B3B /* Foundation.framework in Frameworks */,
@@ -219,6 +247,7 @@
 		840BBB121509E35B00B681A7 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				AAC3484F1547B11C00B2D3E7 /* DownloadControlDelegate.h */,
 				840BBB131509E39700B681A7 /* ContentControlProtocol.h */,
 				840BBB181509EB6000B681A7 /* InterfaceControlDelegate.h */,
 				840BBB2A150C675D00B681A7 /* ContentDisplayDelegate.h */,
@@ -269,6 +298,7 @@
 		84C9DF8815009F6700E16B3B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA5524E81544E7270027253E /* libz.dylib */,
 				84E05FBB151299AD009FE5AF /* QuartzCore.framework */,
 				84C9DF8915009F6700E16B3B /* UIKit.framework */,
 				84C9DF8B15009F6700E16B3B /* Foundation.framework */,
@@ -281,6 +311,7 @@
 		84C9DF8F15009F6700E16B3B /* Humalog */ = {
 			isa = PBXGroup;
 			children = (
+				AAA377BA15447F830078359D /* Models */,
 				840BBB121509E35B00B681A7 /* Protocols */,
 				84C9DFB81500A01000E16B3B /* Controllers */,
 				84C9DFBB1500A01000E16B3B /* Helpers */,
@@ -297,6 +328,7 @@
 		84C9DF9015009F6700E16B3B /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				AAA377BD154491DB0078359D /* Settings.bundle */,
 				84C9DF9115009F6700E16B3B /* Humalog-Info.plist */,
 				84C9DF9215009F6700E16B3B /* InfoPlist.strings */,
 				84C9DF9515009F6700E16B3B /* main.m */,
@@ -401,6 +433,7 @@
 		84E05FB5151298FC009FE5AF /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				AA5524D61544CF1A0027253E /* ZipArchive */,
 				84E05FB6151298FC009FE5AF /* iCarousel */,
 			);
 			path = Libs;
@@ -460,6 +493,43 @@
 				84E05FE115129FC1009FE5AF /* pluma.png */,
 			);
 			path = toolbars;
+			sourceTree = "<group>";
+		};
+		AA5524D61544CF1A0027253E /* ZipArchive */ = {
+			isa = PBXGroup;
+			children = (
+				AA5524D71544CF1A0027253E /* minizip */,
+				AA5524E11544CF1A0027253E /* ZipArchive.h */,
+				AA5524E21544CF1A0027253E /* ZipArchive.mm */,
+			);
+			path = ZipArchive;
+			sourceTree = "<group>";
+		};
+		AA5524D71544CF1A0027253E /* minizip */ = {
+			isa = PBXGroup;
+			children = (
+				AA5524D81544CF1A0027253E /* crypt.h */,
+				AA5524D91544CF1A0027253E /* ioapi.c */,
+				AA5524DA1544CF1A0027253E /* ioapi.h */,
+				AA5524DB1544CF1A0027253E /* mztools.c */,
+				AA5524DC1544CF1A0027253E /* mztools.h */,
+				AA5524DD1544CF1A0027253E /* unzip.c */,
+				AA5524DE1544CF1A0027253E /* unzip.h */,
+				AA5524DF1544CF1A0027253E /* zip.c */,
+				AA5524E01544CF1A0027253E /* zip.h */,
+			);
+			path = minizip;
+			sourceTree = "<group>";
+		};
+		AAA377BA15447F830078359D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				AAA377B615447F7A0078359D /* Brand.h */,
+				AAA377B715447F7A0078359D /* Brand.m */,
+				AA5524B71544B01B0027253E /* Downloader.h */,
+				AA5524B81544B01B0027253E /* Downloader.m */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -581,6 +651,7 @@
 				849891F2152151200038DAA7 /* ONSET and OFFSET study, 2009.png in Resources */,
 				849891F3152151200038DAA7 /* PLATO trial, 2009.png in Resources */,
 				849891F4152151200038DAA7 /* Wallentin Spanish.png in Resources */,
+				AAA377BE154491DB0078359D /* Settings.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -630,6 +701,13 @@
 				84E06023151319A8009FE5AF /* Viewport.m in Sources */,
 				84E64C27151D1388001F7E0A /* ThumbnailStackView.m in Sources */,
 				84E64C2A151D141B001F7E0A /* SlideController.m in Sources */,
+				AAA377B815447F7A0078359D /* Brand.m in Sources */,
+				AA5524B91544B01B0027253E /* Downloader.m in Sources */,
+				AA5524E31544CF1A0027253E /* ioapi.c in Sources */,
+				AA5524E41544CF1A0027253E /* mztools.c in Sources */,
+				AA5524E51544CF1A0027253E /* unzip.c in Sources */,
+				AA5524E61544CF1A0027253E /* zip.c in Sources */,
+				AA5524E71544CF1A0027253E /* ZipArchive.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

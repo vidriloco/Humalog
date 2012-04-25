@@ -14,6 +14,7 @@
 #import "WhitepaperController.h"
 #import "SlideController.h"
 #import "Viewport.h"
+#import "Downloader.h"
 
 #define FADE_DURATION 0.25
 
@@ -24,6 +25,7 @@
     MenubarView          *menubarView;
     WhitepaperController *whitepaperController; 
     SlideController      *slideController;
+    Downloader           *download;
 }
 @end
 
@@ -37,8 +39,34 @@
         self.wantsFullScreenLayout = YES;
         [UIApplication sharedApplication].statusBarHidden = YES;
         
+        BOOL flag=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_interface_preference"];
+        BOOL flag2=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_slides_preference"];
+        
+        NSString *brandId=[[NSUserDefaults standardUserDefaults] stringForKey:@"brand_preference"];        
+
+        slideController = [[SlideController alloc] init];        
+        if (flag || flag2) {
+        
+            download = [[Downloader alloc]init];
+            [download parseJSON:brandId];
+            
+            [slideController assignArrays:[download brandCategories] 
+                               withSlides:[download brandSlides] 
+                               withUpdate:YES] ;
+            
+            NSUserDefaults *defaults = [[NSUserDefaults alloc]init];
+            [defaults setBool:NO forKey:@"update_interface_preference"];
+            [defaults setBool:NO forKey:@"update_slides_preference"];
+            
+        }else {
+            [slideController assignArrays:[[NSUserDefaults standardUserDefaults] arrayForKey:@"categories_preference"] 
+                               withSlides:[[NSUserDefaults standardUserDefaults] arrayForKey:@"slides_preference"] 
+                               withUpdate:NO];
+        }
+        
         // Slide controller
-        slideController = [[SlideController alloc] init];
+
+
         [self addChildViewController:slideController];
         
         // Whitepaper controller

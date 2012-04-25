@@ -38,12 +38,17 @@
     self = [super init];
     if (self) {
         // Custom initialization
-        slideProvider = [[SlideProvider alloc] init];
-        slideProvider.delegate = self;
+
         
         drawThumbnails = YES;
     }
     return self;
+}
+
+- (void) assignArrays:(NSArray *)categories withSlides:(NSArray *)slides withUpdate:(BOOL)update
+{
+    slideProvider = [[SlideProvider alloc] initWithCategories:categories andSlides:slides withUpdate:update];
+    slideProvider.delegate = self;
 }
 
 - (void)loadView

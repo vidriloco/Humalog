@@ -12,7 +12,7 @@
 #import "Viewport.h"
 #import "ThumbnailStackView.h"
 
-#define FADE_DURATION 0.25
+#define FADE_DURATION 0.5
 #define STACK_OFFSET  -15
 
 @interface SlideController () {
@@ -38,18 +38,19 @@
     self = [super init];
     if (self) {
         // Custom initialization
-
+        slideProvider = [[SlideProvider alloc] init];
+        slideProvider.delegate = self;
         
         drawThumbnails = YES;
     }
     return self;
 }
 
-- (void) assignArrays:(NSArray *)categories withSlides:(NSArray *)slides withUpdate:(BOOL)update
-{
-    slideProvider = [[SlideProvider alloc] initWithCategories:categories andSlides:slides withUpdate:update];
-    slideProvider.delegate = self;
-}
+//- (void) assignArrays:(NSArray *)categories withSlides:(NSArray *)slides withUpdate:(BOOL)update
+//{
+//    slideProvider = [[SlideProvider alloc] init];
+//    slideProvider.delegate = self;
+//}
 
 - (void)loadView
 {
@@ -207,6 +208,39 @@
     [self loadContent];
 }
 
+- (void)loadSpecial
+{
+    [self saveAnnotations];
+    currentSlide = [slideProvider numberOfDocuments]-2;
+    [self loadContent];
+}
+
+- (void)loadPDF:(NSString *)pdf
+{
+    [self saveAnnotations];
+    
+    
+    //[self.view addSubview:webView];
+    pdf=[pdf stringByAppendingString:@".pdf"];
+    contentView = [slideProvider viewForPDF:pdf];
+    
+}
+
+- (void)decidePDFLoading:(NSString *)pdfType
+{
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:pdfType]count]-1 >1) {
+        if ([self.parentViewController respondsToSelector:@selector(loadWhitepapers:)])
+            [self.parentViewController performSelector:@selector(loadWhitepapers:)withObject:[[NSUserDefaults standardUserDefaults] objectForKey:pdfType]];
+    }else {
+        NSString *pdf=[[[NSUserDefaults standardUserDefaults] objectForKey:pdfType] objectAtIndex:0];
+        [self loadPDF:pdf];
+    }
+    
+}
+
+
+
+
 #pragma mark - Delegate Methods
 
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
@@ -239,17 +273,34 @@
     title.textColor = [UIColor whiteColor];
     title.text = [slideProvider titleForDocumentAtIndex:[slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index];
     title.font = [UIFont boldSystemFontOfSize:15.0];
-    CGSize titleSize = [title.text sizeWithFont:title.font];
+    CGSize titleSize = [title.text sizeWithFont:title.font
+                              constrainedToSize:CGSizeMake(150.0, 100.0)
+                                  lineBreakMode:UILineBreakModeWordWrap];
     title.frame = CGRectMake(0, 0, titleSize.width, titleSize.height); 
+    title.lineBreakMode= UILineBreakModeWordWrap;
+    title.numberOfLines=0;
+    //[title sizeToFit];
+    [title setTextAlignment:UITextAlignmentCenter];
     title.center = CGPointMake(thumb.bounds.size.width / 2.0, title.center.y);
+    
+    UILabel *separator = [[UILabel alloc] init];    
+    separator.frame = CGRectMake(0, 0, 150.0, 1.0); 
+    //separator.layer.backgroundColor = [UIColor redColor].CGColor;
+    
+    
     
     // Container
     UIView *v = [[UIView alloc] initWithFrame:thumb.frame];
     if (drawThumbnails) {
-        title.center = CGPointMake(title.center.x, thumb.bounds.size.height + 12.0);
+        title.center = CGPointMake(title.center.x, thumb.bounds.size.height + 20.0);
         [v addSubview:thumb];
+        //separator.center = CGPointMake(thumb.bounds.size.width / 2.0,105 );    
+    }else {
+        separator.center = CGPointMake(thumb.bounds.size.width / 2.0,title.bounds.size.height );
+        [v addSubview:separator];
     }
     [v addSubview:title];
+    
     return v;
 }
 
@@ -308,6 +359,14 @@
     [stackView show];
 }
 
+-(void)touchesBegan: (NSSet *)touches withEvent:(UIEvent *)event
+{
+	// do the following for all textfields in your current view
+	[stackView hide];
+	// save the value of the textfield, ...
+	
+}
+
 - (void)menubarViewDidDeselectCategoryButton:(UIButton *)button withIndex:(NSUInteger)index
 {
     // Hide stack
@@ -326,14 +385,27 @@
 
 - (void)menubarViewDidPressEstudios
 {
-    if ([self.parentViewController respondsToSelector:@selector(loadWhitepapers)])
-        [self.parentViewController performSelector:@selector(loadWhitepapers)];
+    [self decidePDFLoading:@"EST"];
+
 }
 
-//- (void)menubarViewDidPressIPP
-//{
-//    NSLog(@"IPP");
-//}
+
+- (void)menubarViewDidPressReferencias
+{
+    [self decidePDFLoading:@"REF"];
+}
+
+
+- (void)menubarViewDidPressIPP
+{
+    [self decidePDFLoading:@"IPP"];
+}
+
+- (void)menubarViewDidPressEspecial
+{
+    [self loadSpecial];
+}
+
 
 - (void)toolbarViewDidPressBack
 {

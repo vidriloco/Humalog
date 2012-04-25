@@ -31,7 +31,7 @@
     
     NSString *file=[brand stringByAppendingString:@".json"];
     NSURL *url = [NSURL URLWithString:[kBrandURL stringByAppendingString:file]];
-
+    NSLog(@"%@",[url description]);
     dispatch_sync(kBgQueue, ^{
         NSData* data = [NSData dataWithContentsOfURL: 
                         url];
@@ -60,7 +60,56 @@
     //Get slides and urls to download
 
     configurator.categories = [json objectForKey:@"categories"];
+    
+    NSMutableArray *temp = [NSMutableArray array];
+    
+    int length = [[configurator.categories valueForKey:@"orden"] count];
+    for (int i=1; i<length-1;i++) {
+        int cat;
+        int nSlide;
+        if (i==1) {
+            cat = i;
+            nSlide = [[[configurator.categories valueForKey:@"number_of_slides"] objectAtIndex:i]intValue] ;
+        }else {
+            cat = cat + nSlide ;
+            nSlide = [[[configurator.categories valueForKey:@"number_of_slides"] objectAtIndex:i]intValue] ;
+        }
+        [temp addObject:[NSValue valueWithRange:NSMakeRange(cat,nSlide)]];
+    }
+    
+   
+    NSMutableArray *dict = [NSMutableArray array];
+    int len = [temp count];
+    for (int i=0; i<len; i++) {
+        NSValue *tmp = [temp objectAtIndex:i];
+        NSNumber *val=[NSNumber numberWithInt:[tmp rangeValue].length] ;
+        
+        NSString *key=[NSString stringWithFormat:@"%d",[tmp rangeValue].location];
+        NSString *cadena = key;
+        cadena = [cadena stringByAppendingString:@","];
+        cadena = [cadena stringByAppendingString:[val stringValue]];
+        
+        [dict addObject:cadena];
+    }
+    NSLog(@"%@",dict);
+    [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"categories_preference"];
+        
     configurator.slides = [[json objectForKey:@"categories"] valueForKey:@"category"];
+    
+    NSMutableArray *tempo = [NSMutableArray array];;
+    for (int i=0; i<[[configurator.slides valueForKey:@"name"] count]; i++) {
+        for (int j=0; j<[[[configurator.slides valueForKey:@"name"] objectAtIndex:i]count]; j++) {
+            [tempo addObject:[[[configurator.slides valueForKey:@"name"] objectAtIndex:i]objectAtIndex:j]];
+        }
+    }
+    NSLog(@"%@",tempo);    
+    [[NSUserDefaults standardUserDefaults] setObject:tempo forKey:@"slides_preference"];
+    
+    
+    
+    
+    
+    
     
     //Assign configuration flags
     
@@ -87,6 +136,56 @@
     
     //get pdf urls to download
     configurator.pdfs = [json objectForKey:@"pdfs"];
+    NSMutableArray *ipp = [NSMutableArray array];
+    NSMutableArray *ref = [NSMutableArray array];
+    NSMutableArray *est = [NSMutableArray array];    
+    for (int i=0; i<[configurator.pdfs count]; i++) {
+        id pdf = [configurator.pdfs objectAtIndex:i];
+        if ([[pdf valueForKey:@"pdf_type"] isEqualToString:@"IPP"]) {
+            [ipp addObject:[pdf valueForKey:@"name"]];
+        }else if ([[pdf valueForKey:@"pdf_type"] isEqualToString:@"Referencia"]){
+                        [ref addObject:[pdf valueForKey:@"name"]];
+        }else {
+            [est addObject:[pdf valueForKey:@"name"]];
+        }
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:ipp forKey:@"IPP"];
+    [[NSUserDefaults standardUserDefaults] setObject:ref forKey:@"REF"];
+    [[NSUserDefaults standardUserDefaults] setObject:est forKey:@"EST"];    
+    
+    [[NSUserDefaults standardUserDefaults] setValue:configurator.brandName forKey:@"brand"];
+    [[NSUserDefaults standardUserDefaults] setValue:[[json objectForKey:@"interface_configuration"] 
+                                                     valueForKey:@"has_closing"] 
+                                             forKey:@"1"];    
+    
+    [[NSUserDefaults standardUserDefaults] setValue:[[json objectForKey:@"interface_configuration"] 
+                                                     valueForKey:@"has_opening"] 
+                                             forKey:@"2"];
+    
+    [[NSUserDefaults standardUserDefaults] setValue:[[json objectForKey:@"interface_configuration"] 
+                                                     valueForKey:@"has_ipp"] 
+                                             forKey:@"3"];
+    
+    [[NSUserDefaults standardUserDefaults] setValue:[[json objectForKey:@"interface_configuration"] 
+                                                     valueForKey:@"has_references"] 
+                                             forKey:@"4"];
+    
+    [[NSUserDefaults standardUserDefaults] setValue:[[json objectForKey:@"interface_configuration"] 
+                                                     valueForKey:@"has_special"] 
+                                             forKey:@"5"];
+    
+    [[NSUserDefaults standardUserDefaults] setValue:[[json objectForKey:@"interface_configuration"] 
+                                                     valueForKey:@"has_studies"] 
+                                             forKey:@"6"];
+    
+    [[NSUserDefaults standardUserDefaults] setValue:[[json objectForKey:@"interface_configuration"] 
+                                                     valueForKey:@"uses_stack_view"] 
+                                             forKey:@"7"];
+    
+    [[NSUserDefaults standardUserDefaults] setValue:[[json objectForKey:@"interface_configuration"] 
+                                                     valueForKey:@"updated_device"] 
+                                             forKey:@"8"];
     
     NSLog(@"brand: %@", configurator.brandName);
     NSLog(@"brand: %@", configurator.brandURL);
@@ -145,6 +244,12 @@
             for (int j=0; j<[[[configurator.slides valueForKey:@"url"] objectAtIndex:i]count]; j++) {
                 [self downloadWithStringURL:[[[configurator.slides valueForKey:@"url"] objectAtIndex:i]objectAtIndex:j] withDir:@"slides"];
            }
+        }
+        
+        for (int i=0; i<[configurator.pdfs count]; i++) {
+            id pdf = [configurator.pdfs objectAtIndex:i];
+            [self downloadWithStringURL:[pdf valueForKey:@"url"] withDir:@"slides"];
+            NSLog(@"pdf:%@",[pdf valueForKey:@"url"]);
         }
 
     }
@@ -223,7 +328,7 @@
          if ([data length] >0 && error == nil)
          {
              NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                               NSLog(@"HTML = %@", html); 
+                               NSLog(@"success"); 
          }
                                
          else if ([data length] == 0 && error == nil)
@@ -279,6 +384,11 @@
     }   
 }
 
+-(NSString *)brandName
+{
+    return configurator.brandName;
+}
+
 -(NSArray *)brandCategories
 {
     return configurator.categories;
@@ -288,6 +398,8 @@
 {
     return configurator.slides;
 }
+
+
 
 
 

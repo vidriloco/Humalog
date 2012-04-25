@@ -43,35 +43,35 @@
         BOOL flag2=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_slides_preference"];
         
         NSString *brandId=[[NSUserDefaults standardUserDefaults] stringForKey:@"brand_preference"];        
+        NSLog(@"%@",brandId);
 
-        slideController = [[SlideController alloc] init];        
         if (flag || flag2) {
         
             download = [[Downloader alloc]init];
             [download parseJSON:brandId];
             
-            [slideController assignArrays:[download brandCategories] 
-                               withSlides:[download brandSlides] 
-                               withUpdate:YES] ;
+//            [slideController assignArrays:[download brandCategories] 
+//                               withSlides:[download brandSlides] 
+//                               withUpdate:YES] ;
             
             NSUserDefaults *defaults = [[NSUserDefaults alloc]init];
             [defaults setBool:NO forKey:@"update_interface_preference"];
             [defaults setBool:NO forKey:@"update_slides_preference"];
             
-        }else {
-            [slideController assignArrays:[[NSUserDefaults standardUserDefaults] arrayForKey:@"categories_preference"] 
-                               withSlides:[[NSUserDefaults standardUserDefaults] arrayForKey:@"slides_preference"] 
-                               withUpdate:NO];
         }
+//        else {
+//            [slideController assignArrays:[[NSUserDefaults standardUserDefaults] arrayForKey:@"categories_preference"] 
+//                               withSlides:[[NSUserDefaults standardUserDefaults] arrayForKey:@"slides_preference"] 
+//                               withUpdate:NO];
+//
+//        }
         
         // Slide controller
-
+        slideController = [[SlideController alloc] init];        
 
         [self addChildViewController:slideController];
         
-        // Whitepaper controller
-        whitepaperController = [[WhitepaperController alloc] init];
-        [self addChildViewController:whitepaperController];
+
     }
     return self;
 }
@@ -163,8 +163,10 @@
 #pragma mark - Content control
 - (void)loadSlides
 {
+    
     [whitepaperController.view removeFromSuperview];
     [self.view insertSubview:slideController.view belowSubview:gestureView];
+    [slideController menubarViewDidPressApertura];
     
     // Delegation
     toolbarView.delegate = slideController;
@@ -172,9 +174,16 @@
     [toolbarView hide];
 }
 
-- (void)loadWhitepapers
+- (void)loadWhitepapers:(NSArray *)pdfs
 {
+    // Whitepaper controller
+    whitepaperController = [[WhitepaperController alloc] init];
+    [whitepaperController loadPDF:pdfs];
+    [self addChildViewController:whitepaperController];
+
+    
     [slideController.view removeFromSuperview];
+
     [self.view insertSubview:whitepaperController.view belowSubview:gestureView];
     
     // Delegation

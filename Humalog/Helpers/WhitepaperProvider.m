@@ -39,6 +39,12 @@
     return self;
 }
 
+- (void) loadContent:(NSArray *)pdfs
+{
+    whitepaperList = pdfs;
+}
+
+
 #pragma mark - Previews
 - (void)grabPreviews
 {

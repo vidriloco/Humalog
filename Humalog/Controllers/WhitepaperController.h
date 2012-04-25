@@ -13,5 +13,5 @@
 
 @interface WhitepaperController : UIViewController<iCarouselDataSource, iCarouselDelegate, InterfaceControlDelegate> {
 }
-
+- (void) loadPDF:(NSArray *)pdfs;
 @end

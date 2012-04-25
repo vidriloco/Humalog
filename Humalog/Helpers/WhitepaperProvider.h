@@ -17,5 +17,5 @@
     id<ContentDisplayDelegate> delegate;
 }
 @property (nonatomic, retain) id<ContentDisplayDelegate> delegate;
-
+- (void) loadContent:(NSArray *)pdfs;
 @end

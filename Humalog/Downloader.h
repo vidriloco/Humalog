@@ -17,6 +17,7 @@
 
 - (void) parseJSON:(NSString *)brand;
 
+- (NSString *) brandName; 
 - (NSArray *) brandCategories;
 - (NSArray *) brandSlides;
 

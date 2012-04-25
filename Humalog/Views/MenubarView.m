@@ -70,20 +70,48 @@
         
         // Nav buttons
         navButtons = [NSMutableArray array];
+        NSMutableArray * temp1 = [NSMutableArray array];
+        NSMutableArray * temp2 = [NSMutableArray array];        
+
+        for (int i=0; i<6; i++) {
+            id flag=[[NSUserDefaults standardUserDefaults] valueForKey:[NSString stringWithFormat:@"%d",i]];
+            if ([flag boolValue]) {
+                
+            switch (i) {
+                case 1:
+                    [temp1 addObject:@"btn_apertura.png"];
+                    [temp2 addObject:[NSValue valueWithPointer:@selector(menubarViewDidPressApertura)]];
+                    break;
+                case 2:
+                    [temp1 addObject:@"btn_cierre.png"];
+                    [temp2 addObject:[NSValue valueWithPointer:@selector(menubarViewDidPressCierre)]];
+                    break;                    
+                case 3:
+                    [temp1 addObject:@"btn_ipp.png"];
+                    [temp2 addObject:[NSValue valueWithPointer:@selector(menubarViewDidPressIPP)]];
+                    break;
+                case 4:
+                    [temp1 addObject:@"btn_referencias.png"];
+                    [temp2 addObject:[NSValue valueWithPointer:@selector(menubarViewDidPressReferencias)]];
+                    break;
+                case 5:
+                    [temp1 addObject:@"btn_especial.png"];
+                    [temp2 addObject:[NSValue valueWithPointer:@selector(menubarViewDidPressEspecial)]];
+                    break;
+                case 6:
+                    [temp1 addObject:@"btn_estudios.png"];
+                    [temp2 addObject:[NSValue valueWithPointer:@selector(menubarViewDidPressEstudios)]];
+                    break;
+            }
+            }
+            
+        }
+
+
         
-        NSArray *buttons = [NSArray arrayWithObjects:
-                            @"btn_apertura.png",
-                            @"btn_cierre.png",
-                            @"btn_estudios.png",
-                            @"btn_ipp.png",
-                            nil];
+        NSArray *buttons = [NSArray arrayWithArray:temp1];
         
-        navActions = [NSArray arrayWithObjects:
-                      [NSValue valueWithPointer:@selector(menubarViewDidPressApertura)],
-                      [NSValue valueWithPointer:@selector(menubarViewDidPressCierre)],
-                      [NSValue valueWithPointer:@selector(menubarViewDidPressEstudios)],
-                      [NSValue valueWithPointer:@selector(menubarViewDidPressIPP)],
-                      nil];
+        navActions = [NSArray arrayWithArray:temp2];
 
         id buttonLayout = [GridLayout gridWithFrame:CGRectMake(2 * MARGIN + self.frame.size.width * 2 / 3, 0, self.frame.size.width * 1 / 5, self.frame.size.height) numRows:1 numCols:[buttons count]];
         i = 0;

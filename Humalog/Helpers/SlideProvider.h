@@ -19,6 +19,6 @@
     id<ContentDisplayDelegate> delegate;
 }
 @property (nonatomic, retain) id<ContentDisplayDelegate> delegate;
-- (id)initWithCategories:(NSArray *)categories andSlides:(NSArray *)slides withUpdate:(BOOL)update;
+//- (id)initWithCategories:(NSArray *)categories andSlides:(NSArray *)slides withUpdate:(BOOL)updated;
 
 @end

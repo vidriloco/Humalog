@@ -30,6 +30,11 @@
     return self;
 }
 
+- (void) loadPDF:(NSArray *)pdfs
+{
+    [whitepaperProvider loadContent:pdfs];
+}
+
 #pragma mark - iCarousel delegate methods
 
 // Data source
@@ -77,10 +82,36 @@
     [documentView removeFromSuperview];
 }
 
+- (void)menubarViewDidPressIPP
+{
+    [documentView removeFromSuperview];
+}
+
 - (void)menubarViewDidPressApertura
 {
     if ([self.parentViewController respondsToSelector:@selector(loadSlides)])
         [self.parentViewController performSelector:@selector(loadSlides)];
+    
+}
+
+- (void)menubarViewDidPressCierre
+{
+    if ([self.parentViewController respondsToSelector:@selector(loadSlideCierre)])
+        [self.parentViewController performSelector:@selector(loadSlideCierre)];
+    
+}
+
+- (void)menubarViewDidPressEspecial
+{
+    if ([self.parentViewController respondsToSelector:@selector(loadSlideEspecial)])
+        [self.parentViewController performSelector:@selector(loadSlideEspecial)];
+    
+}
+
+- (void)menubarViewDidPressReferencias
+{
+    if ([self.parentViewController respondsToSelector:@selector(loadSlideReferencias)])
+        [self.parentViewController performSelector:@selector(loadSlideReferencias)];
     
 }
 

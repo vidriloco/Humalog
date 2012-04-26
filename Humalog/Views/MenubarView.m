@@ -153,6 +153,14 @@
 
 }
 
+- (CGPoint)centerForSectionButtonWithIndex:(NSUInteger)index
+{
+    if (index >= [sectionButtons count])
+        return CGPointZero;
+    
+    return ((UIButton *)[sectionButtons objectAtIndex:index]).center;
+}
+
 - (void)observeValueForKeyPath:(NSString *)keyPath
                       ofObject:(id)object
                         change:(NSDictionary *)change

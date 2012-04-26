@@ -8,9 +8,10 @@
 
 #import "iCarousel.h"
 
-@interface ThumbnailStackView : iCarousel
-
-- (void)setBaseline:(CGPoint)baselineCenterPoint;
+@interface ThumbnailStackView : iCarousel {
+    CGPoint baseline;
+}
+@property (nonatomic, assign) CGPoint baseline;
 - (void)show;
 - (void)hide;
 @end

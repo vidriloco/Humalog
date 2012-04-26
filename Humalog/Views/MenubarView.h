@@ -14,5 +14,6 @@
 }
 
 @property (nonatomic, retain) id<InterfaceControlDelegate> delegate;
+- (CGPoint)centerForSectionButtonWithIndex:(NSUInteger)index;
 
 @end

@@ -24,6 +24,7 @@
     MenubarView          *menubarView;
     WhitepaperController *whitepaperController; 
     SlideController      *slideController;
+    SlideProvider        *slideProvider;
 }
 @end
 
@@ -37,8 +38,11 @@
         self.wantsFullScreenLayout = YES;
         [UIApplication sharedApplication].statusBarHidden = YES;
         
-        // Slide controller
+        // Slides
         slideController = [[SlideController alloc] init];
+        slideProvider = [[SlideProvider alloc] init];
+        slideController.slideProvider = slideProvider;
+        slideProvider.delegate = slideController;
         [self addChildViewController:slideController];
         
         // Whitepaper controller
@@ -136,7 +140,7 @@
 - (void)loadSlides
 {
     [whitepaperController.view removeFromSuperview];
-    [self.view insertSubview:slideController.view belowSubview:gestureView];
+    [self.view insertSubview:slideController.view belowSubview:menubarView];
     
     // Delegation
     toolbarView.delegate = slideController;
@@ -147,7 +151,7 @@
 - (void)loadWhitepapers
 {
     [slideController.view removeFromSuperview];
-    [self.view insertSubview:whitepaperController.view belowSubview:gestureView];
+    [self.view insertSubview:whitepaperController.view belowSubview:menubarView];
     
     // Delegation
     toolbarView.delegate = whitepaperController;

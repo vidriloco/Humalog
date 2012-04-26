@@ -48,7 +48,7 @@
                           @"Mecanismo de acción",
                           @"Rapidez de acción",
                           @"Eficacia",
-                          @"Mantenimiento",
+                          @"Mantenimiento 30 días / 12 meses",
                           @"Seguridad",
                           @"Dosis",
                           @"Cierre",
@@ -60,6 +60,11 @@
 - (NSUInteger)numberOfDocuments
 {
     return 12;
+}
+
+- (NSUInteger)numberOfCategories
+{
+    return 5;
 }
 
 - (NSString *)titleForDocumentAtIndex:(NSUInteger)index

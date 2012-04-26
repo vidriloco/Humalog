@@ -27,7 +27,6 @@
         webContentView = [[WebContentView alloc] init];
         webContentView.delegate = self;
         webContentView.scalesPageToFit = NO;
-        webContentView.scrollView.scrollEnabled = NO;
         
         documentAnnotations = [NSMutableDictionary dictionary];
                 

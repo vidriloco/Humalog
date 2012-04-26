@@ -79,6 +79,7 @@
     stackView.dataSource = self;
     stackView.hidden = YES;
     stackView.alpha = 0.0;
+    stackView.baseline = CGPointMake(self.view.center.x, self.view.bounds.size.height);
     [self.view addSubview:stackView];
     
 //    currentCategoryName = [[slideProvider categoryNames] objectAtIndex:0];
@@ -164,6 +165,8 @@
 
 - (void)loadContent
 {
+    [stackView hide];
+    
     [self fadeOutToAction:^{
         [self loadAnnotations];
         contentView = [slideProvider viewForDocumentAtIndex:currentSlide];

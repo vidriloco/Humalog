@@ -11,10 +11,8 @@
 #import "WebContentView.h"
 
 @interface WhitepaperProvider() {
-    NSArray *whitepaperList;
-    NSMutableArray *previewList;
-    UIWebView *preView;
-    NSUInteger currentPreview;
+    NSArray             *whitepaperList;
+    NSMutableDictionary *previewList;
 }
 @end
 
@@ -29,50 +27,38 @@
                           @"PLATO trial, 2009",
                           @"Wallentin Spanish",
                           nil];
-        previewList = [NSMutableArray array];
-        preView = [[UIWebView alloc] initWithFrame:kPreviewSize];
-        preView.delegate = self;
-        currentPreview = 0;
-        
-//        [self grabPreviews];
+        previewList = [NSMutableDictionary dictionary];
     }
     return self;
 }
 
 #pragma mark - Previews
-- (void)grabPreviews
-{
-    if (currentPreview >= [self numberOfDocuments])
-        return;
-    
-    NSString *fileName = [whitepaperList objectAtIndex:currentPreview];    
-    NSString *path = [[NSBundle mainBundle] pathForResource:fileName ofType:@"pdf"];
-    [preView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:path]]];
-}
 
-- (void)generatePreview
+- (UIImage *)generatePreviewFor:(NSString*)fileName
 {    
-    // Create a new render context of the UIView size, and set a scale so that the full stage will render to it
-    UIGraphicsBeginImageContext(CGSizeMake(preView.bounds.size.width, preView.bounds.size.height));
-    CGContextScaleCTM(UIGraphicsGetCurrentContext(), 1.0f, 1.0f);
+    CGPDFDocumentRef pdf = CGPDFDocumentCreateWithURL((__bridge CFURLRef)[NSURL fileURLWithPath:fileName]);
+    CGPDFPageRef pdfPage = CGPDFDocumentGetPage(pdf, 1);
+    CGRect tmpRect = CGPDFPageGetBoxRect(pdfPage, kCGPDFMediaBox);
     
-    // Render the stage to the new context
-    [preView.scrollView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    CGFloat scale = kPreviewSize.size.width / tmpRect.size.width;
+    CGRect rect = kPreviewSize;
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();
     
-    // Get an image from the context
-    UIImage* viewImage = 0;
-    viewImage = UIGraphicsGetImageFromCurrentImageContext();
+    // White BG
+    CGContextSetRGBFillColor(context, 1.0, 1.0, 1.0, 1.0);
+    CGContextFillRect(context, rect);
     
-    // Kill the render context
+    CGContextSaveGState(context);
+    
+    CGContextTranslateCTM(context, 0, tmpRect.size.height * scale);
+    CGContextScaleCTM(context, scale, -scale);
+    CGContextDrawPDFPage(context, pdfPage);
+    UIImage *pdfImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    // Save the UIImageView
-    [previewList addObject:[[UIImageView alloc] initWithImage:viewImage]];
-    currentPreview++;
-    
-    NSLog(@"Made preview #%d", currentPreview);
-    
-    [self grabPreviews];
+    CGPDFDocumentRelease(pdf);
+    return pdfImage;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
@@ -83,9 +69,15 @@
 
 - (UIImageView *)previewForDocumentAtIndex:(NSUInteger)index
 {
-//    return [previewList objectAtIndex:index];
-    NSString *fileName = [[whitepaperList objectAtIndex:index] stringByAppendingString:@".png"];
-    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:fileName]];
+    NSNumber *indexNumber = [NSNumber numberWithUnsignedInteger:index];
+    UIImageView *imageView = [previewList objectForKey:indexNumber];
+    if (imageView)
+        return imageView;
+    
+    NSString *fileName = [[NSBundle mainBundle] pathForResource:[whitepaperList objectAtIndex:index] ofType:@"pdf"];
+    imageView = [[UIImageView alloc] initWithImage:[self generatePreviewFor:fileName]];
+    [previewList setObject:imageView forKey:indexNumber];
+    return imageView;
 }
 
 - (NSUInteger)numberOfDocuments

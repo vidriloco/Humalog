@@ -40,7 +40,7 @@
 {
     self.bounds = CGRectMake(0, 0, self.bounds.size.width, self.numberOfItems * self.itemWidth + 32.0);
     self.frame  = CGRectOffset(self.bounds, baseline.x - self.bounds.size.width / 2.0, baseline.y - self.bounds.size.height);
-    self.contentOffset = CGSizeMake(0, (self.itemWidth - self.bounds.size.height + 16.0) / 2.0);
+    self.contentOffset = CGSizeMake(0, (self.itemWidth - self.bounds.size.height + 32.0) / 2.0);
     [super setNeedsLayout];
 }
                                                             

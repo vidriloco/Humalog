@@ -22,6 +22,7 @@
     ThumbnailStackView             *stackView;
     NSUInteger                     currentSlide;
     NSUInteger                     currentCategoryIndex;
+    NSUInteger                     previousIndex;
     enum NavigationPosition        navigationPosition;
     BOOL                           drawThumbnails;
 }
@@ -211,19 +212,30 @@
   viewForItemAtIndex:(NSUInteger)index
          reusingView:(UIView *)view
 {
+    NSUInteger documentIndex = [slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index;
+    
     // Title
     UILabel *title = [[UILabel alloc] init];
     title.backgroundColor = [UIColor clearColor];
-    title.textColor = [UIColor whiteColor];
-    title.text = [slideProvider titleForDocumentAtIndex:[slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index];
+    title.textColor = [[UIColor whiteColor] colorWithAlphaComponent:0.75];
+    title.text = [slideProvider titleForDocumentAtIndex:documentIndex];
     title.font = [UIFont boldSystemFontOfSize:15.0];
-    title.frame = CGRectMake(0, 0, carousel.bounds.size.width - 12.0, carousel.itemWidth / 2.0);
+    title.frame = CGRectMake(0, 0, carousel.bounds.size.width - 16.0, title.font.lineHeight * 2.0);
     title.textAlignment = UITextAlignmentCenter;
     title.lineBreakMode = UILineBreakModeWordWrap;
     title.numberOfLines = 0;
     
     // Container
     UIView *container = [[UIView alloc] init];
+//    container.backgroundColor = [UIColor grayColor];
+    
+    // Hilight selected
+    if (currentSlide == documentIndex) {
+        container.layer.shadowOpacity = 1.0;
+        container.layer.shadowRadius = 10.0;
+        container.layer.shadowColor = [UIColor whiteColor].CGColor;
+        title.textColor = [UIColor whiteColor];
+    }
     
     if (!drawThumbnails) {
         container.frame = title.frame;
@@ -231,8 +243,8 @@
         
         // HR
         if (index < carousel.numberOfItems - 1) {
-            UIView *hr = [[UIView alloc] initWithFrame:CGRectMake(0, title.bounds.size.height + 9.0,
-                                                                  carousel.bounds.size.width * 0.75, 1)];
+            UIView *hr = [[UIView alloc] initWithFrame:CGRectMake(0, title.bounds.size.height + 4.0,
+                                                                  title.bounds.size.width - 12.0, 1)];
             hr.center = CGPointMake(title.center.x, hr.center.y);
             hr.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.25];
             hr.opaque = YES;        
@@ -242,21 +254,15 @@
     }
     
     // Image
-    UIView *thumb = [slideProvider previewForDocumentAtIndex:[slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index];
-    
+    UIView *thumb = [slideProvider previewForDocumentAtIndex:documentIndex];    
     thumb.clipsToBounds = YES;
     thumb.layer.cornerRadius = 4.0f;
     
-    // Hilight selected
-//    if (carousel.currentItemIndex == index) {
-//        thumb.layer.borderColor = [UIColor blueColor].CGColor;
-//        thumb.layer.borderWidth = 8.0f;
-//    }
-    
     // Container
-    container.frame = thumb.frame;
+    container.frame = CGRectInset(thumb.frame, 0, -title.bounds.size.height / 2.0);
     [container addSubview:thumb];
-    title.center = CGPointMake(thumb.center.x, thumb.center.y + title.bounds.size.height);
+    title.frame = CGRectOffset(title.frame, 0, thumb.bounds.size.height);
+    title.center = CGPointMake(thumb.center.x, title.center.y);
     [container addSubview:title];
     
     return container;
@@ -264,7 +270,7 @@
 
 - (CGFloat)carouselItemWidth:(iCarousel *)carousel
 {
-    return 36.0 + (drawThumbnails? [slideProvider previewForDocumentAtIndex:0].bounds.size.height : 0.0);
+    return 8.0 + [UIFont boldSystemFontOfSize:15.0].lineHeight * 2.0 + (drawThumbnails? [slideProvider previewForDocumentAtIndex:0].bounds.size.height : 0.0);
 }
 
 - (BOOL)carouselShouldWrap:(iCarousel *)carousel
@@ -281,6 +287,9 @@
 {
     // Feed document view
     currentSlide = [slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index;
+    [carousel reloadItemAtIndex:previousIndex animated:YES];
+    [carousel reloadItemAtIndex:index animated:YES];
+    previousIndex = index;
     [self loadContent];
 }
 

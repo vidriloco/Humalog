@@ -17,12 +17,12 @@
 
 @interface SlideController () {
 @private
-    SlideProvider                  *slideProvider;
     AnnotationView                 *annotationView;
     UIView<ContentControlProtocol> *contentView;
     ThumbnailStackView             *stackView;
     NSUInteger                     currentSlide;
     NSUInteger                     currentCategoryIndex;
+    NSUInteger                     previousIndex;
     enum NavigationPosition        navigationPosition;
     BOOL                           drawThumbnails;
 }
@@ -31,16 +31,13 @@
 @end
 
 @implementation SlideController
-@synthesize navigationPosition;
+@synthesize navigationPosition, slideProvider;
 
 - (id)init
 {
     self = [super init];
     if (self) {
         // Custom initialization
-        slideProvider = [[SlideProvider alloc] init];
-        slideProvider.delegate = self;
-        
         drawThumbnails = YES;
     }
     return self;
@@ -83,7 +80,7 @@
     
     // Thumbnail stack
     NSUInteger stackWidth = [slideProvider previewForDocumentAtIndex:0].bounds.size.width + 64.0;
-    stackView = [[ThumbnailStackView alloc] initWithFrame:CGRectInset(CGRectMake(0, 0, stackWidth, self.view.frame.size.height * 0.75), 0, 30)];
+    stackView = [[ThumbnailStackView alloc] initWithFrame:CGRectMake(0, 0, stackWidth, 0)];
     stackView.delegate   = self;
     stackView.dataSource = self;
     stackView.hidden = YES;
@@ -254,34 +251,20 @@
   viewForItemAtIndex:(NSUInteger)index
          reusingView:(UIView *)view
 {
-    // Image
-    UIView *thumb = [slideProvider previewForDocumentAtIndex:[slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index];
-    
-    thumb.clipsToBounds = YES;
-    thumb.layer.cornerRadius = 8.0f;
-    
-    // Hilight selected
-//    if (carousel.currentItemIndex == index) {
-//        thumb.layer.borderColor = [UIColor blueColor].CGColor;
-//        thumb.layer.borderWidth = 8.0f;
-//    }
-        
+    NSUInteger documentIndex = [slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index;
     
     // Title
     UILabel *title = [[UILabel alloc] init];
     title.backgroundColor = [UIColor clearColor];
-    title.textColor = [UIColor whiteColor];
-    title.text = [slideProvider titleForDocumentAtIndex:[slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index];
+    title.textColor = [[UIColor whiteColor] colorWithAlphaComponent:0.75];
+    title.text = [slideProvider titleForDocumentAtIndex:documentIndex];
     title.font = [UIFont boldSystemFontOfSize:15.0];
-    CGSize titleSize = [title.text sizeWithFont:title.font
-                              constrainedToSize:CGSizeMake(150.0, 100.0)
-                                  lineBreakMode:UILineBreakModeWordWrap];
-    title.frame = CGRectMake(0, 0, titleSize.width, titleSize.height); 
-    title.lineBreakMode= UILineBreakModeWordWrap;
-    title.numberOfLines=0;
-    //[title sizeToFit];
-    [title setTextAlignment:UITextAlignmentCenter];
-    title.center = CGPointMake(thumb.bounds.size.width / 2.0, title.center.y);
+
+    title.frame = CGRectMake(0, 0, carousel.bounds.size.width - 16.0, title.font.lineHeight * 2.0);
+    title.textAlignment = UITextAlignmentCenter;
+    title.lineBreakMode = UILineBreakModeWordWrap;
+    title.numberOfLines = 0;
+
     
     UILabel *separator = [[UILabel alloc] init];    
     separator.frame = CGRectMake(0, 0, 150.0, 1.0); 
@@ -290,23 +273,52 @@
     
     
     // Container
-    UIView *v = [[UIView alloc] initWithFrame:thumb.frame];
-    if (drawThumbnails) {
-        title.center = CGPointMake(title.center.x, thumb.bounds.size.height + 20.0);
-        [v addSubview:thumb];
-        //separator.center = CGPointMake(thumb.bounds.size.width / 2.0,105 );    
-    }else {
-        separator.center = CGPointMake(thumb.bounds.size.width / 2.0,title.bounds.size.height );
-        [v addSubview:separator];
-    }
-    [v addSubview:title];
+    UIView *container = [[UIView alloc] init];
+//    container.backgroundColor = [UIColor grayColor];
     
-    return v;
+    // Hilight selected
+    if (currentSlide == documentIndex) {
+        container.layer.shadowOpacity = 1.0;
+        container.layer.shadowRadius = 10.0;
+        container.layer.shadowColor = [UIColor whiteColor].CGColor;
+        title.textColor = [UIColor whiteColor];
+    }
+    
+    if (!drawThumbnails) {
+        container.frame = title.frame;
+        [container addSubview:title];
+        
+        // HR
+        if (index < carousel.numberOfItems - 1) {
+            UIView *hr = [[UIView alloc] initWithFrame:CGRectMake(0, title.bounds.size.height + 4.0,
+                                                                  title.bounds.size.width - 12.0, 1)];
+            hr.center = CGPointMake(title.center.x, hr.center.y);
+            hr.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.25];
+            hr.opaque = YES;        
+            [container addSubview:hr];
+        }
+        return container;
+    }
+    
+    // Image
+    UIView *thumb = [slideProvider previewForDocumentAtIndex:documentIndex];    
+    thumb.clipsToBounds = YES;
+    thumb.layer.cornerRadius = 4.0f;
+    
+    // Container
+    container.frame = CGRectInset(thumb.frame, 0, -title.bounds.size.height / 2.0);
+    [container addSubview:thumb];
+    title.frame = CGRectOffset(title.frame, 0, thumb.bounds.size.height);
+    title.center = CGPointMake(thumb.center.x, title.center.y);
+    [container addSubview:title];
+    
+    return container;
+
 }
 
 - (CGFloat)carouselItemWidth:(iCarousel *)carousel
 {
-    return 36.0 + (drawThumbnails? [slideProvider previewForDocumentAtIndex:0].bounds.size.height : 0.0);
+    return 8.0 + [UIFont boldSystemFontOfSize:15.0].lineHeight * 2.0 + (drawThumbnails? [slideProvider previewForDocumentAtIndex:0].bounds.size.height : 0.0);
 }
 
 - (BOOL)carouselShouldWrap:(iCarousel *)carousel
@@ -316,13 +328,16 @@
 
 - (NSUInteger)numberOfVisibleItemsInCarousel:(iCarousel *)carousel
 {
-    return 5;
+    return 7;
 }
 
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
 {
     // Feed document view
     currentSlide = [slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index;
+    [carousel reloadItemAtIndex:previousIndex animated:YES];
+    [carousel reloadItemAtIndex:index animated:YES];
+    previousIndex = index;
     [self loadContent];
 }
 
@@ -354,8 +369,8 @@
 //    [self loadContent];
     
     // Move stack
+    stackView.baseline = CGPointMake(button.center.x, self.view.bounds.size.height + STACK_OFFSET);
     [stackView reloadData];
-    [stackView setBaseline:CGPointMake(button.center.x, self.view.bounds.size.height + STACK_OFFSET)];
     [stackView show];
 }
 
@@ -427,16 +442,12 @@
 - (void)toolbarViewDidPressThumbnailsLeft
 {
     drawThumbnails = NO;
-    stackView.bounds = CGRectMake(0, 0, stackView.bounds.size.width, self.view.frame.size.height * 0.25);
-    [stackView setBaseline:CGPointMake(stackView.center.x, self.view.bounds.size.height + STACK_OFFSET)];
     [stackView reloadData];
 }
 
 - (void)toolbarViewDidPressThumbnailsBottom
 {
     drawThumbnails = YES;
-    stackView.bounds = CGRectMake(0, 0, stackView.bounds.size.width, self.view.frame.size.height * 0.75);
-    [stackView setBaseline:CGPointMake(stackView.center.x, self.view.bounds.size.height + STACK_OFFSET)];
     [stackView reloadData];
 }
 

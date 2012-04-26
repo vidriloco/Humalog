@@ -33,6 +33,7 @@
         
         documentAnnotations = [NSMutableDictionary dictionary];
         
+
         NSArray *categories = [NSArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"categories_preference"]];
        NSArray *slides = [NSArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"slides_preference"]];
         
@@ -53,6 +54,7 @@
         documentTitles = slides;
                 
             }
+
     return self;
 }
 
@@ -134,6 +136,11 @@
 - (NSUInteger)numberOfDocuments
 {
     return [[[NSUserDefaults standardUserDefaults] objectForKey:@"slide_preference"]count];
+}
+
+- (NSUInteger)numberOfCategories
+{
+    return 5;
 }
 
 - (NSString *)titleForDocumentAtIndex:(NSUInteger)index

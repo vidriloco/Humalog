@@ -12,6 +12,7 @@
 #define TRANSITION_TIME 0.2
 
 @implementation ThumbnailStackView
+@synthesize baseline;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -20,21 +21,29 @@
         // Initialization code
         self.type = iCarouselTypeLinear;
         self.vertical = YES;
-        self.clipsToBounds = YES;
         self.backgroundColor = [[UIColor darkGrayColor] colorWithAlphaComponent:0.75];
         self.layer.cornerRadius = 8.0f;
-//        self.layer.borderWidth = 3.0f;
-//        self.layer.borderColor = [UIColor grayColor].CGColor;    
+        self.scrollEnabled = NO;
+        self.centerItemWhenSelected = NO;
+        self.baseline = CGPointZero;
         
         // Shadow
-//        self.layer.shadowColor = [UIColor blackColor].CGColor;
-//        self.layer.shadowRadius = 15.0f;
-//        self.layer.shadowOpacity = 0.5f;
-//        self.layer.shadowOffset = CGSizeMake(50.0f, 50.0f);
+        self.layer.shadowColor = [UIColor blackColor].CGColor;
+        self.layer.shadowRadius = 15.0f;
+        self.layer.shadowOpacity = 0.5f;
+        self.layer.shadowOffset = CGSizeMake(0.0f, 15.0f);
     }
     return self;
 }
 
+- (void)setNeedsLayout
+{
+    self.bounds = CGRectMake(0, 0, self.bounds.size.width, self.numberOfItems * self.itemWidth + 32.0);
+    self.frame  = CGRectOffset(self.bounds, baseline.x - self.bounds.size.width / 2.0, baseline.y - self.bounds.size.height);
+    self.contentOffset = CGSizeMake(0, (self.itemWidth - self.bounds.size.height + 32.0) / 2.0);
+    [super setNeedsLayout];
+}
+                                                            
 - (void)reloadData
 {
     [UIView animateWithDuration:TRANSITION_TIME / 2.0
@@ -46,8 +55,9 @@
                          [UIView animateWithDuration:TRANSITION_TIME / 2.0
                                           animations:^{
                                               self.contentView.alpha = 1.0;
+                                              [self setNeedsLayout];
                                           }];
-                     }];
+                     }];    
 }
 
 - (void)show
@@ -69,14 +79,6 @@
                      }
                      completion:^(BOOL finished) {
                          self.hidden = YES;
-                     }];
-}
-
-- (void)setBaseline:(CGPoint)baselineCenterPoint
-{
-    [UIView animateWithDuration:TRANSITION_TIME
-                     animations:^{
-                         self.frame = CGRectOffset(self.bounds, baselineCenterPoint.x - self.bounds.size.width / 2.0, baselineCenterPoint.y - self.bounds.size.height);
                      }];
 }
 

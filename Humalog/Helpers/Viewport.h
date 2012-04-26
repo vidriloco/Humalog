@@ -13,4 +13,5 @@
 + (CGRect)screenArea;
 + (CGRect)contentArea;
 + (CGRect)menuArea;
+
 @end

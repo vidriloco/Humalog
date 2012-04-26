@@ -107,7 +107,7 @@
     [self.view addSubview:menubarView];
     
     // Gestures & view for toolbar
-    gestureView = [[UIView alloc] initWithFrame:toolbarView.bounds];
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, toolbarView.bounds.size.width, toolbarView.bounds.size.height * 1.33)];
     UISwipeGestureRecognizer *swipeUp = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeUp:)];
     [swipeUp setDirection:UISwipeGestureRecognizerDirectionUp];
     [gestureView addGestureRecognizer:swipeUp];

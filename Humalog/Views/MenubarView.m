@@ -73,7 +73,7 @@
         NSMutableArray * temp1 = [NSMutableArray array];
         NSMutableArray * temp2 = [NSMutableArray array];        
 
-        for (int i=0; i<6; i++) {
+        for (int i=1; i<=6; i++) {
             id flag=[[NSUserDefaults standardUserDefaults] valueForKey:[NSString stringWithFormat:@"%d",i]];
             if ([flag boolValue]) {
                 
@@ -132,6 +132,12 @@
     return self;
 }
 
+- (void)deselectButtons
+{
+    for (UIButton *buttons in sectionButtons)
+        buttons.selected = NO;
+}
+
 - (void)sectionPressed:(UIButton *)button
 {
     if (button.selected) {
@@ -140,8 +146,7 @@
         return;
     }
     
-    for (UIButton *buttons in sectionButtons)
-        buttons.selected = NO;
+    [self deselectButtons];
         
     button.selected = YES;
     [self.delegate menubarViewDidSelectCategoryButton:button withIndex:[sectionButtons indexOfObject:button]];
@@ -213,30 +218,31 @@
                        context:(void *)context
 {
     if ([keyPath isEqualToString:@"navigationPosition"]) {
-        
-        enum NavigationPosition navigationPositionValue = [[change objectForKey:NSKeyValueChangeNewKey] intValue];
-        
-        UIButton *aperturaButton = [navButtons objectAtIndex:0];
-        UIButton *cierreButton = [navButtons objectAtIndex:1];
-        switch (navigationPositionValue) {
-            case NavigationPositionFirstDocument:
-                aperturaButton.enabled = NO;
-                cierreButton.enabled = YES;
-                break;
-            case NavigationPositionLastDocument:
-                aperturaButton.enabled = YES;
-                cierreButton.enabled = NO;
-                break;
-            case NavigationPositionOtherDocument:
-                aperturaButton.enabled = YES;
-                cierreButton.enabled = YES;
-                break;
-            case NavigationPositionUndefined:
-            default:
-                aperturaButton.enabled = NO;
-                cierreButton.enabled = NO;
-                break;
-        }
+                
+        [self deselectButtons];
+//        enum NavigationPosition navigationPositionValue = [[change objectForKey:NSKeyValueChangeNewKey] intValue];
+//
+//        UIButton *aperturaButton = [navButtons objectAtIndex:0];
+//        UIButton *cierreButton = [navButtons objectAtIndex:1];
+//        switch (navigationPositionValue) {
+//            case NavigationPositionFirstDocument:
+//                aperturaButton.enabled = NO;
+//                cierreButton.enabled = YES;
+//                break;
+//            case NavigationPositionLastDocument:
+//                aperturaButton.enabled = YES;
+//                cierreButton.enabled = NO;
+//                break;
+//            case NavigationPositionOtherDocument:
+//                aperturaButton.enabled = YES;
+//                cierreButton.enabled = YES;
+//                break;
+//            case NavigationPositionUndefined:
+//            default:
+//                aperturaButton.enabled = NO;
+//                cierreButton.enabled = NO;
+//                break;
+//        }
     }
 }
 

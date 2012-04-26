@@ -29,7 +29,6 @@
         webContentView = [[WebContentView alloc] init];
         webContentView.delegate = self;
         webContentView.scalesPageToFit = NO;
-        webContentView.scrollView.scrollEnabled = NO;
         
         documentAnnotations = [NSMutableDictionary dictionary];
         
@@ -135,12 +134,13 @@
 
 - (NSUInteger)numberOfDocuments
 {
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:@"slide_preference"]count];
+    NSLog(@"%d", [[[NSUserDefaults standardUserDefaults] objectForKey:@"slides_preference"]count]);
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:@"slides_preference"]count];
 }
 
 - (NSUInteger)numberOfCategories
 {
-    return 5;
+    return [[[NSUserDefaults standardUserDefaults] objectForKey:@"categories_preference"]count];
 }
 
 - (NSString *)titleForDocumentAtIndex:(NSUInteger)index

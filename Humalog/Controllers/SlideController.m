@@ -51,12 +51,23 @@
 
 - (void)loadView
 {
+    
+    NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                  NSUserDomainMask,
+                                                                  YES) objectAtIndex:0];
+    
+    NSString *newDir = [documentsDir stringByAppendingPathComponent:@"resources/backs/"];
+    NSString *brand = [[NSUserDefaults standardUserDefaults] stringForKey:@"brand"];
+    brand = [brand stringByAppendingString:@".jpg"];
+    
     currentSlide = 0;
     
     self.view = [[UIView alloc] initWithFrame:[Viewport contentArea]];
     self.view.opaque = YES;
-    self.view.backgroundColor = [UIColor purpleColor];
-    
+    self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:
+                                 [UIImage imageWithContentsOfFile:[newDir stringByAppendingPathComponent:brand]]];
+
+
     contentView = [slideProvider viewForDocumentAtIndex:currentSlide];
     contentView.frame = self.view.frame;
     [self.view addSubview:contentView];
@@ -85,6 +96,7 @@
     stackView.dataSource = self;
     stackView.hidden = YES;
     stackView.alpha = 0.0;
+    stackView.baseline = CGPointMake(self.view.center.x, self.view.bounds.size.height);
     [self.view addSubview:stackView];
     
 //    currentCategoryName = [[slideProvider categoryNames] objectAtIndex:0];
@@ -170,6 +182,8 @@
 
 - (void)loadContent
 {
+    [stackView hide];
+    
     [self fadeOutToAction:^{
         [self loadAnnotations];
         contentView = [slideProvider viewForDocumentAtIndex:currentSlide];
@@ -201,7 +215,7 @@
 - (void)loadLastDocument
 {
     [self saveAnnotations];
-    currentSlide = [slideProvider numberOfDocuments] - 1;
+    currentSlide = [slideProvider numberOfDocuments]-1;
     [self loadContent];
 }
 

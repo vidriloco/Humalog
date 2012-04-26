@@ -23,6 +23,7 @@
     enum AnnotationPathType creatingPathOfType;
     NSMutableArray *currentPath;
 }
+BOOL LineSegmentsIntersect(CGPoint p1, CGPoint p2, CGPoint p3, CGPoint p4);
 @end
 
 @implementation AnnotationView
@@ -154,10 +155,7 @@
     creatingPathOfType = PathTypeNone;
 }
 
-- (BOOL)lineSegmentsIntersectWithFirstPoint:(CGPoint)p1
-                                     second:(CGPoint)p2
-                                      third:(CGPoint)p3
-                                     fourth:(CGPoint)p4
+BOOL LineSegmentsIntersect(CGPoint p1, CGPoint p2, CGPoint p3, CGPoint p4)
 {
     float d = ((p4.y - p3.y) * (p2.x - p1.x) - (p4.x - p3.x) * (p2.y - p1.y));
     
@@ -171,7 +169,7 @@
     if ((u >= 0.0 && u <= 1.0) && (v >= 0.0 && v <= 1.0))
         return YES;
     
-    return NO;
+    return NO;    
 }
 
 - (void)checkAndErasePath:(NSMutableArray *)paths
@@ -194,10 +192,7 @@
                 continue;
             
             // Refined line-segment intersection
-            if ([self lineSegmentsIntersectWithFirstPoint:line1A
-                                                   second:line1B
-                                                    third:eraserA
-                                                   fourth:eraserB])
+            if (LineSegmentsIntersect(line1A, line1B, eraserA, eraserB))
                 [markedForDeletion addObject:path];
         }
     } 

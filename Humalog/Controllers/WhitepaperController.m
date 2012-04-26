@@ -119,8 +119,9 @@
 
 - (void)loadView
 {
+    
     self.view = [[UIView alloc] initWithFrame:[Viewport contentArea]];
-    self.view.backgroundColor = [UIColor purpleColor];
+    self.view.backgroundColor = [UIColor underPageBackgroundColor];
     
     iCarousel *carousel = [[iCarousel alloc] initWithFrame:self.view.bounds];
     carousel.type = iCarouselTypeRotary;

@@ -76,8 +76,6 @@
     [previewList addObject:[[UIImageView alloc] initWithImage:viewImage]];
     currentPreview++;
     
-    NSLog(@"Made preview #%d", currentPreview);
-    
     [self grabPreviews];
 }
 

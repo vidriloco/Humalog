@@ -43,7 +43,6 @@
         BOOL flag2=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_slides_preference"];
         
         NSString *brandId=[[NSUserDefaults standardUserDefaults] stringForKey:@"brand_preference"];        
-        NSLog(@"%@",brandId);
 
         if (flag || flag2) {
         

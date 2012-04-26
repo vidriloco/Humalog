@@ -177,7 +177,6 @@
     NSString *newDir = [documentsDir stringByAppendingPathComponent:@"slides/"];    
     //UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(10, 10, 200, 200)];
     NSString *path = [newDir stringByAppendingPathComponent:pdf];
-    NSLog(@"path:%@",[newDir stringByAppendingPathComponent:pdf]);
     NSURL *url = [NSURL fileURLWithPath:path];
     [webContentView loadRequest:[NSURLRequest requestWithURL:url]];
     return webContentView;
@@ -196,7 +195,7 @@
     brand = [brand stringByAppendingString:@"_"];
     NSString *fileName = [[brand stringByAppendingString:[NSNumber numberWithUnsignedInt:index + 1].stringValue] stringByAppendingString:@".jpg"];
     //return [[UIImageView alloc] initWithImage:[UIImage imageNamed:fileName]];
-    NSLog(@"%@",[newDir stringByAppendingPathComponent:fileName]);
+
     return [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:[newDir stringByAppendingPathComponent:fileName]]];
 }
 

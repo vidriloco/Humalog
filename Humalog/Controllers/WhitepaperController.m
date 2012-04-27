@@ -44,7 +44,7 @@
 {
     UIView *preview = [whitepaperProvider previewForDocumentAtIndex:index];
     preview.clipsToBounds = YES;
-    preview.layer.cornerRadius = 30.0;
+    preview.layer.cornerRadius = 20.0;
     return preview;
 }
 
@@ -114,6 +114,28 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - Toolbar delegate methods
+
+- (void)toolbarViewDidSelectPen
+{
+    [annotationView startDrawing:PathTypePen];
+}
+
+- (void)toolbarViewDidSelectMarker
+{
+    [annotationView startDrawing:PathTypeMarker];
+}
+
+- (void)toolbarViewDidSelectEraser
+{
+    [annotationView startDrawing:PathTypeEraser];
+}
+
+- (void)toolbarViewDidDeselectTool
+{
+    [annotationView finishDrawing];
 }
 
 @end

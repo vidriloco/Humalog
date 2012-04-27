@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Astra Zeneca. All rights reserved.
 //
 
+#import <QuartzCore/QuartzCore.h>
 #import "MenubarView.h"
 #import "GridLayout.h"
 #define MENUBAR_IMAGE @"barra_menu.jpg"
@@ -153,6 +154,14 @@
                               forKeyPath:@"navigationPosition"
                                  options:NSKeyValueObservingOptionNew
                                  context:nil];
+    
+    [(NSObject *)delegate removeObserver:self
+                              forKeyPath:@"currentCategoryIndex"];
+    
+    [(NSObject *)newDelegate addObserver:self
+                              forKeyPath:@"currentCategoryIndex"
+                                 options:NSKeyValueObservingOptionNew
+                                 context:nil];
         
     delegate = newDelegate;
 
@@ -197,6 +206,17 @@
 //                cierreButton.enabled = NO;
 //                break;
 //        }
+    } else if ([keyPath isEqualToString:@"currentCategoryIndex"]) {
+        NSUInteger newCategoryIndex = [[change objectForKey:NSKeyValueChangeNewKey] unsignedIntegerValue];
+        for (UIButton *button in sectionButtons) {
+            button.layer.shadowOpacity = 0.0;
+            button.layer.shadowRadius = 0.0;
+            button.layer.shadowColor = [UIColor clearColor].CGColor;
+        }
+        UIButton *button = (UIButton *) [sectionButtons objectAtIndex:newCategoryIndex];
+        button.layer.shadowOpacity = 0.8;
+        button.layer.shadowRadius = 6.0;
+        button.layer.shadowColor = [UIColor purpleColor].CGColor;
     }
 }
 

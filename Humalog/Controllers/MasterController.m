@@ -24,7 +24,6 @@
     MenubarView          *menubarView;
     WhitepaperController *whitepaperController; 
     SlideController      *slideController;
-    SlideProvider        *slideProvider;
 }
 @end
 
@@ -40,9 +39,6 @@
         
         // Slides
         slideController = [[SlideController alloc] init];
-        slideProvider = [[SlideProvider alloc] init];
-        slideController.slideProvider = slideProvider;
-        slideProvider.delegate = slideController;
         [self addChildViewController:slideController];
         
         // Whitepaper controller

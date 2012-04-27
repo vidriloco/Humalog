@@ -84,7 +84,6 @@
 		AA5524E91544E7280027253E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5524E81544E7270027253E /* libz.dylib */; };
 		AA70C975154A83BD00888EE6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AA70C974154A83BD00888EE6 /* Settings.bundle */; };
 		AA70C977154A83CB00888EE6 /* Root.plist in Resources */ = {isa = PBXBuildFile; fileRef = AA70C976154A83CB00888EE6 /* Root.plist */; };
-		AA70C97E154A891F00888EE6 /* ZipArchive.mm in Frameworks */ = {isa = PBXBuildFile; fileRef = AA70C97D154A891F00888EE6 /* ZipArchive.mm */; };
 		AA70C9A2154A8E6200888EE6 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = AA70C998154A8E6200888EE6 /* ioapi.c */; };
 		AA70C9A3154A8E6200888EE6 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = AA70C99A154A8E6200888EE6 /* mztools.c */; };
 		AA70C9A4154A8E6200888EE6 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = AA70C99C154A8E6200888EE6 /* unzip.c */; };
@@ -205,9 +204,6 @@
 		AA5524E81544E7270027253E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		AA70C974154A83BD00888EE6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		AA70C976154A83CB00888EE6 /* Root.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Root.plist; sourceTree = "<group>"; };
-		AA70C97B154A891400888EE6 /* ZipArchive.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ZipArchive.h; path = Humalog/Libs/ZipArchive/ZipArchive.h; sourceTree = "<group>"; };
-		AA70C97D154A891F00888EE6 /* ZipArchive.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ZipArchive.mm; path = Humalog/Libs/ZipArchive/ZipArchive.mm; sourceTree = "<group>"; };
-		AA70C97F154A892900888EE6 /* ZipArchive.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = ZipArchive.mm; path = Humalog/Libs/ZipArchive/ZipArchive.mm; sourceTree = "<group>"; };
 		AA70C997154A8E6200888EE6 /* crypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = crypt.h; sourceTree = "<group>"; };
 		AA70C998154A8E6200888EE6 /* ioapi.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ioapi.c; sourceTree = "<group>"; };
 		AA70C999154A8E6200888EE6 /* ioapi.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ioapi.h; sourceTree = "<group>"; };
@@ -229,7 +225,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA70C97E154A891F00888EE6 /* ZipArchive.mm in Frameworks */,
 				AA5524E91544E7280027253E /* libz.dylib in Frameworks */,
 				84E05FBC151299AD009FE5AF /* QuartzCore.framework in Frameworks */,
 				84C9DF8A15009F6700E16B3B /* UIKit.framework in Frameworks */,
@@ -286,9 +281,6 @@
 		84C9DF7A15009F6700E16B3B = {
 			isa = PBXGroup;
 			children = (
-				AA70C97F154A892900888EE6 /* ZipArchive.mm */,
-				AA70C97D154A891F00888EE6 /* ZipArchive.mm */,
-				AA70C97B154A891400888EE6 /* ZipArchive.h */,
 				84C9DF8F15009F6700E16B3B /* Humalog */,
 				84C9DFA715009F6700E16B3B /* HumalogTests */,
 				84C9DF8815009F6700E16B3B /* Frameworks */,

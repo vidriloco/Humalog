@@ -20,7 +20,7 @@
 			<key>Key</key>
 			<string>brand_preference</string>
 			<key>DefaultValue</key>
-			<string>0</string>
+			<string>1</string>
 			<key>Titles</key>
 			<array>
 				<string>Brilinta</string>
@@ -40,7 +40,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<false/>
+			<true/>
 			<key>Key</key>
 			<string>update_interface_preference</string>
 			<key>Title</key>
@@ -58,7 +58,7 @@
 		</dict>
 		<dict>
 			<key>DefaultValue</key>
-			<false/>
+			<true/>
 			<key>Key</key>
 			<string>update_slides_preference</string>
 			<key>Title</key>

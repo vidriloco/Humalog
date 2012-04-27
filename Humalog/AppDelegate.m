@@ -8,13 +8,52 @@
 
 #import "AppDelegate.h"
 #import "MasterController.h"
+#import "Downloader.h"
+
+@interface AppDelegate() {
+    Downloader           *download;
+
+}
+@end
 
 @implementation AppDelegate
 
 @synthesize window = _window;
 
+
+- (void) settingsChanged:(NSNotification *)paramNotification{
+    NSLog(@"Settings changed");
+    NSLog(@"Notification Object = %@", [paramNotification object]);
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self 
+                                             selector:@selector(settingsChanged:) 
+                                                 name:NSUserDefaultsDidChangeNotification 
+                                               object:nil];
+    
+    BOOL flag=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_interface_preference"];
+    BOOL flag2=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_slides_preference"];
+    
+    NSString *brandId=[[NSUserDefaults standardUserDefaults] stringForKey:@"brand_preference"];  
+    
+    
+    
+    if (flag || flag2) {
+        
+        download = [[Downloader alloc]init];
+        [download parseJSON:brandId];
+        
+        NSUserDefaults *defaults = [[NSUserDefaults alloc]init];
+        [defaults setBool:NO forKey:@"update_interface_preference"];
+        [defaults setBool:NO forKey:@"update_slides_preference"];
+        
+    }
+
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor blackColor];
@@ -64,6 +103,7 @@
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

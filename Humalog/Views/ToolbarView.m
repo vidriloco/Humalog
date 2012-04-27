@@ -32,6 +32,14 @@
 
 - (id)init
 {
+    NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                  NSUserDomainMask,
+                                                                  YES) objectAtIndex:0];
+    
+    NSString *newDir = [documentsDir stringByAppendingPathComponent:@"resources/backs/"];
+    
+    
+    
     self = [super initWithImage:[UIImage imageNamed:TOOLBAR_IMAGE]];
     if (self) {
         self.userInteractionEnabled = YES;
@@ -56,7 +64,7 @@
         id playbackLayout = [GridLayout gridWithFrame:CGRectMake(0, 0, 196, self.frame.size.height) numRows:1 numCols:[playback count]];
         int i = 0;
         for (NSValue* v in playbackLayout) {
-            UIImage  *normalImage = [UIImage imageNamed:[playback objectAtIndex:i]];
+            UIImage  *normalImage = [UIImage imageWithContentsOfFile:[newDir stringByAppendingPathComponent:[playback objectAtIndex:i]]];
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.frame = CGRectMake(0, 0, normalImage.size.width, normalImage.size.height);
             button.center = [v CGPointValue];
@@ -83,8 +91,9 @@
         id miniLayout = [GridLayout gridWithFrame:CGRectMake(196 + 10, 0, 120, self.frame.size.height) numRows:1 numCols:[miniOptions count]];
         i = 0;
         for (NSValue* v in miniLayout) {
-            UIImage  *normalImage = [UIImage imageNamed:[miniOptions objectAtIndex:i]];
-            UIImage  *selectedImage = [UIImage imageNamed:[@"over_" stringByAppendingString:[miniOptions objectAtIndex:i]]];
+            UIImage  *normalImage = [UIImage imageWithContentsOfFile:[newDir stringByAppendingPathComponent:[miniOptions objectAtIndex:i]]];
+            UIImage  *selectedImage = [UIImage imageWithContentsOfFile:[newDir 
+                                                                        stringByAppendingPathComponent:[@"over_" stringByAppendingString:[miniOptions objectAtIndex:i]]]];
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.frame = CGRectMake(0, 0, normalImage.size.width, normalImage.size.height);
             button.center = [v CGPointValue];

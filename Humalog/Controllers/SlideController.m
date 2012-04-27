@@ -59,7 +59,7 @@
     NSString *newDir = [documentsDir stringByAppendingPathComponent:@"resources/backs/"];
     NSString *brand = [[NSUserDefaults standardUserDefaults] stringForKey:@"brand"];
     brand = [brand stringByAppendingString:@".jpg"];
-    
+    brand = [brand lowercaseString];
     currentSlide = 0;
     
     self.view = [[UIView alloc] initWithFrame:[Viewport contentArea]];
@@ -67,6 +67,7 @@
     self.view.backgroundColor = [[UIColor alloc] initWithPatternImage:
                                  [UIImage imageWithContentsOfFile:[newDir stringByAppendingPathComponent:brand]]];
 
+    NSLog(@"%@",[newDir stringByAppendingPathComponent:brand]);
 
     contentView = [slideProvider viewForDocumentAtIndex:currentSlide];
     contentView.frame = self.view.frame;
@@ -379,13 +380,24 @@
 - (void)menubarViewDidSelectCategoryButton:(UIButton *)button withIndex:(NSUInteger)index
 {
     currentCategoryIndex = index;
-//    currentSlide = [slideProvider rangeForCategoryIndex:index].location;
-//    [self loadContent];
+    NSString *category = [[[NSUserDefaults standardUserDefaults] objectForKey:@"categories_preference"]objectAtIndex:index];
+    NSRange match=[category rangeOfString:@","];
+    NSString *string2 = [category substringFromIndex:match.location+1];
     
-    // Move stack
-    stackView.baseline = CGPointMake(button.center.x, self.view.bounds.size.height + STACK_OFFSET);
-    [stackView reloadData];
-    [stackView show];
+    if ([string2 intValue]==1) {
+        currentSlide = [slideProvider rangeForCategoryIndex:index].location;
+        [self loadContent];
+    }else {
+
+        // Move stack
+        stackView.baseline = CGPointMake(button.center.x, self.view.bounds.size.height + STACK_OFFSET);
+        [stackView reloadData];
+        [stackView show];
+    }
+    
+
+    
+ 
 }
 
 -(void)touchesBegan: (NSSet *)touches withEvent:(UIEvent *)event

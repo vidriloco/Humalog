@@ -8,6 +8,7 @@
 
 #import "Downloader.h"
 #import "Brand.h"
+#define kBrandURL [NSString stringWithFormat: @"http://humalog.herokuapp.com/brands/"] //2
 
 @interface Downloader(){
     Brand *configurator;
@@ -31,7 +32,6 @@
     
     NSString *file=[brand stringByAppendingString:@".json"];
     NSURL *url = [NSURL URLWithString:[kBrandURL stringByAppendingString:file]];
-    NSLog(@"%@",[url description]);
     dispatch_sync(kBgQueue, ^{
         NSData* data = [NSData dataWithContentsOfURL: 
                         url];
@@ -91,7 +91,6 @@
         
         [dict addObject:cadena];
     }
-    NSLog(@"%@",dict);
     [[NSUserDefaults standardUserDefaults] setObject:dict forKey:@"categories_preference"];
         
     configurator.slides = [[json objectForKey:@"categories"] valueForKey:@"category"];
@@ -101,8 +100,7 @@
         for (int j=0; j<[[[configurator.slides valueForKey:@"name"] objectAtIndex:i]count]; j++) {
             [tempo addObject:[[[configurator.slides valueForKey:@"name"] objectAtIndex:i]objectAtIndex:j]];
         }
-    }
-    NSLog(@"%@",tempo);    
+    } 
     [[NSUserDefaults standardUserDefaults] setObject:tempo forKey:@"slides_preference"];
     
     
@@ -129,7 +127,7 @@
     configurator.numberOfIpps = [[json objectForKey:@"number_of_ipps"]intValue];
     configurator.numberOfReferences = [[json objectForKey:@"number_of_references"]intValue];    
     configurator.numberOfStudies = [[json objectForKey:@"number_of_studies"]intValue];        
-
+    [[NSUserDefaults standardUserDefaults] setValue:[[json objectForKey:@"interface_configuration"] valueForKey:@"number_of_menus"] forKey:@"menus"];
     
     //get interface urls to download
     configurator.interfaceURL = [json objectForKey:@"interface_urls"];
@@ -187,19 +185,19 @@
                                                      valueForKey:@"updated_device"] 
                                              forKey:@"8"];
     
-    NSLog(@"brand: %@", configurator.brandName);
-    NSLog(@"brand: %@", configurator.brandURL);
-    NSLog(@"number_of_slides: %@", [configurator.categories valueForKey:@"number_of_slides"]);
-    
-    NSLog(@"category_name: %@", [configurator.categories valueForKey:@"orden"]);
-    NSLog(@"slides: %@", [[configurator.slides valueForKey:@"orden"]objectAtIndex:0]);
-    NSLog(@"slides: %@", [configurator.slides valueForKey:@"url"]);
-    NSLog(@"interface_Conf: %d", configurator.isUpdated);
-    NSLog(@"interface_Conf: %d", configurator.usesStackView);    
-    NSLog(@"interface_url: %@", configurator.interfaceURL);
-    NSLog(@"Pdfs: %@", configurator.pdfs);
-    NSLog(@"noCategories: %d", configurator.numberOfCategories);
-    NSLog(@"%@",[configurator.interfaceURL valueForKey:@"backgrounds_url"]);
+//    NSLog(@"brand: %@", configurator.brandName);
+//    NSLog(@"brand: %@", configurator.brandURL);
+//    NSLog(@"number_of_slides: %@", [configurator.categories valueForKey:@"number_of_slides"]);
+//    
+//    NSLog(@"category_name: %@", [configurator.categories valueForKey:@"orden"]);
+//    NSLog(@"slides: %@", [[configurator.slides valueForKey:@"orden"]objectAtIndex:0]);
+//    NSLog(@"slides: %@", [configurator.slides valueForKey:@"url"]);
+//    NSLog(@"interface_Conf: %d", configurator.isUpdated);
+//    NSLog(@"interface_Conf: %d", configurator.usesStackView);    
+//    NSLog(@"interface_url: %@", configurator.interfaceURL);
+//    NSLog(@"Pdfs: %@", configurator.pdfs);
+//    NSLog(@"noCategories: %d", configurator.numberOfCategories);
+//    NSLog(@"%@",[configurator.interfaceURL valueForKey:@"backgrounds_url"]);
 
     //Download interface elements
 
@@ -249,16 +247,18 @@
         for (int i=0; i<[configurator.pdfs count]; i++) {
             id pdf = [configurator.pdfs objectAtIndex:i];
             [self downloadWithStringURL:[pdf valueForKey:@"url"] withDir:@"slides"];
-            NSLog(@"pdf:%@",[pdf valueForKey:@"url"]);
+
         }
 
     }
     
     
     
-    
+    NSLog(@"Descarga Completa");
     
 }
+
+
 
 
 
@@ -267,42 +267,76 @@
     NSString *urlAsString = urlString;
     NSURL *url = [NSURL URLWithString:urlAsString];
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url]; 
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    [NSURLConnection sendAsynchronousRequest:urlRequest 
-                                       queue:queue 
-                           completionHandler:^(NSURLResponse *response,NSData *data, NSError *error) 
-    {
-         if ([data length] >0 && error == nil)
-         {
-             /* Get the documents directory */
-             NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                                           NSUserDomainMask,
-                                                                           YES) objectAtIndex:0];
-             /* Append the file name to the documents directory */
-             NSFileManager *filemgr =[NSFileManager defaultManager];
+//    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+//    [NSURLConnection sendAsynchronousRequest:urlRequest 
+//                                       queue:queue 
+//                           completionHandler:^(NSURLResponse *response,NSData *data, NSError *error) 
+//    {
+//         if ([data length] >0 && error == nil)
+//         {
+//             /* Get the documents directory */
+//             NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+//                                                                           NSUserDomainMask,
+//                                                                           YES) objectAtIndex:0];
+//             /* Append the file name to the documents directory */
+//             NSFileManager *filemgr =[NSFileManager defaultManager];
+//
+//             NSString *newDir = [documentsDir stringByAppendingPathComponent:dir];
+//             if ([filemgr createDirectoryAtPath:newDir withIntermediateDirectories:YES attributes:nil error: NULL] == NO)
+//             {
+//                 NSLog(@"Failure in creating directory");
+//             }
+//             
+//             NSString *filePath = [newDir stringByAppendingPathComponent:[url lastPathComponent]];
+//             /* Write the data to the file */ 
+//             [data writeToFile:filePath atomically:YES];
+//             NSLog(@"Successfully saved the file to %@", filePath);
+//             [self unzip:filePath];  
+//         }
+//         else if ([data length] == 0 && error == nil)
+//         { 
+//             NSLog(@"Nothing was downloaded.");
+//         }
+//         else if (error != nil)
+//         {
+//             NSLog(@"Error happened = %@", error); 
+//         }
+//     }];
+    
+    NSLog(@"We are here...");
+    NSURLResponse *response = nil; NSError *error = nil;
+    NSLog(@"Firing synchronous url connection...");
+    NSData *data = [NSURLConnection sendSynchronousRequest:urlRequest
+                                         returningResponse:&response error:&error];
+    if ([data length] > 0 && error == nil){
+        NSLog(@"%lu bytes of data was returned.", (unsigned long)[data length]);
+        /* Get the documents directory */
+         NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                       NSUserDomainMask,
+                                                                       YES) objectAtIndex:0];
+         /* Append the file name to the documents directory */
+         NSFileManager *filemgr =[NSFileManager defaultManager];
 
-             NSString *newDir = [documentsDir stringByAppendingPathComponent:dir];
-             if ([filemgr createDirectoryAtPath:newDir withIntermediateDirectories:YES attributes:nil error: NULL] == NO)
-             {
-                 NSLog(@"Failure in creating directory");
-             }
-             NSLog(@"%@",newDir);
-             
-             NSString *filePath = [newDir stringByAppendingPathComponent:[url lastPathComponent]];
-             /* Write the data to the file */ 
-             [data writeToFile:filePath atomically:YES];
-             NSLog(@"Successfully saved the file to %@", filePath);
-             [self unzip:filePath];  
-         }
-         else if ([data length] == 0 && error == nil)
-         { 
-             NSLog(@"Nothing was downloaded.");
-         }
-         else if (error != nil)
+         NSString *newDir = [documentsDir stringByAppendingPathComponent:dir];
+         if ([filemgr createDirectoryAtPath:newDir withIntermediateDirectories:YES attributes:nil error: NULL] == NO)
          {
-             NSLog(@"Error happened = %@", error); 
+             NSLog(@"Failure in creating directory");
          }
-     }];
+         
+         NSString *filePath = [newDir stringByAppendingPathComponent:[url lastPathComponent]];
+         /* Write the data to the file */ 
+         [data writeToFile:filePath atomically:YES];
+         NSLog(@"Successfully saved the file to %@", filePath);
+         [self unzip:filePath];  
+    }
+    else if ([data length] == 0 &&
+             error == nil){
+        NSLog(@"No data was returned.");
+    }
+    else if (error != nil){
+        NSLog(@"Error happened = %@", error); }
+    NSLog(@"We are done.");
+    
 }
 
 - (void) updateServer:(NSString*)url{
@@ -327,8 +361,9 @@
                                
          if ([data length] >0 && error == nil)
          {
-             NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                               NSLog(@"success"); 
+            // NSString *html = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                               NSLog(@"Servidor actualizado"); 
+
          }
                                
          else if ([data length] == 0 && error == nil)
@@ -352,34 +387,18 @@
 {
     
 
-//    NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-//                                                                  NSUserDomainMask,
-//                                                                  YES) objectAtIndex:0];
     NSString *newDir = [filePath stringByDeletingLastPathComponent];
     NSFileManager *filemgr =[NSFileManager defaultManager];
-    NSString *file = [filePath lastPathComponent];
-    //NSString *downDir = [[NSBundle mainBundle]bundlePath];
-    if ([filemgr fileExistsAtPath:[newDir stringByAppendingPathComponent:file]])
+
+    if ([filemgr fileExistsAtPath:filePath])
     {
-        NSData *unzipData = [NSData dataWithContentsOfFile:file];
-        [filemgr createFileAtPath:newDir contents:unzipData attributes:nil];
-        ZipArchive *zipArchive = [[ZipArchive alloc] init];
-        if ([zipArchive UnzipOpenFile:filePath])
-        {
-            if ([zipArchive UnzipFileTo:newDir overWrite:NO])
-            {
-                NSLog(@"Archive unzip success");
-                [filemgr removeItemAtPath:filePath error:NULL];
-            }
-            else
-            {
-                NSLog(@"Failure to unzip archive");
-            }
-        }
-        else
-        {
-            NSLog(@"Failure to open archive");
-        }
+
+
+        [SSZipArchive unzipFileAtPath:filePath toDestination:newDir];
+        
+        [filemgr removeItemAtPath:filePath error:NULL];
+        NSLog(@"Succes in unzipping:%@",[filePath lastPathComponent]);
+
         
     }   
 }

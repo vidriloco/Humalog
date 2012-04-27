@@ -41,26 +41,7 @@
         [UIApplication sharedApplication].statusBarHidden = YES;
         
 
-        BOOL flag=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_interface_preference"];
-        BOOL flag2=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_slides_preference"];
-        
-        NSString *brandId=[[NSUserDefaults standardUserDefaults] stringForKey:@"brand_preference"];        
-
-        if (flag || flag2) {
-        
-            download = [[Downloader alloc]init];
-            [download parseJSON:brandId];
-            
-//            [slideController assignArrays:[download brandCategories] 
-//                               withSlides:[download brandSlides] 
-//                               withUpdate:YES] ;
-            
-            NSUserDefaults *defaults = [[NSUserDefaults alloc]init];
-            [defaults setBool:NO forKey:@"update_interface_preference"];
-            [defaults setBool:NO forKey:@"update_slides_preference"];
-            
-        }
-//        else {
+        //        else {
 //            [slideController assignArrays:[[NSUserDefaults standardUserDefaults] arrayForKey:@"categories_preference"] 
 //                               withSlides:[[NSUserDefaults standardUserDefaults] arrayForKey:@"slides_preference"] 
 //                               withUpdate:NO];

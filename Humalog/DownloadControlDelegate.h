@@ -12,6 +12,7 @@
 
 @optional
 - (void)downloaderDidFinish;
+- (void)downloaderIsDownloading;
 
 
 @end

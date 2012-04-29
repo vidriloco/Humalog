@@ -13,11 +13,12 @@
 @interface Downloader(){
     Brand *configurator;
     int pending;
+    int totalSlides;
 }
 @end
 
 @implementation Downloader
-@synthesize delegate;
+@synthesize delegate,advance;
 
 - (id)init
 {
@@ -26,6 +27,7 @@
         // Custom initialization
         configurator = [[Brand alloc]init];
         pending=0;
+        totalSlides=0;
     }
     return self;
 }
@@ -175,6 +177,7 @@ int len = [temp count];
     for (int i=0; i<[[configurator.slides valueForKey:@"name"] count]; i++) {
         for (int j=0; j<[[[configurator.slides valueForKey:@"name"] objectAtIndex:i]count]; j++) {
             [tempo addObject:[[[configurator.slides valueForKey:@"name"] objectAtIndex:i]objectAtIndex:j]];
+            totalSlides++;
         }
     } 
     return tempo;
@@ -254,10 +257,6 @@ int len = [temp count];
         }
         
     }
-    
-    
-    
-    NSLog(@"Descarga Completa");
 }
 
 
@@ -288,9 +287,10 @@ int len = [temp count];
              NSString *filePath = [newDir stringByAppendingPathComponent:[url lastPathComponent]];
              /* Write the data to the file */ 
              [data writeToFile:filePath atomically:YES];
-             NSLog(@"Successfully saved the file to %@", filePath);
+             //NSLog(@"Successfully saved the file to %@", filePath);
              [self unzip:filePath];  
              pending++;
+            [self performSelectorOnMainThread:@selector(downloadProgress) withObject:nil waitUntilDone:YES]; 
             [self performSelectorOnMainThread:@selector(downloadComplete) withObject:nil waitUntilDone:YES];
          }
          else if ([data length] == 0 && error == nil)
@@ -309,7 +309,6 @@ int len = [temp count];
 - (void) updateServer:(NSString*)url{
 
     NSString *fix = [url stringByDeletingLastPathComponent];
-        NSLog(@"url:%@",fix);
     NSURL *rURL = [NSURL URLWithString:fix];
     
     NSMutableURLRequest *urlRequest = [NSMutableURLRequest requestWithURL:rURL]; 
@@ -364,7 +363,7 @@ int len = [temp count];
         [SSZipArchive unzipFileAtPath:filePath toDestination:newDir];
         
         [filemgr removeItemAtPath:filePath error:NULL];
-        NSLog(@"Succes in unzipping:%@",[filePath lastPathComponent]);
+        //NSLog(@"Succes in unzipping:%@",[filePath lastPathComponent]);
 
         
     }    
@@ -393,11 +392,8 @@ int len = [temp count];
 
 -(void)downloadComplete
 {
-    int totalNumberOfDocuments = [configurator.pdfs count]+4+[configurator.slides count];
+    int totalNumberOfDocuments = [configurator.pdfs count]+4+totalSlides;
     NSLog(@"%d",totalNumberOfDocuments);
-        NSLog(@"%d",[configurator.pdfs count]);
-        NSLog(@"%d",[configurator.slides count]);    
-        NSLog(@"%d",configurator.numberOfCategories);        
         NSLog(@"%d",pending);            
     if (pending==totalNumberOfDocuments) {
         if (self.delegate != NULL && [self.delegate respondsToSelector:@selector(downloaderDidFinish)]) {
@@ -405,6 +401,16 @@ int len = [temp count];
         }
     }
     
+}
+
+-(void)downloadProgress
+{
+    advance = (float)pending/([configurator.pdfs count]+4+totalSlides);
+    if (self.delegate != NULL && [self.delegate respondsToSelector:@selector(downloaderIsDownloading)]) {
+        [delegate performSelector:@selector(downloaderIsDownloading)];
+        
+    }
+
 }
 
 

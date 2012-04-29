@@ -84,6 +84,7 @@
 		AA70C9A4154A8E6200888EE6 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = AA70C99C154A8E6200888EE6 /* unzip.c */; };
 		AA70C9A5154A8E6200888EE6 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = AA70C99E154A8E6200888EE6 /* zip.c */; };
 		AA70C9A6154A8E6200888EE6 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = AA70C9A1154A8E6200888EE6 /* SSZipArchive.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		AA814B76154DB0E1006B468F /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AA814B71154DAFDB006B468F /* Default-Landscape~ipad.png */; };
 		AAA377B815447F7A0078359D /* Brand.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA377B715447F7A0078359D /* Brand.m */; };
 		AAEF06B8154DA215004C119E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AA70C974154A83BD00888EE6 /* Settings.bundle */; };
 		AAEF06BA154DA23B004C119E /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = AAEF0687154CBEB7004C119E /* splash.png */; };
@@ -209,6 +210,7 @@
 		AA70C99F154A8E6200888EE6 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		AA70C9A0154A8E6200888EE6 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
 		AA70C9A1154A8E6200888EE6 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
+		AA814B71154DAFDB006B468F /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		AAA377B615447F7A0078359D /* Brand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Brand.h; path = Models/Brand.h; sourceTree = "<group>"; };
 		AAA377B715447F7A0078359D /* Brand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Brand.m; path = Models/Brand.m; sourceTree = "<group>"; };
 		AAC3484F1547B11C00B2D3E7 /* DownloadControlDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DownloadControlDelegate.h; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 		84C9DF7A15009F6700E16B3B = {
 			isa = PBXGroup;
 			children = (
+				AA814B71154DAFDB006B468F /* Default-Landscape~ipad.png */,
 				AA08DD41154B9AA300B45FF3 /* Root.plist */,
 				84C9DF8F15009F6700E16B3B /* Humalog */,
 				84C9DFA715009F6700E16B3B /* HumalogTests */,
@@ -638,6 +641,7 @@
 				84E64C45151D4D2E001F7E0A /* brilinta_11.jpg in Resources */,
 				84E64C46151D4D2E001F7E0A /* brilinta_12.jpg in Resources */,
 				AAEF06BA154DA23B004C119E /* splash.png in Resources */,
+				AA814B76154DB0E1006B468F /* Default-Landscape~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

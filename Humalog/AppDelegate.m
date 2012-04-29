@@ -15,6 +15,7 @@
     BOOL                flag;
     BOOL                flag2;
     UIViewController    *masterController;
+    UIProgressView      *progress;
 
 }
 @end
@@ -71,7 +72,6 @@
         
     if (flag || flag2) {
         NSString *brandId=[[NSUserDefaults standardUserDefaults] stringForKey:@"brand_preference"];  
-        NSLog(@"entre");
         download = [[Downloader alloc]init];
         download.delegate=self;
         [download parseJSON:brandId];
@@ -101,7 +101,13 @@
     masterController = [[MasterController alloc] init];
     if(flag&&flag2)
     {
+        progress = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+
+        
         UIImageView *vista = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"splash.png"]];
+        [progress setFrame:CGRectMake(vista.frame.size.width/2.5, vista.frame.size.height/1.5, 200.0, 10.0)];
+        [vista addSubview:progress];
+        
         [masterController.view addSubview:vista];
     }
     [self.window setRootViewController:masterController];  
@@ -110,14 +116,18 @@
 
 }
 
+
+
 -(void)downloaderDidFinish
 {
-
     masterController = [[MasterController alloc] init];
     [self.window setRootViewController:masterController];  
 }
 
-
+-(void)downloaderIsDownloading
+{
+    progress.progress=download.advance;
+}
 
 
 

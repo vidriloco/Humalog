@@ -19,10 +19,12 @@
 @interface Downloader : NSObject
 
 @property (retain) id<DownloadControlDelegate> delegate;
+@property (assign) float advance;
 - (void) parseJSON:(NSString *)brand;
 
 - (NSString *) brandName; 
 - (NSArray *) brandCategories;
 - (NSArray *) brandSlides;
+
 
 @end

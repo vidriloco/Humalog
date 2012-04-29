@@ -79,14 +79,14 @@
 		84E64C46151D4D2E001F7E0A /* brilinta_12.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C3A151D4D2E001F7E0A /* brilinta_12.jpg */; };
 		AA5524B91544B01B0027253E /* Downloader.m in Sources */ = {isa = PBXBuildFile; fileRef = AA5524B81544B01B0027253E /* Downloader.m */; };
 		AA5524E91544E7280027253E /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AA5524E81544E7270027253E /* libz.dylib */; };
-		AA70C975154A83BD00888EE6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AA70C974154A83BD00888EE6 /* Settings.bundle */; };
 		AA70C9A2154A8E6200888EE6 /* ioapi.c in Sources */ = {isa = PBXBuildFile; fileRef = AA70C998154A8E6200888EE6 /* ioapi.c */; };
 		AA70C9A3154A8E6200888EE6 /* mztools.c in Sources */ = {isa = PBXBuildFile; fileRef = AA70C99A154A8E6200888EE6 /* mztools.c */; };
 		AA70C9A4154A8E6200888EE6 /* unzip.c in Sources */ = {isa = PBXBuildFile; fileRef = AA70C99C154A8E6200888EE6 /* unzip.c */; };
 		AA70C9A5154A8E6200888EE6 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = AA70C99E154A8E6200888EE6 /* zip.c */; };
 		AA70C9A6154A8E6200888EE6 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = AA70C9A1154A8E6200888EE6 /* SSZipArchive.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AAA377B815447F7A0078359D /* Brand.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA377B715447F7A0078359D /* Brand.m */; };
-		AAEF0688154CBEB7004C119E /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = AAEF0687154CBEB7004C119E /* splash.png */; };
+		AAEF06B8154DA215004C119E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AA70C974154A83BD00888EE6 /* Settings.bundle */; };
+		AAEF06BA154DA23B004C119E /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = AAEF0687154CBEB7004C119E /* splash.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -590,6 +590,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AAEF06B8154DA215004C119E /* Settings.bundle in Resources */,
 				84C9DF9415009F6700E16B3B /* InfoPlist.strings in Resources */,
 				840BBB091509CFE200B681A7 /* slides in Resources */,
 				84E05FC115129B3B009FE5AF /* ONSET and OFFSET study, 2009.pdf in Resources */,
@@ -636,7 +637,7 @@
 				84E64C44151D4D2E001F7E0A /* brilinta_10.jpg in Resources */,
 				84E64C45151D4D2E001F7E0A /* brilinta_11.jpg in Resources */,
 				84E64C46151D4D2E001F7E0A /* brilinta_12.jpg in Resources */,
-
+				AAEF06BA154DA23B004C119E /* splash.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

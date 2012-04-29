@@ -375,7 +375,7 @@
         }
 
         
-        if (newCategoryIndex>[sectionButtons count]) {
+        if (newCategoryIndex>=[sectionButtons count]) {
             return;
         }
         

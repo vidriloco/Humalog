@@ -27,6 +27,7 @@
     SlideController      *slideController;
     Downloader           *download;
     SlideProvider        *slideProvider;
+
 }
 @end
 
@@ -39,24 +40,13 @@
         // Custom initialization
         self.wantsFullScreenLayout = YES;
         [UIApplication sharedApplication].statusBarHidden = YES;
-        
-
-        //        else {
-//            [slideController assignArrays:[[NSUserDefaults standardUserDefaults] arrayForKey:@"categories_preference"] 
-//                               withSlides:[[NSUserDefaults standardUserDefaults] arrayForKey:@"slides_preference"] 
-//                               withUpdate:NO];
-//
-//        }
-        
+       
         // Slide controller
         slideController = [[SlideController alloc] init];        
 
 
         // Slides
         slideController = [[SlideController alloc] init];
-        slideProvider = [[SlideProvider alloc] init];
-        slideController.slideProvider = slideProvider;
-        slideProvider.delegate = slideController;
         [self addChildViewController:slideController];
         
 

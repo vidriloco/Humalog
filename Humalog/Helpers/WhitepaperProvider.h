@@ -11,7 +11,7 @@
 #import "AnnotationDataSource.h"
 #import "ContentDisplayDelegate.h"
 
-#define kPreviewSize CGRectMake(0, 0, 384, 384)
+#define kPreviewSize CGRectMake(0, 0, 512, 600)
 
 @interface WhitepaperProvider : NSObject<UIWebViewDelegate, DocumentDataSource, AnnotationDataSource> {
     id<ContentDisplayDelegate> delegate;

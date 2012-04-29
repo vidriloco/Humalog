@@ -99,17 +99,12 @@
     
     // Instance the master controller
     masterController = [[MasterController alloc] init];
-
-
     if(flag&&flag2)
     {
         UIImageView *vista = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"splash.png"]];
         [masterController.view addSubview:vista];
     }
     [self.window setRootViewController:masterController];  
-    
-    //[masterController presentModalViewController:splashController animated:NO];
-
     [self.window makeKeyAndVisible];
     return YES;
 

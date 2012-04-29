@@ -17,21 +17,24 @@
 
 @interface SlideController () {
 @private
+    SlideProvider                  *slideProvider;
     AnnotationView                 *annotationView;
     UIView<ContentControlProtocol> *contentView;
     ThumbnailStackView             *stackView;
     NSUInteger                     currentSlide;
     NSUInteger                     currentCategoryIndex;
+    NSUInteger                     stackCategoryIndex;
     NSUInteger                     previousIndex;
     enum NavigationPosition        navigationPosition;
     BOOL                           drawThumbnails;
 }
 @property (nonatomic, assign) enum NavigationPosition navigationPosition;
+@property (nonatomic, assign) NSUInteger currentCategoryIndex;
 - (void)updateNavigationPosition;
 @end
 
 @implementation SlideController
-@synthesize navigationPosition, slideProvider;
+@synthesize navigationPosition, currentCategoryIndex;
 
 - (id)init
 {
@@ -39,6 +42,9 @@
     if (self) {
         // Custom initialization
         drawThumbnails = YES;
+        slideProvider = [[SlideProvider alloc] init];
+        slideProvider.delegate = self;
+        currentCategoryIndex =0;
     }
     return self;
 }
@@ -99,14 +105,14 @@
     stackView.alpha = 0.0;
     stackView.baseline = CGPointMake(self.view.center.x, self.view.bounds.size.height);
     [self.view addSubview:stackView];
-    
-//    currentCategoryName = [[slideProvider categoryNames] objectAtIndex:0];
-//    currentCategoryDocumentIndices = [slideProvider documentIndicesForCategoryNamed:currentCategoryName];
-    
+        
     // Hide content views until content is loaded
     contentView.alpha    = 0.0;
-    annotationView.alpha = 0.0;
-    
+    annotationView.alpha = 0.0;        
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
     [self updateNavigationPosition];
 }
 
@@ -178,7 +184,7 @@
     
     else self.navigationPosition = NavigationPositionOtherDocument;
     
-//    [stackView scrollToItemAtIndex:currentSlide animated:YES];
+    self.currentCategoryIndex = [slideProvider categoryIndexForDocumentAtIndex:currentSlide];
 }
 
 - (void)loadContent
@@ -258,7 +264,7 @@
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
 //    return [slideProvider numberOfDocuments];
-    NSUInteger num = [slideProvider rangeForCategoryIndex:currentCategoryIndex].length;
+    NSUInteger num = [slideProvider rangeForCategoryIndex:stackCategoryIndex].length;
     return num;
 }
 
@@ -266,7 +272,7 @@
   viewForItemAtIndex:(NSUInteger)index
          reusingView:(UIView *)view
 {
-    NSUInteger documentIndex = [slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index;
+    NSUInteger documentIndex = [slideProvider rangeForCategoryIndex:stackCategoryIndex].location + index;
     
     // Title
     UILabel *title = [[UILabel alloc] init];
@@ -349,7 +355,7 @@
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
 {
     // Feed document view
-    currentSlide = [slideProvider rangeForCategoryIndex:currentCategoryIndex].location + index;
+    currentSlide = [slideProvider rangeForCategoryIndex:stackCategoryIndex].location + index;
     [carousel reloadItemAtIndex:previousIndex animated:YES];
     [carousel reloadItemAtIndex:index animated:YES];
     previousIndex = index;
@@ -379,10 +385,14 @@
 // Tool & Nav
 - (void)menubarViewDidSelectCategoryButton:(UIButton *)button withIndex:(NSUInteger)index
 {
-    currentCategoryIndex = index;
+
+    //currentCategoryIndex = index;
     NSString *category = [[[NSUserDefaults standardUserDefaults] objectForKey:@"categories_preference"]objectAtIndex:index];
     NSRange match=[category rangeOfString:@","];
     NSString *string2 = [category substringFromIndex:match.location+1];
+
+    stackCategoryIndex = index;
+
     
     if ([string2 intValue]==1) {
         currentSlide = [slideProvider rangeForCategoryIndex:index].location;
@@ -416,11 +426,13 @@
 
 - (void)menubarViewDidPressApertura
 {
+    currentCategoryIndex=99;
     [self loadFirstDocument];
 }
 
 - (void)menubarViewDidPressCierre
 {
+    currentCategoryIndex=99;
     [self loadLastDocument];
 }
 

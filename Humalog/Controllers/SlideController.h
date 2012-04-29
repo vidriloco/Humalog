@@ -12,10 +12,7 @@
 #import "InterfaceControlDelegate.h"
 #import "SlideProvider.h"
 
-@interface SlideController : UIViewController<iCarouselDataSource, iCarouselDelegate, UIGestureRecognizerDelegate, ContentDisplayDelegate, InterfaceControlDelegate> {
-    SlideProvider *slideProvider;
-}
-@property (nonatomic, retain) SlideProvider *slideProvider;
+@interface SlideController : UIViewController<iCarouselDataSource, iCarouselDelegate, UIGestureRecognizerDelegate, ContentDisplayDelegate, InterfaceControlDelegate>
 
 
 //- (void) assignArrays:(NSArray *)categories withSlides:(NSArray *)slides withUpdate:(BOOL)update;

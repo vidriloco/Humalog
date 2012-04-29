@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "MasterController.h"
 #import "Downloader.h"
+#import "GANTracker.h"
+static const NSInteger kGANDispatchPeriodSec = 10;
 
 @interface AppDelegate() {
     Downloader           *download;
@@ -87,7 +89,22 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[GANTracker sharedTracker] startTrackerWithAccountID:@"UA-31202291-1"
+                                           dispatchPeriod:kGANDispatchPeriodSec
+                                                 delegate:nil];
+    
+    NSError *error;
+    if (![[GANTracker sharedTracker] setCustomVariableAtIndex:1
+                                                         name:@"iPad3"
+                                                        value:@"ip1"
+                                                    withError:&error]) {
+        // Handle error here
+    }
+    
 
+
+    
+    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor clearColor];
@@ -169,6 +186,7 @@
      See also applicationDidEnterBackground:.
      */
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[GANTracker sharedTracker] stopTracker];
 }
 
 @end

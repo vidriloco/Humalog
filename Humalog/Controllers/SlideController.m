@@ -11,6 +11,7 @@
 #import "AnnotationView.h"
 #import "Viewport.h"
 #import "ThumbnailStackView.h"
+#import "GANTracker.h"
 
 #define FADE_DURATION 0.5
 #define STACK_OFFSET  -15
@@ -173,6 +174,29 @@
     annotationView.markerPaths = [annotations objectForKey:kMarkerPathsKey];
 }
 
+-(void) registerGA:(BOOL)isSlide withString:(NSString *)string
+{
+    NSError *error;
+    
+    NSString *cadena =[[NSUserDefaults standardUserDefaults] stringForKey:@"brand"];
+
+    
+    if (isSlide&&string==nil) {
+        NSString *slide=[[[NSUserDefaults standardUserDefaults] objectForKey:@"slides_preference"]objectAtIndex:currentSlide];        
+        cadena = [cadena stringByAppendingPathComponent:slide];
+    }else if(!isSlide&&string!=nil) {
+        cadena = [cadena stringByAppendingPathComponent:[@"PDF/" stringByAppendingString:string]];
+    }else {
+        cadena = [cadena stringByAppendingPathComponent:string];
+    }
+    
+    if (![[GANTracker sharedTracker] trackPageview:cadena
+                                         withError:&error]) {
+        // Handle error here
+    }
+
+}
+
 - (void)updateNavigationPosition
 {
     // Update navigation position status
@@ -196,6 +220,7 @@
         contentView = [slideProvider viewForDocumentAtIndex:currentSlide];
     }];
     [self updateNavigationPosition];
+    [self registerGA:TRUE withString:nil];
 }
 
 - (void)loadPreviousDocument
@@ -231,14 +256,16 @@
     [self saveAnnotations];
     currentSlide = [slideProvider numberOfDocuments]-2;
     [self loadContent];
+    [self registerGA:TRUE withString:@"Especial"];
+
 }
 
 - (void)loadPDF:(NSString *)pdf
 {
     [self saveAnnotations];
+        //[self.view addSubview:webView];
     
-    
-    //[self.view addSubview:webView];
+    [self registerGA:NO withString:pdf];
     pdf=[pdf stringByAppendingString:@".pdf"];
     contentView = [slideProvider viewForPDF:pdf];
     
@@ -249,6 +276,7 @@
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:pdfType]count]-1 >1) {
         if ([self.parentViewController respondsToSelector:@selector(loadWhitepapers:)])
             [self.parentViewController performSelector:@selector(loadWhitepapers:)withObject:[[NSUserDefaults standardUserDefaults] objectForKey:pdfType]];
+            [self registerGA:NO withString:pdfType];
     }else {
         NSString *pdf=[[[NSUserDefaults standardUserDefaults] objectForKey:pdfType] objectAtIndex:0];
         [self loadPDF:pdf];

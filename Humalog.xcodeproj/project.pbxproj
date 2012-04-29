@@ -85,6 +85,10 @@
 		AA70C9A5154A8E6200888EE6 /* zip.c in Sources */ = {isa = PBXBuildFile; fileRef = AA70C99E154A8E6200888EE6 /* zip.c */; };
 		AA70C9A6154A8E6200888EE6 /* SSZipArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = AA70C9A1154A8E6200888EE6 /* SSZipArchive.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		AA814B76154DB0E1006B468F /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = AA814B71154DAFDB006B468F /* Default-Landscape~ipad.png */; };
+		AA814B8E154DCC67006B468F /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA814B8D154DCC67006B468F /* CFNetwork.framework */; };
+		AA814B90154DCC80006B468F /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = AA814B8F154DCC80006B468F /* libsqlite3.0.dylib */; };
+		AA814B99154DCCFB006B468F /* libGoogleAnalytics.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA814B96154DCCFB006B468F /* libGoogleAnalytics.a */; };
+		AA814B9A154DCCFB006B468F /* libGoogleAnalytics_NoThumb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA814B97154DCCFB006B468F /* libGoogleAnalytics_NoThumb.a */; };
 		AAA377B815447F7A0078359D /* Brand.m in Sources */ = {isa = PBXBuildFile; fileRef = AAA377B715447F7A0078359D /* Brand.m */; };
 		AAEF06B8154DA215004C119E /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = AA70C974154A83BD00888EE6 /* Settings.bundle */; };
 		AAEF06BA154DA23B004C119E /* splash.png in Resources */ = {isa = PBXBuildFile; fileRef = AAEF0687154CBEB7004C119E /* splash.png */; };
@@ -211,6 +215,11 @@
 		AA70C9A0154A8E6200888EE6 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
 		AA70C9A1154A8E6200888EE6 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
 		AA814B71154DAFDB006B468F /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		AA814B8D154DCC67006B468F /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		AA814B8F154DCC80006B468F /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		AA814B95154DCCFB006B468F /* GANTracker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GANTracker.h; sourceTree = "<group>"; };
+		AA814B96154DCCFB006B468F /* libGoogleAnalytics.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics.a; sourceTree = "<group>"; };
+		AA814B97154DCCFB006B468F /* libGoogleAnalytics_NoThumb.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libGoogleAnalytics_NoThumb.a; sourceTree = "<group>"; };
 		AAA377B615447F7A0078359D /* Brand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Brand.h; path = Models/Brand.h; sourceTree = "<group>"; };
 		AAA377B715447F7A0078359D /* Brand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Brand.m; path = Models/Brand.m; sourceTree = "<group>"; };
 		AAC3484F1547B11C00B2D3E7 /* DownloadControlDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DownloadControlDelegate.h; sourceTree = "<group>"; };
@@ -222,11 +231,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AA814B90154DCC80006B468F /* libsqlite3.0.dylib in Frameworks */,
+				AA814B8E154DCC67006B468F /* CFNetwork.framework in Frameworks */,
 				AA5524E91544E7280027253E /* libz.dylib in Frameworks */,
 				84E05FBC151299AD009FE5AF /* QuartzCore.framework in Frameworks */,
 				84C9DF8A15009F6700E16B3B /* UIKit.framework in Frameworks */,
 				84C9DF8C15009F6700E16B3B /* Foundation.framework in Frameworks */,
 				84C9DF8E15009F6700E16B3B /* CoreGraphics.framework in Frameworks */,
+				AA814B99154DCCFB006B468F /* libGoogleAnalytics.a in Frameworks */,
+				AA814B9A154DCCFB006B468F /* libGoogleAnalytics_NoThumb.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,6 +302,8 @@
 		84C9DF8815009F6700E16B3B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AA814B8F154DCC80006B468F /* libsqlite3.0.dylib */,
+				AA814B8D154DCC67006B468F /* CFNetwork.framework */,
 				AA5524E81544E7270027253E /* libz.dylib */,
 				84E05FBB151299AD009FE5AF /* QuartzCore.framework */,
 				84C9DF8915009F6700E16B3B /* UIKit.framework */,
@@ -424,6 +439,7 @@
 		84E05FB5151298FC009FE5AF /* Libs */ = {
 			isa = PBXGroup;
 			children = (
+				AA814B94154DCCFB006B468F /* GoogleAnalytics */,
 				AA70C995154A8E6200888EE6 /* SSZipArchive */,
 				84E05FB6151298FC009FE5AF /* iCarousel */,
 			);
@@ -510,6 +526,16 @@
 				AA70C99F154A8E6200888EE6 /* zip.h */,
 			);
 			path = minizip;
+			sourceTree = "<group>";
+		};
+		AA814B94154DCCFB006B468F /* GoogleAnalytics */ = {
+			isa = PBXGroup;
+			children = (
+				AA814B95154DCCFB006B468F /* GANTracker.h */,
+				AA814B96154DCCFB006B468F /* libGoogleAnalytics.a */,
+				AA814B97154DCCFB006B468F /* libGoogleAnalytics_NoThumb.a */,
+			);
+			path = GoogleAnalytics;
 			sourceTree = "<group>";
 		};
 		AAA377BA15447F830078359D /* Models */ = {
@@ -796,6 +822,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humalog/Humalog-Prefix.pch";
 				INFOPLIST_FILE = "Humalog/Humalog-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Humalog/Libs/Library\"",
+					"\"$(SRCROOT)/Humalog/Libs/GoogleAnalytics\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -807,6 +838,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Humalog/Humalog-Prefix.pch";
 				INFOPLIST_FILE = "Humalog/Humalog-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/Humalog/Libs/Library\"",
+					"\"$(SRCROOT)/Humalog/Libs/GoogleAnalytics\"",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

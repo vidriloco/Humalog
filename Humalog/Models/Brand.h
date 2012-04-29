@@ -43,6 +43,7 @@
 @property (nonatomic, assign) int numberOfReferences;
 @property (nonatomic, assign) int numberOfStudies;
 @property (nonatomic, strong) NSArray *interfaceURL;
+@property (nonatomic, strong) NSString *editURL;
 @property (nonatomic, strong) NSArray *pdfs;
 @property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, strong) NSArray *slides;

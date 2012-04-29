@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DownloadControlDelegate.h"
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate,DownloadControlDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+
 
 @end

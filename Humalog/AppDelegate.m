@@ -12,6 +12,9 @@
 
 @interface AppDelegate() {
     Downloader           *download;
+    BOOL                flag;
+    BOOL                flag2;
+    UIViewController    *masterController;
 
 }
 @end
@@ -21,50 +24,107 @@
 @synthesize window = _window;
 
 
+
 - (void) settingsChanged:(NSNotification *)paramNotification{
     NSLog(@"Settings changed");
     NSLog(@"Notification Object = %@", [paramNotification object]);
 }
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (void) setDefaults{
 
-    
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(settingsChanged:) 
                                                  name:NSUserDefaultsDidChangeNotification 
                                                object:nil];
     
-    BOOL flag=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_interface_preference"];
-    BOOL flag2=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_slides_preference"];
-    
-    NSString *brandId=[[NSUserDefaults standardUserDefaults] stringForKey:@"brand_preference"];  
-    
-    
-    
-    if (flag || flag2) {
+    if (![[NSUserDefaults standardUserDefaults] stringForKey:@"brand_preference"])  {
         
+        NSString  *mainBundlePath = [[NSBundle mainBundle] bundlePath];
+        NSString  *settingsPropertyListPath = [mainBundlePath
+                                               stringByAppendingPathComponent:@"Settings.bundle/Root.plist"];
+        
+        NSDictionary *settingsPropertyList = [NSDictionary 
+                                              dictionaryWithContentsOfFile:settingsPropertyListPath];
+        
+        NSMutableArray      *preferenceArray = [settingsPropertyList objectForKey:@"PreferenceSpecifiers"];
+        NSMutableDictionary *registerableDictionary = [NSMutableDictionary dictionary];
+        
+        for (int i = 0; i < [preferenceArray count]; i++)  { 
+            NSString  *key = [[preferenceArray objectAtIndex:i] objectForKey:@"Key"];
+            
+            if (key)  {
+                id  value = [[preferenceArray objectAtIndex:i] objectForKey:@"DefaultValue"];
+                [registerableDictionary setObject:value forKey:key];
+            }
+        }
+        
+        [[NSUserDefaults standardUserDefaults] registerDefaults:registerableDictionary]; 
+        [[NSUserDefaults standardUserDefaults] synchronize]; 
+    }
+
+}
+
+-(void) downloadContent
+{
+    flag=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_interface_preference"];
+    flag2=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_slides_preference"];
+        
+    if (flag || flag2) {
+        NSString *brandId=[[NSUserDefaults standardUserDefaults] stringForKey:@"brand_preference"];  
+        NSLog(@"entre");
         download = [[Downloader alloc]init];
+        download.delegate=self;
         [download parseJSON:brandId];
+
         
         NSUserDefaults *defaults = [[NSUserDefaults alloc]init];
         [defaults setBool:NO forKey:@"update_interface_preference"];
         [defaults setBool:NO forKey:@"update_slides_preference"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         
-    }
+    }   
+}
 
-    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor blackColor];
+    self.window.backgroundColor = [UIColor clearColor];
+    
+    
+    [self setDefaults];
+    [self downloadContent];
+   
     
     // Instance the master controller
-    UIViewController *masterController = [[MasterController alloc] init];
-    [self.window setRootViewController:masterController];
+    masterController = [[MasterController alloc] init];
+
+
+    if(flag&&flag2)
+    {
+        UIImageView *vista = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"splash.png"]];
+        [masterController.view addSubview:vista];
+    }
+    [self.window setRootViewController:masterController];  
     
+    //[masterController presentModalViewController:splashController animated:NO];
+
     [self.window makeKeyAndVisible];
     return YES;
+
 }
+
+-(void)downloaderDidFinish
+{
+
+    masterController = [[MasterController alloc] init];
+    [self.window setRootViewController:masterController];  
+}
+
+
+
+
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {

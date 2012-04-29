@@ -15,7 +15,7 @@
 @synthesize brandName, brandURL;
 @synthesize isUpdated, hasOpening,hasClosing, hasIPP, hasStudies, hasSpecial, hasReferences,usesStackView;
 @synthesize numberOfMenus, numberOfCategories,numberOfIpps, numberOfReferences, numberOfStudies;
-@synthesize interfaceURL,pdfs,categories,slides;
+@synthesize editURL,interfaceURL,pdfs,categories,slides;
 
 
 - (id)init
@@ -24,6 +24,7 @@
     if (self) {
         // Custom initialization
         brandName = [NSString string];
+        editURL = [NSString string];
         brandURL = [[NSURL alloc]init];
         interfaceURL = [NSArray array];        
         pdfs = [NSArray array];                

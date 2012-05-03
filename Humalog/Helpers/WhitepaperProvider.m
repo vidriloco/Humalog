@@ -9,30 +9,31 @@
 #import <QuartzCore/QuartzCore.h>
 #import "WhitepaperProvider.h"
 #import "WebContentView.h"
+#import "Brand.h"
+#import "Viewport.h"
 
 @interface WhitepaperProvider() {
-    NSArray             *whitepaperList;
+    NSMutableDictionary *documentAnnotations;
     NSMutableDictionary *previewList;
+    WebContentView      *webView;
 }
 @end
 
 @implementation WhitepaperProvider
-@synthesize delegate;
+@synthesize delegate, whitepaperList;
 
 - (id)init
 {
     if ((self = [super init])) {
-        whitepaperList = [NSArray array];
-        previewList = [NSMutableDictionary dictionary];
+        previewList    = [NSMutableDictionary dictionary];
+        webView        = [[WebContentView alloc] initWithFrame:[Viewport contentArea]];
+        webView.scalesPageToFit = YES;
+        webView.delegate        = self;
+        
+        documentAnnotations = [NSMutableDictionary dictionary];
     }
     return self;
 }
-
-- (void) loadContent:(NSArray *)pdfs
-{
-    whitepaperList = pdfs;
-}
-
 
 #pragma mark - Previews
 
@@ -62,23 +63,27 @@
     
     CGPDFDocumentRelease(pdf);
     return pdfImage;
-
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+- (NSString *)pathForDocumentAtIndex:(NSUInteger)index
 {
-    // Save image
-    [self performSelector:@selector(generatePreview) withObject:nil afterDelay:1.0]; 
+    NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                  NSUserDomainMask,
+                                                                  YES) objectAtIndex:0];
+    
+    NSString *newDir = [documentsDir stringByAppendingPathComponent:@"slides/"];    
+    NSString *path = [newDir stringByAppendingPathComponent:[self.whitepaperList objectAtIndex:index]];
+    return [path stringByAppendingString:@".pdf"];
 }
 
 - (UIImageView *)previewForDocumentAtIndex:(NSUInteger)index
 {
-    NSNumber *indexNumber = [NSNumber numberWithUnsignedInteger:index];
+    NSNumber    *indexNumber = [NSNumber numberWithUnsignedInteger:index];
     UIImageView *imageView = [previewList objectForKey:indexNumber];
     if (imageView)
         return imageView;
     
-    NSString *fileName = [[NSBundle mainBundle] pathForResource:[whitepaperList objectAtIndex:index] ofType:@"pdf"];
+    NSString *fileName = [self pathForDocumentAtIndex:index];
     imageView = [[UIImageView alloc] initWithImage:[self generatePreviewFor:fileName]];
     [previewList setObject:imageView forKey:indexNumber];
     return imageView;
@@ -86,28 +91,47 @@
 
 - (NSUInteger)numberOfDocuments
 {
-    return 3;
+    return [self.whitepaperList count];
 }
 
 - (UIView<ContentControlProtocol> *)viewForDocumentAtIndex:(NSUInteger)index
 {
-    NSString *fileName = [whitepaperList objectAtIndex:index];    
-    NSString *path = [[NSBundle mainBundle] pathForResource:fileName ofType:@"pdf"];
-    WebContentView *webView = [[WebContentView alloc] initWithFrame:kPreviewSize];
+    NSString *path = [self pathForDocumentAtIndex:index];
     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:path]]];
     return webView;
 }
 
 - (NSDictionary *)annotationsForDocumentAtIndex:(NSUInteger)index
 {
-    return nil;
+    return [documentAnnotations objectForKey:[self.whitepaperList objectAtIndex:index]];
 }
 
 - (void)setAnnotations:(NSDictionary *)annotations forDocumentAtIndex:(NSUInteger)index
 {
-    
+    [documentAnnotations setObject:annotations forKey:[self.whitepaperList objectAtIndex:index]];
 }
 
+#pragma mark - UIWebView delegate methods
 
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
+{
+    NSLog(@"ERROR: %@", [error description]);
+}
+
+- (void)webViewDidStartLoad:(UIWebView *)aWebView
+{
+    webView.hidden = YES;
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [self performSelector:@selector(delay) withObject:nil afterDelay:0.5];
+}
+
+- (void)delay
+{
+    [self.delegate contentViewDidFinishLoad];
+    webView.hidden = NO;
+}
 
 @end

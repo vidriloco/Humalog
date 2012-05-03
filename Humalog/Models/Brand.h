@@ -27,6 +27,9 @@
 
 }
 
++ (Brand *)sharedInstance;
++ (void)updateElementsFromDefaults;
+
 @property (nonatomic, strong) NSString *brandName;
 @property (nonatomic, strong) NSURL *brandURL;
 @property (nonatomic, assign) BOOL isUpdated;
@@ -48,6 +51,9 @@
 @property (nonatomic, strong) NSArray *categories;
 @property (nonatomic, strong) NSArray *slides;
 
-
+// New
+@property (nonatomic, strong) NSArray *studies;
+@property (nonatomic, strong) NSArray *IPPs;
+@property (nonatomic, strong) NSArray *references;
 
 @end

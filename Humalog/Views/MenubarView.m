@@ -359,10 +359,10 @@
 //                cierreButton.enabled = YES;
 //                break;
 //            case NavigationPositionUndefined:
-//            default:
+            default:
 //                aperturaButton.enabled = NO;
 //                cierreButton.enabled = NO;
-//                break;
+                break;
         
         }
     } else if ([keyPath isEqualToString:@"currentCategoryIndex"]) {

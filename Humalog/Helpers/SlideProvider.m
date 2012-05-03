@@ -8,7 +8,7 @@
 
 #import "SlideProvider.h"
 #import "WebContentView.h"
-
+#import "Brand.h"
 
 @interface SlideProvider() {
     NSMutableDictionary *documentAnnotations;
@@ -32,10 +32,8 @@
         
         documentAnnotations = [NSMutableDictionary dictionary];
         
-
-        NSArray *categories = [NSArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"categories_preference"]];
-       NSArray *slides = [NSArray arrayWithArray:[[NSUserDefaults standardUserDefaults] objectForKey:@"slides_preference"]];
-        
+        NSArray *categories = [Brand sharedInstance].categories;
+        NSArray *slides     = [Brand sharedInstance].slides;
         
         NSMutableArray *temp = [NSMutableArray array];
         
@@ -60,15 +58,12 @@
 
 - (NSUInteger)numberOfDocuments
 {
-    NSLog(@"slides:%d", [[[NSUserDefaults standardUserDefaults] objectForKey:@"slides_preference"]count]);
-    NSLog(@"categorias:%d", [[[NSUserDefaults standardUserDefaults] objectForKey:@"categories_preference"]count]);    
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:@"slides_preference"]count];
+    return [Brand sharedInstance].slides.count;
 }
 
 - (NSUInteger)numberOfCategories
 {
-    NSLog(@"categorias:%d", [[[NSUserDefaults standardUserDefaults] objectForKey:@"categories_preference"]count]);
-    return [[[NSUserDefaults standardUserDefaults] objectForKey:@"categories_preference"]count];
+    return [Brand sharedInstance].numberOfCategories;
 }
 
 - (NSString *)titleForDocumentAtIndex:(NSUInteger)index
@@ -86,7 +81,7 @@
     NSString *newDir = [documentsDir stringByAppendingPathComponent:@"slides/"];    
     NSString *slideName = [@"slide" stringByAppendingString:[[NSNumber numberWithUnsignedInt:index + 1] stringValue]];
     newDir = [newDir stringByAppendingPathComponent:slideName];
-    NSMutableString *path=[NSMutableString string];
+    NSMutableString *path = [NSMutableString string];
     slideName = [slideName stringByAppendingString:@".html"];
     [path appendString:[newDir stringByAppendingPathComponent:slideName]];
 
@@ -103,21 +98,6 @@
     return webContentView;
 }
 
-- (UIView<ContentControlProtocol> *)viewForPDF:(NSString *)pdf
-{
-    NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
-                                                                  NSUserDomainMask,
-                                                                  YES) objectAtIndex:0];
-    
-    NSString *newDir = [documentsDir stringByAppendingPathComponent:@"slides/"];    
-    //UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(10, 10, 200, 200)];
-    NSString *path = [newDir stringByAppendingPathComponent:pdf];
-    NSURL *url = [NSURL fileURLWithPath:path];
-    [webContentView loadRequest:[NSURLRequest requestWithURL:url]];
-    return webContentView;
-}
-
-
 - (UIImageView *)previewForDocumentAtIndex:(NSUInteger)index
 {
     NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
@@ -125,11 +105,10 @@
                                                                   YES) objectAtIndex:0];
     
     NSString *newDir = [documentsDir stringByAppendingPathComponent:@"resources/backs/"];
-    NSString *brand = [[NSUserDefaults standardUserDefaults] stringForKey:@"brand"];
+    NSString *brand = [Brand sharedInstance].brandName;
     brand = [brand lowercaseString];
     brand = [brand stringByAppendingString:@"_"];
     NSString *fileName = [[brand stringByAppendingString:[NSNumber numberWithUnsignedInt:index + 1].stringValue] stringByAppendingString:@".jpg"];
-    //return [[UIImageView alloc] initWithImage:[UIImage imageNamed:fileName]];
 
     return [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:[newDir stringByAppendingPathComponent:fileName]]];
 }
@@ -158,29 +137,23 @@
     return NSUIntegerMax;
 }
 
-// Delegation
-//- (void)webViewDidFinishLoad:(UIWebView *)webView
-//{
-//    [self.delegate contentViewDidFinishLoad];
-//}
+#pragma mark - UIWebView delegate methods
 
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
-    webContentView.hidden=YES;
+    webContentView.hidden = YES;
     
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    [self performSelector:@selector(delay) withObject:nil afterDelay:.5];
-    
-    
+    [self performSelector:@selector(delay) withObject:nil afterDelay:0.5];
 }
 
-- (void)delay{
-    
+- (void)delay
+{
     [self.delegate contentViewDidFinishLoad];
-    webContentView.hidden=NO;
+    webContentView.hidden = NO;
 }
 
 @end

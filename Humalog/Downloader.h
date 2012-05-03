@@ -26,5 +26,4 @@
 - (NSArray *) brandCategories;
 - (NSArray *) brandSlides;
 
-
 @end

@@ -6,21 +6,25 @@
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
-#import "SlideController.h"
+#import "ContentController.h"
 #import "SlideProvider.h"
 #import "AnnotationView.h"
 #import "Viewport.h"
 #import "ThumbnailStackView.h"
+#import "WhitepaperProvider.h"
+#import "Brand.h"
 
 #define FADE_DURATION 0.5
 #define STACK_OFFSET  -15
 
-@interface SlideController () {
+@interface ContentController () {
 @private
     SlideProvider                  *slideProvider;
+    WhitepaperProvider             *whitepaperProvider;
     AnnotationView                 *annotationView;
     UIView<ContentControlProtocol> *contentView;
     ThumbnailStackView             *stackView;
+    iCarousel                      *rotaryCarousel;
     NSUInteger                     currentSlide;
     NSUInteger                     currentCategoryIndex;
     NSUInteger                     stackCategoryIndex;
@@ -33,7 +37,7 @@
 - (void)updateNavigationPosition;
 @end
 
-@implementation SlideController
+@implementation ContentController
 @synthesize navigationPosition, currentCategoryIndex;
 
 - (id)init
@@ -42,17 +46,24 @@
     if (self) {
         // Custom initialization
         drawThumbnails = YES;
+        
         slideProvider = [[SlideProvider alloc] init];
         slideProvider.delegate = self;
-        currentCategoryIndex =0;
+        
+        whitepaperProvider = [[WhitepaperProvider alloc] init];
+        whitepaperProvider.delegate = self;
+        
+        currentCategoryIndex = 0;
     }
     return self;
 }
 
-//- (void) assignArrays:(NSArray *)categories withSlides:(NSArray *)slides withUpdate:(BOOL)update
+#pragma mark - View lifecycle
+
+//- (void)loadContentView:(UIView<ContentControlProtocol> *)contentView
 //{
-//    slideProvider = [[SlideProvider alloc] init];
-//    slideProvider.delegate = self;
+//    contentView.frame = self.view.frame;
+//    [self.view insertSubview:<#(UIView *)#> belowSubview:<#(UIView *)#>
 //}
 
 - (void)loadView
@@ -63,7 +74,7 @@
                                                                   YES) objectAtIndex:0];
     
     NSString *newDir = [documentsDir stringByAppendingPathComponent:@"resources/backs/"];
-    NSString *brand = [[NSUserDefaults standardUserDefaults] stringForKey:@"brand"];
+    NSString *brand = [Brand sharedInstance].brandName;
     brand = [brand stringByAppendingString:@".jpg"];
     brand = [brand lowercaseString];
     currentSlide = 0;
@@ -80,7 +91,7 @@
     [self.view addSubview:contentView];
     
     // Annotations
-    annotationView = [[AnnotationView alloc] initWithFrame:contentView.frame andMasterView:[contentView getContentSubview]];
+    annotationView = [[AnnotationView alloc] initWithFrame:contentView.frame];
     [self.view addSubview:annotationView];
     
     // Navigation gestures
@@ -105,6 +116,16 @@
     stackView.alpha = 0.0;
     stackView.baseline = CGPointMake(self.view.center.x, self.view.bounds.size.height);
     [self.view addSubview:stackView];
+    
+    // Document carousel
+    rotaryCarousel = [[iCarousel alloc] initWithFrame:self.view.bounds];
+    rotaryCarousel.backgroundColor = [UIColor underPageBackgroundColor];
+    rotaryCarousel.type = iCarouselTypeRotary;
+    rotaryCarousel.delegate   = self;
+    rotaryCarousel.dataSource = self;
+    rotaryCarousel.hidden = YES;
+    
+    [self.view addSubview:rotaryCarousel];
         
     // Hide content views until content is loaded
     contentView.alpha    = 0.0;
@@ -126,11 +147,6 @@
 {
     [super viewDidUnload];
     // Release any retained subviews of the main view.
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-	return YES;
 }
 
 #pragma mark - Eyecandy
@@ -157,18 +173,18 @@
 
 #pragma mark - Document management
 
-- (void)saveAnnotations
+- (void)saveAnnotationsWithProvider:(id<AnnotationDataSource>)provider forDocumentAtIndex:(NSUInteger)index
 {
     NSDictionary *annotations = [NSDictionary dictionaryWithObjectsAndKeys:
                                  annotationView.penPaths,    kPenPathsKey,
                                  annotationView.markerPaths, kMarkerPathsKey,
                                  nil];
-    [slideProvider setAnnotations:annotations forDocumentAtIndex:currentSlide];
+    [provider setAnnotations:annotations forDocumentAtIndex:index];
 }
 
-- (void)loadAnnotations
+- (void)loadAnnotationsWithProvider:(id<AnnotationDataSource>)provider forDocumentAtIndex:(NSUInteger)index
 {
-    NSDictionary *annotations  = [slideProvider annotationsForDocumentAtIndex:currentSlide];
+    NSDictionary *annotations  = [provider annotationsForDocumentAtIndex:index];
     annotationView.penPaths    = [annotations objectForKey:kPenPathsKey];
     annotationView.markerPaths = [annotations objectForKey:kMarkerPathsKey];
 }
@@ -185,85 +201,99 @@
     else self.navigationPosition = NavigationPositionOtherDocument;
     
     self.currentCategoryIndex = [slideProvider categoryIndexForDocumentAtIndex:currentSlide];
+
+    annotationView.masterView = [contentView getContentSubview];
+}
+
+- (void)hideCarousels
+{
+    [stackView hide];
+    [UIView animateWithDuration:FADE_DURATION
+                     animations:^{
+                         rotaryCarousel.alpha = 0.0;
+                     }
+                     completion:^(BOOL finished) {
+                         rotaryCarousel.hidden = YES;
+                     }];
 }
 
 - (void)loadContent
 {
-    [stackView hide];
+    [self hideCarousels];
     
     [self fadeOutToAction:^{
-        [self loadAnnotations];
+        [self loadAnnotationsWithProvider:slideProvider 
+                       forDocumentAtIndex:currentSlide];
+        [contentView removeFromSuperview];
         contentView = [slideProvider viewForDocumentAtIndex:currentSlide];
+        [self.view insertSubview:contentView belowSubview:annotationView];
     }];
     [self updateNavigationPosition];
 }
 
+// TODO: Tweak for content navigation
+- (void)loadCustomContentWithProvider:(id<AnnotationDataSource, DocumentDataSource>)someProvider
+                     andDocumentIndex:(NSUInteger)index;
+{
+    [self hideCarousels];
+    
+    [self fadeOutToAction:^{
+        [self loadAnnotationsWithProvider:someProvider forDocumentAtIndex:index];
+        [contentView removeFromSuperview];
+        contentView = [someProvider viewForDocumentAtIndex:index];
+        [self.view insertSubview:contentView belowSubview:annotationView];
+    }];
+    
+    self.navigationPosition = NavigationPositionUndefined;
+    self.currentCategoryIndex = 99;
+    annotationView.masterView = [contentView getContentSubview];
+}
+
 - (void)loadPreviousDocument
 {
-    [self saveAnnotations];
+    [self saveAnnotationsWithProvider:slideProvider forDocumentAtIndex:currentSlide];
     currentSlide = MAX(--currentSlide, 0);
     [self loadContent];
 }
 
 - (void)loadNextDocument
 {
-    [self saveAnnotations];
+    [self saveAnnotationsWithProvider:slideProvider forDocumentAtIndex:currentSlide];
     currentSlide = MIN(++currentSlide, [slideProvider numberOfDocuments] - 1);
     [self loadContent];
 }
 
 - (void)loadFirstDocument
 {
-    [self saveAnnotations];
+    [self saveAnnotationsWithProvider:slideProvider forDocumentAtIndex:currentSlide];
     currentSlide = 0;
     [self loadContent];
 }
 
 - (void)loadLastDocument
 {
-    [self saveAnnotations];
+    [self saveAnnotationsWithProvider:slideProvider forDocumentAtIndex:currentSlide];
     currentSlide = [slideProvider numberOfDocuments]-1;
     [self loadContent];
 }
 
 - (void)loadSpecial
 {
-    [self saveAnnotations];
+    [self saveAnnotationsWithProvider:slideProvider forDocumentAtIndex:currentSlide];
     currentSlide = [slideProvider numberOfDocuments]-2;
     [self loadContent];
 }
 
-- (void)loadPDF:(NSString *)pdf
-{
-    [self saveAnnotations];
-    
-    
-    //[self.view addSubview:webView];
-    pdf=[pdf stringByAppendingString:@".pdf"];
-    contentView = [slideProvider viewForPDF:pdf];
-    
-}
-
-- (void)decidePDFLoading:(NSString *)pdfType
-{
-    if ([[[NSUserDefaults standardUserDefaults] objectForKey:pdfType]count]-1 >1) {
-        if ([self.parentViewController respondsToSelector:@selector(loadWhitepapers:)])
-            [self.parentViewController performSelector:@selector(loadWhitepapers:)withObject:[[NSUserDefaults standardUserDefaults] objectForKey:pdfType]];
-    }else {
-        NSString *pdf=[[[NSUserDefaults standardUserDefaults] objectForKey:pdfType] objectAtIndex:0];
-        [self loadPDF:pdf];
-    }
-    
-}
-
-
-
-
-#pragma mark - Delegate Methods
+#pragma mark - iCarousel data source methods
 
 - (NSUInteger)numberOfItemsInCarousel:(iCarousel *)carousel
 {
-//    return [slideProvider numberOfDocuments];
+    // Document carousel
+    if (carousel == rotaryCarousel) {
+        return [whitepaperProvider numberOfDocuments];
+    }
+
+    // Slide carousel
     NSUInteger num = [slideProvider rangeForCategoryIndex:stackCategoryIndex].length;
     return num;
 }
@@ -272,6 +302,15 @@
   viewForItemAtIndex:(NSUInteger)index
          reusingView:(UIView *)view
 {
+    // Document carousel
+    if (carousel == rotaryCarousel) {
+        UIView *preview = [whitepaperProvider previewForDocumentAtIndex:index];
+        preview.clipsToBounds = YES;
+        preview.layer.cornerRadius = 10.0;
+        return preview;
+    }
+    
+    // Slide carousel
     NSUInteger documentIndex = [slideProvider rangeForCategoryIndex:stackCategoryIndex].location + index;
     
     // Title
@@ -289,13 +328,9 @@
     
     UILabel *separator = [[UILabel alloc] init];    
     separator.frame = CGRectMake(0, 0, 150.0, 1.0); 
-    //separator.layer.backgroundColor = [UIColor redColor].CGColor;
-    
-    
     
     // Container
     UIView *container = [[UIView alloc] init];
-//    container.backgroundColor = [UIColor grayColor];
     
     // Hilight selected
     if (currentSlide == documentIndex) {
@@ -321,7 +356,7 @@
         return container;
     }
     
-    // Image
+    // Thumbnail
     UIView *thumb = [slideProvider previewForDocumentAtIndex:documentIndex];    
     thumb.clipsToBounds = YES;
     thumb.layer.cornerRadius = 4.0f;
@@ -339,21 +374,48 @@
 
 - (CGFloat)carouselItemWidth:(iCarousel *)carousel
 {
+    // Document carousel
+    if (carousel == rotaryCarousel) {
+        return kPreviewSize.size.width;
+    }
+    
+    // Slide carousel
     return 8.0 + [UIFont boldSystemFontOfSize:15.0].lineHeight * 2.0 + (drawThumbnails? [slideProvider previewForDocumentAtIndex:0].bounds.size.height : 0.0);
 }
 
 - (BOOL)carouselShouldWrap:(iCarousel *)carousel
 {
-    return NO;
+    return (carousel == rotaryCarousel);
 }
 
 - (NSUInteger)numberOfVisibleItemsInCarousel:(iCarousel *)carousel
 {
+    // Document carousel
+    if (carousel == rotaryCarousel) {
+        return [whitepaperProvider numberOfDocuments];
+    }
+    
+    // Slide carousel
     return 7;
 }
 
+#pragma mark - iCarousel delegate methods
+
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index
 {
+    // Document carousel
+    if (carousel == rotaryCarousel) {
+        // Only the front element is selectable
+        if (carousel.currentItemIndex != index)
+            return;
+        
+        [self loadCustomContentWithProvider:whitepaperProvider
+                           andDocumentIndex:index];
+        
+        return;
+    }
+    
+    // Slide carousel
     // Feed document view
     currentSlide = [slideProvider rangeForCategoryIndex:stackCategoryIndex].location + index;
     [carousel reloadItemAtIndex:previousIndex animated:YES];
@@ -361,6 +423,8 @@
     previousIndex = index;
     [self loadContent];
 }
+
+#pragma mark - Misc delegate methods
 
 - (void)contentViewDidFinishLoad
 {
@@ -382,7 +446,8 @@
     return YES;
 }
 
-// Tool & Nav
+#pragma mark - Toolbar delegate methods
+
 - (void)menubarViewDidSelectCategoryButton:(UIButton *)button withIndex:(NSUInteger)index
 {
 
@@ -405,17 +470,14 @@
         [stackView show];
     }
     
-
-    
  
 }
 
--(void)touchesBegan: (NSSet *)touches withEvent:(UIEvent *)event
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
 {
 	// do the following for all textfields in your current view
 	[stackView hide];
 	// save the value of the textfield, ...
-	
 }
 
 - (void)menubarViewDidDeselectCategoryButton:(UIButton *)button withIndex:(NSUInteger)index
@@ -436,22 +498,39 @@
     [self loadLastDocument];
 }
 
-- (void)menubarViewDidPressEstudios
+- (void)whitepaperDisplayAction
 {
-    [self decidePDFLoading:@"EST"];
+    if ([whitepaperProvider numberOfDocuments] <= 1) {
+        [self loadCustomContentWithProvider:whitepaperProvider
+                           andDocumentIndex:0];
+        return;
+    }
+ 
+    [rotaryCarousel reloadData];
+    rotaryCarousel.hidden = NO;
+    [UIView animateWithDuration:FADE_DURATION
+                     animations:^{
+                         rotaryCarousel.alpha = 1.0;
+                     }];
 
 }
 
+- (void)menubarViewDidPressEstudios
+{
+    whitepaperProvider.whitepaperList = [Brand sharedInstance].studies;
+    [self whitepaperDisplayAction];
+}
 
 - (void)menubarViewDidPressReferencias
 {
-    [self decidePDFLoading:@"REF"];
+    whitepaperProvider.whitepaperList = [Brand sharedInstance].references;
+    [self whitepaperDisplayAction];
 }
-
 
 - (void)menubarViewDidPressIPP
 {
-    [self decidePDFLoading:@"IPP"];
+    whitepaperProvider.whitepaperList = [Brand sharedInstance].IPPs;
+    [self whitepaperDisplayAction];
 }
 
 - (void)menubarViewDidPressEspecial

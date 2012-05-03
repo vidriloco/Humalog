@@ -61,10 +61,9 @@
 		84E05FFD15129FC1009FE5AF /* over_pluma.png in Resources */ = {isa = PBXBuildFile; fileRef = 84E05FE015129FC1009FE5AF /* over_pluma.png */; };
 		84E05FFE15129FC1009FE5AF /* pluma.png in Resources */ = {isa = PBXBuildFile; fileRef = 84E05FE115129FC1009FE5AF /* pluma.png */; };
 		84E0600B1512BFF0009FE5AF /* WhitepaperProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E0600A1512BFF0009FE5AF /* WhitepaperProvider.m */; };
-		84E0602015131827009FE5AF /* WhitepaperController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E0601F15131827009FE5AF /* WhitepaperController.m */; };
 		84E06023151319A8009FE5AF /* Viewport.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E06022151319A8009FE5AF /* Viewport.m */; };
 		84E64C27151D1388001F7E0A /* ThumbnailStackView.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E64C26151D1388001F7E0A /* ThumbnailStackView.m */; };
-		84E64C2A151D141B001F7E0A /* SlideController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E64C29151D141B001F7E0A /* SlideController.m */; };
+		84E64C2A151D141B001F7E0A /* ContentController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E64C29151D141B001F7E0A /* ContentController.m */; };
 		84E64C3B151D4D2E001F7E0A /* brilinta_1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C2F151D4D2E001F7E0A /* brilinta_1.jpg */; };
 		84E64C3C151D4D2E001F7E0A /* brilinta_2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C30151D4D2E001F7E0A /* brilinta_2.jpg */; };
 		84E64C3D151D4D2E001F7E0A /* brilinta_3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 84E64C31151D4D2E001F7E0A /* brilinta_3.jpg */; };
@@ -172,16 +171,14 @@
 		84E05FE115129FC1009FE5AF /* pluma.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pluma.png; sourceTree = "<group>"; };
 		84E060001512B1EB009FE5AF /* DocumentDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DocumentDataSource.h; path = Protocols/DocumentDataSource.h; sourceTree = "<group>"; };
 		84E060011512B511009FE5AF /* AnnotationDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AnnotationDataSource.h; path = Protocols/AnnotationDataSource.h; sourceTree = "<group>"; };
-		84E060091512BFF0009FE5AF /* WhitepaperProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhitepaperProvider.h; sourceTree = "<group>"; };
+		84E060091512BFF0009FE5AF /* WhitepaperProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; path = WhitepaperProvider.h; sourceTree = "<group>"; };
 		84E0600A1512BFF0009FE5AF /* WhitepaperProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhitepaperProvider.m; sourceTree = "<group>"; };
-		84E0601E15131827009FE5AF /* WhitepaperController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WhitepaperController.h; sourceTree = "<group>"; };
-		84E0601F15131827009FE5AF /* WhitepaperController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WhitepaperController.m; sourceTree = "<group>"; };
 		84E06021151319A8009FE5AF /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
 		84E06022151319A8009FE5AF /* Viewport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Viewport.m; sourceTree = "<group>"; };
 		84E64C25151D1388001F7E0A /* ThumbnailStackView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThumbnailStackView.h; sourceTree = "<group>"; };
 		84E64C26151D1388001F7E0A /* ThumbnailStackView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThumbnailStackView.m; sourceTree = "<group>"; };
-		84E64C28151D141B001F7E0A /* SlideController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideController.h; sourceTree = "<group>"; };
-		84E64C29151D141B001F7E0A /* SlideController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideController.m; sourceTree = "<group>"; };
+		84E64C28151D141B001F7E0A /* ContentController.h */ = {isa = PBXFileReference; fileEncoding = 4; path = ContentController.h; sourceTree = "<group>"; };
+		84E64C29151D141B001F7E0A /* ContentController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContentController.m; sourceTree = "<group>"; };
 		84E64C2F151D4D2E001F7E0A /* brilinta_1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_1.jpg; sourceTree = "<group>"; };
 		84E64C30151D4D2E001F7E0A /* brilinta_2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_2.jpg; sourceTree = "<group>"; };
 		84E64C31151D4D2E001F7E0A /* brilinta_3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_3.jpg; sourceTree = "<group>"; };
@@ -194,7 +191,7 @@
 		84E64C38151D4D2E001F7E0A /* brilinta_10.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_10.jpg; sourceTree = "<group>"; };
 		84E64C39151D4D2E001F7E0A /* brilinta_11.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_11.jpg; sourceTree = "<group>"; };
 		84E64C3A151D4D2E001F7E0A /* brilinta_12.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = brilinta_12.jpg; sourceTree = "<group>"; };
-		AA08DD41154B9AA300B45FF3 /* Root.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Root.plist; path = Humalog/Settings.bundle/Root.plist; sourceTree = "<group>"; };
+		AA08DD41154B9AA300B45FF3 /* Root.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Root.plist; path = Settings.bundle/Root.plist; sourceTree = "<group>"; };
 		AA5524B71544B01B0027253E /* Downloader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Downloader.h; sourceTree = "<group>"; };
 		AA5524B81544B01B0027253E /* Downloader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Downloader.m; sourceTree = "<group>"; };
 		AA5524E81544E7270027253E /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
@@ -210,7 +207,7 @@
 		AA70C99F154A8E6200888EE6 /* zip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		AA70C9A0154A8E6200888EE6 /* SSZipArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SSZipArchive.h; sourceTree = "<group>"; };
 		AA70C9A1154A8E6200888EE6 /* SSZipArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SSZipArchive.m; sourceTree = "<group>"; };
-		AA814B71154DAFDB006B468F /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
+		AA814B71154DAFDB006B468F /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default-Landscape~ipad.png"; path = "../../Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		AAA377B615447F7A0078359D /* Brand.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Brand.h; path = Models/Brand.h; sourceTree = "<group>"; };
 		AAA377B715447F7A0078359D /* Brand.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Brand.m; path = Models/Brand.m; sourceTree = "<group>"; };
 		AAC3484F1547B11C00B2D3E7 /* DownloadControlDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DownloadControlDelegate.h; sourceTree = "<group>"; };
@@ -268,8 +265,6 @@
 		84C9DF7A15009F6700E16B3B = {
 			isa = PBXGroup;
 			children = (
-				AA814B71154DAFDB006B468F /* Default-Landscape~ipad.png */,
-				AA08DD41154B9AA300B45FF3 /* Root.plist */,
 				84C9DF8F15009F6700E16B3B /* Humalog */,
 				84C9DFA715009F6700E16B3B /* HumalogTests */,
 				84C9DF8815009F6700E16B3B /* Frameworks */,
@@ -321,6 +316,7 @@
 			children = (
 				AA70C974154A83BD00888EE6 /* Settings.bundle */,
 				84C9DF9115009F6700E16B3B /* Humalog-Info.plist */,
+				AA08DD41154B9AA300B45FF3 /* Root.plist */,
 				84C9DF9215009F6700E16B3B /* InfoPlist.strings */,
 				84C9DF9515009F6700E16B3B /* main.m */,
 				84C9DF9715009F6700E16B3B /* Humalog-Prefix.pch */,
@@ -352,10 +348,8 @@
 			children = (
 				84C9DFB91500A01000E16B3B /* MasterController.h */,
 				84C9DFBA1500A01000E16B3B /* MasterController.m */,
-				84E0601E15131827009FE5AF /* WhitepaperController.h */,
-				84E0601F15131827009FE5AF /* WhitepaperController.m */,
-				84E64C28151D141B001F7E0A /* SlideController.h */,
-				84E64C29151D141B001F7E0A /* SlideController.m */,
+				84E64C28151D141B001F7E0A /* ContentController.h */,
+				84E64C29151D141B001F7E0A /* ContentController.m */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -378,6 +372,7 @@
 		84C9DFBE1500A01000E16B3B /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				AA814B71154DAFDB006B468F /* Default-Landscape~ipad.png */,
 				84E05FC415129FC1009FE5AF /* toolbars */,
 				84E05FBD15129B3B009FE5AF /* pdfs */,
 				84C9DFD11500A01000E16B3B /* minis */,
@@ -687,10 +682,9 @@
 				840BBB26150AFAA900B681A7 /* AnnotationView.m in Sources */,
 				84E05FB9151298FC009FE5AF /* iCarousel.m in Sources */,
 				84E0600B1512BFF0009FE5AF /* WhitepaperProvider.m in Sources */,
-				84E0602015131827009FE5AF /* WhitepaperController.m in Sources */,
 				84E06023151319A8009FE5AF /* Viewport.m in Sources */,
 				84E64C27151D1388001F7E0A /* ThumbnailStackView.m in Sources */,
-				84E64C2A151D141B001F7E0A /* SlideController.m in Sources */,
+				84E64C2A151D141B001F7E0A /* ContentController.m in Sources */,
 				AAA377B815447F7A0078359D /* Brand.m in Sources */,
 				AA5524B91544B01B0027253E /* Downloader.m in Sources */,
 				AA70C9A2154A8E6200888EE6 /* ioapi.c in Sources */,

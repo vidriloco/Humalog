@@ -12,7 +12,4 @@
 
 @interface MasterController : UIViewController<UIGestureRecognizerDelegate>
 
-- (void)loadWhitepapers:(NSArray *)pdfs;
-- (void)loadSlides;
-
 @end

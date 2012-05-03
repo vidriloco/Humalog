@@ -11,21 +11,19 @@
 #define kBrandURL [NSString stringWithFormat: @"http://humalog.herokuapp.com/brands/"] //2
 
 @interface Downloader(){
-    Brand *configurator;
     int pending;
     int totalSlides;
 }
 @end
 
 @implementation Downloader
-@synthesize delegate,advance;
+@synthesize delegate, advance;
 
 - (id)init
 {
     self = [super init];
     if (self) {
         // Custom initialization
-        configurator = [[Brand alloc]init];
         pending=0;
         totalSlides=0;
     }
@@ -60,10 +58,12 @@
 }
 
 - (void) updateElementsWithJSON:(NSDictionary *)json{
+    Brand *configurator = [Brand sharedInstance];
     
     configurator.brandName = [[json objectForKey:@"brand"] valueForKey:@"name"];
     configurator.brandURL = [[json objectForKey:@"brand"] valueForKey:@"url"];
-    configurator.categories = [json objectForKey:@"categories"];//Get slides and urls to download
+    configurator.categories = [json objectForKey:@"categories"];
+    //Get slides and urls to download
     configurator.slides = [[json objectForKey:@"categories"] valueForKey:@"category"];
     configurator.hasOpening = [[[json objectForKey:@"interface_configuration"] valueForKey:@"has_opening"] boolValue];
     configurator.hasClosing = [[[json objectForKey:@"interface_configuration"] valueForKey:@"has_closing"] boolValue];
@@ -92,7 +92,7 @@
                                                      valueForKey:@"number_of_menus"] forKey:@"menus"];
     
     [self setPDFDefaults];
-    
+        
     [[NSUserDefaults standardUserDefaults] setValue:configurator.brandName forKey:@"brand"];
     
     [[NSUserDefaults standardUserDefaults] setValue:[[json objectForKey:@"interface_configuration"] 
@@ -137,20 +137,20 @@
 
 -(NSArray *)setCategoriesInPreferences
 {
-NSMutableArray *temp = [NSMutableArray array];
-
-int length = [[configurator.categories valueForKey:@"orden"] count];
-for (int i=1; i<length-1;i++) {
-    int cat;
-    int nSlide;
-    if (i==1) {
-        cat = i;
-        nSlide = [[[configurator.categories valueForKey:@"number_of_slides"] objectAtIndex:i]intValue] ;
-    }else {
-        cat = cat + nSlide ;
-        nSlide = [[[configurator.categories valueForKey:@"number_of_slides"] objectAtIndex:i]intValue] ;
-    }
-    [temp addObject:[NSValue valueWithRange:NSMakeRange(cat,nSlide)]];
+    NSMutableArray *temp = [NSMutableArray array];
+    Brand *configurator = [Brand sharedInstance];
+    int length = [[configurator.categories valueForKey:@"orden"] count];
+    for (int i=1; i<length-1;i++) {
+        int cat;
+        int nSlide;
+        if (i==1) {
+            cat = i;
+            nSlide = [[[configurator.categories valueForKey:@"number_of_slides"] objectAtIndex:i]intValue] ;
+        }else {
+            cat = cat + nSlide ;
+            nSlide = [[[configurator.categories valueForKey:@"number_of_slides"] objectAtIndex:i]intValue] ;
+        }
+        [temp addObject:[NSValue valueWithRange:NSMakeRange(cat,nSlide)]];
 }
 
 
@@ -173,6 +173,7 @@ int len = [temp count];
 
 -(NSArray *)setSlidesInPreferences
 {
+    Brand *configurator = [Brand sharedInstance];
     NSMutableArray *tempo = [NSMutableArray array];;
     for (int i=0; i<[[configurator.slides valueForKey:@"name"] count]; i++) {
         for (int j=0; j<[[[configurator.slides valueForKey:@"name"] objectAtIndex:i]count]; j++) {
@@ -187,7 +188,8 @@ int len = [temp count];
 {
     NSMutableArray *ipp = [NSMutableArray array];
     NSMutableArray *ref = [NSMutableArray array];
-    NSMutableArray *est = [NSMutableArray array];    
+    NSMutableArray *est = [NSMutableArray array];
+    Brand *configurator = [Brand sharedInstance];
     for (int i=0; i<[configurator.pdfs count]; i++) {
         id pdf = [configurator.pdfs objectAtIndex:i];
         if ([[pdf valueForKey:@"pdf_type"] isEqualToString:@"IPP"]) {
@@ -198,6 +200,11 @@ int len = [temp count];
             [est addObject:[pdf valueForKey:@"name"]];
         }
     }
+
+    // New collections in the singleton for quick document retrieval
+    configurator.IPPs       = ipp;
+    configurator.references = ref;
+    configurator.studies    = est;
     
     [[NSUserDefaults standardUserDefaults] setObject:ipp forKey:@"IPP"];
     [[NSUserDefaults standardUserDefaults] setObject:ref forKey:@"REF"];
@@ -206,7 +213,7 @@ int len = [temp count];
 
 -(void)downloadElements
 {
-    
+    Brand *configurator = [Brand sharedInstance];
     BOOL force = [[NSUserDefaults standardUserDefaults] boolForKey:@"update_interface_preference"];
     BOOL force2 = [[NSUserDefaults standardUserDefaults] boolForKey:@"update_slides_preference"];
     if(!configurator.isUpdated || force){
@@ -371,16 +378,19 @@ int len = [temp count];
 
 -(NSString *)brandName
 {
+    Brand *configurator = [Brand sharedInstance];
     return configurator.brandName;
 }
 
 -(NSArray *)brandCategories
 {
+    Brand *configurator = [Brand sharedInstance];
     return configurator.categories;
 }
 
 -(NSArray *)brandSlides
 {
+    Brand *configurator = [Brand sharedInstance];
     return configurator.slides;
 }
 
@@ -392,6 +402,7 @@ int len = [temp count];
 
 -(void)downloadComplete
 {
+    Brand *configurator = [Brand sharedInstance];
     int totalNumberOfDocuments = [configurator.pdfs count]+4+totalSlides;
     NSLog(@"%d",totalNumberOfDocuments);
         NSLog(@"%d",pending);            
@@ -405,6 +416,7 @@ int len = [temp count];
 
 -(void)downloadProgress
 {
+    Brand *configurator = [Brand sharedInstance];
     advance = (float)pending/([configurator.pdfs count]+4+totalSlides);
     if (self.delegate != NULL && [self.delegate respondsToSelector:@selector(downloaderIsDownloading)]) {
         [delegate performSelector:@selector(downloaderIsDownloading)];
@@ -412,8 +424,5 @@ int len = [temp count];
     }
 
 }
-
-
-
 
 @end

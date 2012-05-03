@@ -9,13 +9,14 @@
 #import "AppDelegate.h"
 #import "MasterController.h"
 #import "Downloader.h"
+#import "Brand.h"
 
 @interface AppDelegate() {
-    Downloader           *download;
-    BOOL                flag;
-    BOOL                flag2;
-    UIViewController    *masterController;
-    UIProgressView      *progress;
+    Downloader       *download;
+    BOOL             flag;
+    BOOL             flag2;
+    UIViewController *masterController;
+    UIProgressView   *progress;
 
 }
 @end
@@ -31,7 +32,8 @@
     NSLog(@"Notification Object = %@", [paramNotification object]);
 }
 
-- (void) setDefaults{
+- (void) setDefaults
+{
 
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(settingsChanged:) 
@@ -69,20 +71,23 @@
 {
     flag=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_interface_preference"];
     flag2=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_slides_preference"];
+    
+    download = [[Downloader alloc]init];
+    download.delegate=self;
         
     if (flag || flag2) {
         NSString *brandId=[[NSUserDefaults standardUserDefaults] stringForKey:@"brand_preference"];  
-        download = [[Downloader alloc]init];
-        download.delegate=self;
         [download parseJSON:brandId];
-
         
-        NSUserDefaults *defaults = [[NSUserDefaults alloc]init];
+        NSUserDefaults *defaults = [[NSUserDefaults alloc] init];
         [defaults setBool:NO forKey:@"update_interface_preference"];
         [defaults setBool:NO forKey:@"update_slides_preference"];
         [[NSUserDefaults standardUserDefaults] synchronize];
         
-    }   
+    } 
+    else {
+        [Brand updateElementsFromDefaults];
+    }
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

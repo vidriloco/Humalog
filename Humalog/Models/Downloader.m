@@ -251,7 +251,7 @@
 {
     NSString *urlAsString = urlString;
     NSURL *url = [NSURL URLWithString:urlAsString];
-    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url]; 
+    NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalAndRemoteCacheData timeoutInterval:240.0f]; 
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
     [NSURLConnection sendAsynchronousRequest:urlRequest 
                                        queue:queue 

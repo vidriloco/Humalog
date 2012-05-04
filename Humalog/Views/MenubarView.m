@@ -340,12 +340,12 @@
         UIButton *cierreButton = [navButtons objectAtIndex:1];
         switch (navigationPositionValue) {
             case NavigationPositionFirstDocument:
-                if (noMenus>1) {
-                [self removeSelectorButtons:sectionButtons];
-                [self setSectionButtons:[self setMenu:1 withMenus:noMenus] 
-                         isMenuSelector:YES 
-                      withSectionNumber:0];
-                self.delegate=delegate;
+                if (noMenus > 1) {
+                    [self removeSelectorButtons:sectionButtons];
+                    [self setSectionButtons:[self setMenu:1 withMenus:noMenus] 
+                             isMenuSelector:YES 
+                          withSectionNumber:0];
+                    self.delegate = delegate;
                 }
                 aperturaButton.enabled = YES;
                 cierreButton.enabled = YES;
@@ -370,21 +370,18 @@
        
         for (UIButton *button in sectionButtons) {
             button.layer.shadowOpacity = 0.0;
-            button.layer.shadowRadius = 0.0;
-            button.layer.shadowColor = [UIColor clearColor].CGColor;
+            button.layer.shadowRadius  = 0.0;
+            button.layer.shadowColor   = [UIColor clearColor].CGColor;
         }
-
         
-        if (newCategoryIndex>=[sectionButtons count]) {
+        if (newCategoryIndex >= [sectionButtons count]) {
             return;
         }
-        
-        
-        UIButton *button = (UIButton *) [sectionButtons objectAtIndex:newCategoryIndex];
+    
+        UIButton *button = (UIButton *)[sectionButtons objectAtIndex:newCategoryIndex];
         button.layer.shadowOpacity = 0.8;
-        button.layer.shadowRadius = 6.0;
-        button.layer.shadowColor = [UIColor whiteColor].CGColor;
-
+        button.layer.shadowRadius  = 6.0;
+        button.layer.shadowColor   = [UIColor whiteColor].CGColor;
     }
 }
 

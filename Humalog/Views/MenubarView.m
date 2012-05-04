@@ -9,6 +9,8 @@
 #import <QuartzCore/QuartzCore.h>
 #import "MenubarView.h"
 #import "GridLayout.h"
+#import "Brand.h"
+
 #define MENUBAR_IMAGE @"barra_menu.jpg"
 #define MARGIN 15
 
@@ -123,7 +125,7 @@
     NSString *menuBar=@"/backs/";
     menuBar = [menuBar stringByAppendingString:MENUBAR_IMAGE];
     
-    noMenus = [[[NSUserDefaults standardUserDefaults] valueForKey:@"menus"]intValue];
+    noMenus = [Brand sharedInstance].numberOfMenus;
     
     self = [super initWithImage:[UIImage imageWithContentsOfFile:[newDir stringByAppendingString:menuBar]]];
     
@@ -144,8 +146,8 @@
         NSMutableArray * temp1 = [NSMutableArray array];
         NSMutableArray * temp2 = [NSMutableArray array];        
 
-        for (int i=1; i<=6; i++) {
-            id flag=[[NSUserDefaults standardUserDefaults] valueForKey:[NSString stringWithFormat:@"%d",i]];
+        for (int i = 1; i <= 6; i++) {
+            id flag = [[NSUserDefaults standardUserDefaults] valueForKey:[NSString stringWithFormat:@"%d",i]];
             if ([flag boolValue]) {
                 
             switch (i) {

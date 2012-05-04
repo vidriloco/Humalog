@@ -243,7 +243,7 @@
     NSString *cadena = [Brand sharedInstance].brandName;
     
     if (isSlide && string == nil) {
-        NSString *slide = [[[NSUserDefaults standardUserDefaults] objectForKey:@"slides_preference"] objectAtIndex:currentSlide];
+        NSString *slide = [[Brand sharedInstance].slides objectAtIndex:currentSlide];
         cadena = [cadena stringByAppendingPathComponent:slide];
     } else if (!isSlide&&string != nil) {
         cadena = [cadena stringByAppendingPathComponent:[@"PDF/" stringByAppendingString:string]];
@@ -454,8 +454,6 @@
 
 - (void)menubarViewDidSelectCategoryButton:(UIButton *)button withIndex:(NSUInteger)index
 {
-    //currentCategoryIndex = index;
-//    NSString *category = [[[NSUserDefaults standardUserDefaults] objectForKey:@"categories_preference"] objectAtIndex:index];
     NSString *category = [[Brand sharedInstance].categories objectAtIndex:index];
     NSRange match = [category rangeOfString:@","];
     NSString *string2 = [category substringFromIndex:match.location + 1];

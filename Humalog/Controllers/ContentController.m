@@ -102,16 +102,6 @@
     [contentView addGestureRecognizer:swipeRight];
     swipeRight.delegate = self;
     
-    // Thumbnail stack
-    NSUInteger stackWidth = [slideProvider previewForDocumentAtIndex:0].bounds.size.width + 64.0;
-    stackView = [[ThumbnailStackView alloc] initWithFrame:CGRectMake(0, 0, stackWidth, 0)];
-    stackView.delegate   = self;
-    stackView.dataSource = self;
-    stackView.hidden = YES;
-    stackView.alpha = 0.0;
-    stackView.baseline = CGPointMake(self.view.center.x, self.view.bounds.size.height);
-    [self.view addSubview:stackView];
-    
     // Document carousel
     rotaryCarousel = [[iCarousel alloc] initWithFrame:self.view.bounds];
     rotaryCarousel.backgroundColor = [UIColor underPageBackgroundColor];
@@ -121,6 +111,16 @@
     rotaryCarousel.hidden = YES;
     
     [self.view addSubview:rotaryCarousel];
+    
+    // Thumbnail stack
+    NSUInteger stackWidth = [slideProvider previewForDocumentAtIndex:0].bounds.size.width + 64.0;
+    stackView = [[ThumbnailStackView alloc] initWithFrame:CGRectMake(0, 0, stackWidth, 0)];
+    stackView.delegate   = self;
+    stackView.dataSource = self;
+    stackView.hidden = YES;
+    stackView.alpha = 0.0;
+    stackView.baseline = CGPointMake(self.view.center.x, self.view.bounds.size.height);
+    [self.view addSubview:stackView];
         
     // Hide content views until content is loaded
     contentView.alpha    = 0.0;

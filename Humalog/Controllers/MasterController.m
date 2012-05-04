@@ -8,12 +8,12 @@
 
 #import "ContentControlProtocol.h"
 #import "MasterController.h"
-#import "SlideProvider.h"
 #import "ToolbarView.h"
 #import "MenubarView.h"
-#import "WhitepaperController.h"
-#import "SlideController.h"
+#import "ContentController.h"
 #import "Viewport.h"
+#import "Downloader.h"
+#import "Brand.h"
 
 #define FADE_DURATION 0.25
 
@@ -22,8 +22,8 @@
     UIView               *gestureView;
     ToolbarView          *toolbarView;
     MenubarView          *menubarView;
-    WhitepaperController *whitepaperController; 
-    SlideController      *slideController;
+    ContentController    *contentController;
+    Downloader           *download;
 }
 @end
 
@@ -36,14 +36,10 @@
         // Custom initialization
         self.wantsFullScreenLayout = YES;
         [UIApplication sharedApplication].statusBarHidden = YES;
-        
+
         // Slides
-        slideController = [[SlideController alloc] init];
-        [self addChildViewController:slideController];
-        
-        // Whitepaper controller
-        whitepaperController = [[WhitepaperController alloc] init];
-        [self addChildViewController:whitepaperController];
+        contentController = [[ContentController alloc] init];
+        [self addChildViewController:contentController];
     }
     return self;
 }
@@ -85,7 +81,7 @@
 
     [self.view addSubview:gestureView];
     
-    [self loadSlides];
+    [self loadContents];
 }
 
 // Implement viewDidLoad to do additional setup after loading the view, typically from a nib.
@@ -103,10 +99,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    if (interfaceOrientation == UIInterfaceOrientationLandscapeLeft || interfaceOrientation == UIInterfaceOrientationLandscapeRight)
-        return YES;
-    
-    return NO;
+    return UIInterfaceOrientationIsLandscape(interfaceOrientation);
 }
 
 #pragma mark - Gesture control
@@ -133,25 +126,14 @@
 }
 
 #pragma mark - Content control
-- (void)loadSlides
+- (void)loadContents
 {
-    [whitepaperController.view removeFromSuperview];
-    [self.view insertSubview:slideController.view belowSubview:menubarView];
+    [self.view insertSubview:contentController.view belowSubview:menubarView];
+    [contentController menubarViewDidPressApertura];
     
     // Delegation
-    toolbarView.delegate = slideController;
-    menubarView.delegate = slideController;
-    [toolbarView hide];
-}
-
-- (void)loadWhitepapers
-{
-    [slideController.view removeFromSuperview];
-    [self.view insertSubview:whitepaperController.view belowSubview:menubarView];
-    
-    // Delegation
-    toolbarView.delegate = whitepaperController;
-    menubarView.delegate = whitepaperController;
+    toolbarView.delegate = contentController;
+    menubarView.delegate = contentController;
     [toolbarView hide];
 }
 

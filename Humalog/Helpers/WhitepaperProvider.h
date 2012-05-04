@@ -16,6 +16,12 @@
 @interface WhitepaperProvider : NSObject<UIWebViewDelegate, DocumentDataSource, AnnotationDataSource> {
     id<ContentDisplayDelegate> delegate;
 }
-@property (nonatomic, retain) id<ContentDisplayDelegate> delegate;
 
+- (void)loadStudies;
+- (void)loadIPPs;
+- (void)loadReferences;
+
+@property (nonatomic, retain) id<ContentDisplayDelegate> delegate;
+@property (nonatomic, readonly) NSArray *whitepaperList;
 @end
+

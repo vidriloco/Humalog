@@ -12,13 +12,10 @@
 #import "DocumentDataSource.h"
 #import "AnnotationDataSource.h"
 
-#define kMarkerPathsKey @"markers"
-#define kPenPathsKey    @"pens"
-
 @interface SlideProvider : NSObject<UIWebViewDelegate, DocumentDataSource, AnnotationDataSource> {
     id<ContentDisplayDelegate> delegate;
 }
 @property (nonatomic, retain) id<ContentDisplayDelegate> delegate;
-
+//- (id)initWithCategories:(NSArray *)categories andSlides:(NSArray *)slides withUpdate:(BOOL)updated;
 
 @end

@@ -32,6 +32,14 @@
 
 - (id)init
 {
+    NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                  NSUserDomainMask,
+                                                                  YES) objectAtIndex:0];
+    
+    NSString *newDir = [documentsDir stringByAppendingPathComponent:@"resources/backs/"];
+    
+    
+    
     self = [super initWithImage:[UIImage imageNamed:TOOLBAR_IMAGE]];
     if (self) {
         self.userInteractionEnabled = YES;
@@ -56,7 +64,7 @@
         id playbackLayout = [GridLayout gridWithFrame:CGRectMake(0, 0, 196, self.frame.size.height) numRows:1 numCols:[playback count]];
         int i = 0;
         for (NSValue* v in playbackLayout) {
-            UIImage  *normalImage = [UIImage imageNamed:[playback objectAtIndex:i]];
+            UIImage  *normalImage = [UIImage imageWithContentsOfFile:[newDir stringByAppendingPathComponent:[playback objectAtIndex:i]]];
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.frame = CGRectMake(0, 0, normalImage.size.width, normalImage.size.height);
             button.center = [v CGPointValue];
@@ -83,15 +91,22 @@
         id miniLayout = [GridLayout gridWithFrame:CGRectMake(196 + 10, 0, 120, self.frame.size.height) numRows:1 numCols:[miniOptions count]];
         i = 0;
         for (NSValue* v in miniLayout) {
-            UIImage  *normalImage = [UIImage imageNamed:[miniOptions objectAtIndex:i]];
-            UIImage  *selectedImage = [UIImage imageNamed:[@"over_" stringByAppendingString:[miniOptions objectAtIndex:i]]];
+            UIImage  *normalImage = [UIImage imageWithContentsOfFile:[newDir stringByAppendingPathComponent:[miniOptions objectAtIndex:i]]];
+            UIImage  *selectedImage = [UIImage imageWithContentsOfFile:[newDir 
+                                                                        stringByAppendingPathComponent:[@"over_" stringByAppendingString:[miniOptions objectAtIndex:i]]]];
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.frame = CGRectMake(0, 0, normalImage.size.width, normalImage.size.height);
             button.center = [v CGPointValue];
             button.frame = CGRectIntegral(button.frame);
-            button.enabled = NO;
+            button.enabled = YES;
+            button.selected = (v == [miniLayout lastObject]);
             [button setImage:normalImage forState:UIControlStateNormal];
             [button setImage:selectedImage forState:UIControlStateSelected];
+
+            [button addTarget:self
+                       action:@selector(miniButtonPressed:)
+             forControlEvents:UIControlEventTouchDown];
+
             [self addSubview:button];
             [miniButtons addObject:button];
             ++i;
@@ -159,24 +174,24 @@
     }
 
     // Update thumbnail
-    buttons = miniButtons;
-    actions = miniActions;
-    for (UIButton *button in buttons) {
-        if (self.delegate) {
-            [button removeTarget:self.delegate
-                          action:NULL
-                forControlEvents:UIControlEventTouchDown];
-        }
-        SEL action = [[actions objectAtIndex:[buttons indexOfObject:button]] pointerValue];
-        if ([newDelegate respondsToSelector:action]) {
-            [button addTarget:newDelegate
-                       action:action
-             forControlEvents:UIControlEventTouchDown];
-            button.enabled = YES;
-        } else {
-            button.enabled = NO;
-        }
-    }
+//    buttons = miniButtons;
+//    actions = miniActions;
+//    for (UIButton *button in buttons) {
+//        if (self.delegate) {
+//            [button removeTarget:self.delegate
+//                          action:NULL
+//                forControlEvents:UIControlEventTouchDown];
+//        }
+//        SEL action = [[actions objectAtIndex:[buttons indexOfObject:button]] pointerValue];
+//        if ([newDelegate respondsToSelector:action]) {
+//            [button addTarget:newDelegate
+//                       action:action
+//             forControlEvents:UIControlEventTouchDown];
+//            button.enabled = YES;
+//        } else {
+//            button.enabled = NO;
+//        }
+//    }
     
     // Update tools
 //    buttons = toolButtons;
@@ -220,23 +235,28 @@
     enum NavigationPosition navigationPositionValue = [[change objectForKey:NSKeyValueChangeNewKey] intValue];
     
     UIButton *prevButton = [navButtons objectAtIndex:0];
+    UIButton *playButton = [navButtons objectAtIndex:1];
     UIButton *nextButton = [navButtons lastObject];
     switch (navigationPositionValue) {
         case NavigationPositionFirstDocument:
             prevButton.enabled = NO;
+            playButton.enabled = YES;
             nextButton.enabled = YES;
             break;
         case NavigationPositionLastDocument:
             prevButton.enabled = YES;
+            playButton.enabled = YES;
             nextButton.enabled = NO;
             break;
         case NavigationPositionOtherDocument:
             prevButton.enabled = YES;
+            playButton.enabled = YES;
             nextButton.enabled = YES;
             break;
         case NavigationPositionUndefined:
         default:
             prevButton.enabled = NO;
+            playButton.enabled = NO;
             nextButton.enabled = NO;
             break;
     }
@@ -248,6 +268,19 @@
             i.selected = NO;
         }
     }
+    [self hide];
+}
+
+- (void)miniButtonPressed:(UIButton *)button
+{
+    for (UIButton *i in miniButtons)
+        i.selected = NO;
+    
+    button.selected = YES;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+    [self.delegate performSelector:[[miniActions objectAtIndex:[miniButtons indexOfObject:button]] pointerValue]]; 
+#pragma clang diagnostic pop
     [self hide];
 }
 
@@ -264,7 +297,11 @@
         i.selected = NO;
     
     button.selected = YES;
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-performSelector-leaks"
     [self.delegate performSelector:[[toolActions objectAtIndex:[toolButtons indexOfObject:button]] pointerValue]];
+#pragma clang diagnostic pop
+    [self hide];
 }
 
 - (void)hide

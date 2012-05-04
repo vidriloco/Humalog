@@ -30,7 +30,9 @@ enum ThumbnailNavigationType {
 - (void)menubarViewDidPressApertura;
 - (void)menubarViewDidPressCierre;
 - (void)menubarViewDidPressEstudios;
+- (void)menubarViewDidPressEspecial;
 - (void)menubarViewDidPressIPP;
+- (void)menubarViewDidPressReferencias;
 
 - (void)menubarViewDidSelectCategoryButton:(UIButton *)button withIndex:(NSUInteger)index;
 - (void)menubarViewDidDeselectCategoryButton:(UIButton *)button withIndex:(NSUInteger)index;

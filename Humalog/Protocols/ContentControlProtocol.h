@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "AnnotationView.h"
 
 @protocol ContentControlProtocol <NSObject>
 
 - (BOOL)playAction;
-- (UIView *)getContentSubview;
+- (UIView *)contentSubview;
 
 @end

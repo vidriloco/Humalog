@@ -21,7 +21,7 @@
         // Initialization code
         self.type = iCarouselTypeLinear;
         self.vertical = YES;
-        self.backgroundColor = [[UIColor darkGrayColor] colorWithAlphaComponent:0.75];
+        self.backgroundColor = [[UIColor scrollViewTexturedBackgroundColor] colorWithAlphaComponent:0.75];
         self.layer.cornerRadius = 8.0f;
         self.scrollEnabled = NO;
         self.centerItemWhenSelected = NO;

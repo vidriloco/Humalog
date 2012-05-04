@@ -8,12 +8,16 @@
 
 #import "SlideProvider.h"
 #import "WebContentView.h"
+#import "Brand.h"
 
 @interface SlideProvider() {
     NSMutableDictionary *documentAnnotations;
     NSArray             *documentTitles;
     NSArray             *categoriesAndIndices;
     WebContentView      *webContentView;
+    AnnotationView      *annotationView;
+    NSString            *brandName;
+    NSUInteger          previousIndex;
 }
 
 @end
@@ -28,42 +32,41 @@
         webContentView.delegate = self;
         webContentView.scalesPageToFit = NO;
         
-        documentAnnotations = [NSMutableDictionary dictionary];
-                
-        categoriesAndIndices = [NSArray arrayWithObjects:
-                                [NSValue valueWithRange:NSMakeRange(0, 3)],  // Epidemiología
-                                [NSValue valueWithRange:NSMakeRange(3, 3)],  // Brilinta
-                                [NSValue valueWithRange:NSMakeRange(6, 3)],  // Eficacia
-                                [NSValue valueWithRange:NSMakeRange(9, 1)],  // Seguridad
-                                [NSValue valueWithRange:NSMakeRange(10, 2)], // Posología
-                                nil];
+        annotationView = [[AnnotationView alloc] initWithFrame:webContentView.frame];
+        annotationView.masterView = [webContentView contentSubview];
         
-        documentTitles = [NSArray arrayWithObjects:
-                          @"Apertura",
-                          @"Epidemiología",
-                          @"Riesgo",
-                          @"Director",
-                          @"Indicaciones",
-                          @"Mecanismo de acción",
-                          @"Rapidez de acción",
-                          @"Eficacia",
-                          @"Mantenimiento 30 días / 12 meses",
-                          @"Seguridad",
-                          @"Dosis",
-                          @"Cierre",
-                          nil];
+        documentAnnotations = [NSMutableDictionary dictionary];
+        
+        NSArray *categories = [Brand sharedInstance].categories;
+        NSArray *slides     = [Brand sharedInstance].slides;
+        
+        NSMutableArray *temp = [NSMutableArray array];
+        
+        for (int i = 0; i < [categories count]; ++i) {
+            NSString *cadena = [categories objectAtIndex:i];
+            
+            NSRange match = [cadena rangeOfString:@","];
+            NSString *string1 = [cadena substringToIndex:match.location];
+            NSString *string2 = [cadena substringFromIndex:match.location + 1];
+            
+            [temp addObject:[NSValue valueWithRange:NSMakeRange([string1 intValue], [string2 intValue])]];
+        }
+        categoriesAndIndices = temp;
+        documentTitles = slides;
     }
+    
     return self;
 }
 
+
 - (NSUInteger)numberOfDocuments
 {
-    return 12;
+    return [Brand sharedInstance].slides.count;
 }
 
 - (NSUInteger)numberOfCategories
 {
-    return 5;
+    return [Brand sharedInstance].numberOfCategories;
 }
 
 - (NSString *)titleForDocumentAtIndex:(NSUInteger)index
@@ -73,10 +76,18 @@
 
 - (UIView<ContentControlProtocol> *)viewForDocumentAtIndex:(NSUInteger)index
 {
+    
+    NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                  NSUserDomainMask,
+                                                                  YES) objectAtIndex:0];
+    
+    NSString *newDir = [documentsDir stringByAppendingPathComponent:@"slides/"];    
     NSString *slideName = [@"slide" stringByAppendingString:[[NSNumber numberWithUnsignedInt:index + 1] stringValue]];
-    NSString *path = [[NSBundle mainBundle] pathForResource:slideName
-                                                     ofType:@"html"
-                                                inDirectory:[@"slides/" stringByAppendingString:slideName]];
+    newDir = [newDir stringByAppendingPathComponent:slideName];
+    NSMutableString *path = [NSMutableString string];
+    slideName = [slideName stringByAppendingString:@".html"];
+    [path appendString:[newDir stringByAppendingPathComponent:slideName]];
+
     
     if (!path)
         return nil;
@@ -87,23 +98,26 @@
     
     [webContentView loadRequest:[NSURLRequest requestWithURL:url]];
     webContentView.scalesPageToFit = YES;
+    
+    // Tracker stuff
+    [Brand trackContentWithType:HumalogContentReportTypeSlide andName:[[Brand sharedInstance].slides objectAtIndex:index]];
+    
     return webContentView;
 }
 
 - (UIImageView *)previewForDocumentAtIndex:(NSUInteger)index
 {
-    NSString *fileName = [[@"brilinta_" stringByAppendingString:[NSNumber numberWithUnsignedInt:index + 1].stringValue] stringByAppendingString:@".jpg"];
-    return [[UIImageView alloc] initWithImage:[UIImage imageNamed:fileName]];
-}
+    NSString *documentsDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,
+                                                                  NSUserDomainMask,
+                                                                  YES) objectAtIndex:0];
+    
+    NSString *newDir = [documentsDir stringByAppendingPathComponent:@"resources/backs/"];
+    NSString *brand = [Brand sharedInstance].brandName;
+    brand = [brand lowercaseString];
+    brand = [brand stringByAppendingString:@"_"];
+    NSString *fileName = [[brand stringByAppendingString:[NSNumber numberWithUnsignedInt:index + 1].stringValue] stringByAppendingString:@".jpg"];
 
-- (NSDictionary *)annotationsForDocumentAtIndex:(NSUInteger)index
-{
-    return [documentAnnotations objectForKey:[NSNumber numberWithUnsignedInt:index]];
-}
-
-- (void)setAnnotations:(NSDictionary *)annotations forDocumentAtIndex:(NSUInteger)index
-{
-    [documentAnnotations setObject:annotations forKey:[NSNumber numberWithUnsignedInteger:index]];
+    return [[UIImageView alloc] initWithImage:[UIImage imageWithContentsOfFile:[newDir stringByAppendingPathComponent:fileName]]];
 }
 
 - (NSRange)rangeForCategoryIndex:(NSUInteger)categoryIndex
@@ -120,10 +134,41 @@
     return NSUIntegerMax;
 }
 
-// Delegation
+- (AnnotationView *)annotationViewForDocumentAtIndex:(NSUInteger)index
+{
+    // Save previous
+    NSDictionary *annotations = [NSDictionary dictionaryWithObjectsAndKeys:
+                                 annotationView.markerPaths, kMarkerPathsKey,
+                                 annotationView.penPaths,    kPenPathsKey,
+                                 nil];
+    [documentAnnotations setObject:annotations forKey:[NSNumber numberWithUnsignedInteger:previousIndex]];
+
+    // Load new
+    annotations = [documentAnnotations objectForKey:[NSNumber numberWithUnsignedInteger:index]];
+    annotationView.penPaths    = [annotations objectForKey:kPenPathsKey]; 
+    annotationView.markerPaths = [annotations objectForKey:kMarkerPathsKey]; 
+    previousIndex = index;
+    
+    return annotationView;
+}
+
+#pragma mark - UIWebView delegate methods
+
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    webContentView.hidden = YES;
+    
+}
+
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    [self performSelector:@selector(delay) withObject:nil afterDelay:0.5];
+}
+
+- (void)delay
+{
     [self.delegate contentViewDidFinishLoad];
+    webContentView.hidden = NO;
 }
 
 @end

@@ -12,10 +12,12 @@
 @protocol DocumentDataSource <NSObject>
 - (NSUInteger)numberOfDocuments;
 - (UIView<ContentControlProtocol> *)viewForDocumentAtIndex:(NSUInteger)index;
+
 @optional
-- (NSUInteger)numberOfCategories;
-- (NSString *)titleForDocumentAtIndex:(NSUInteger)index;
 - (UIImageView *)previewForDocumentAtIndex:(NSUInteger)index;
+- (NSString *)titleForDocumentAtIndex:(NSUInteger)index;
+
+- (NSUInteger)numberOfCategories;
 - (NSRange)rangeForCategoryIndex:(NSUInteger)categoryIndex;
 - (NSUInteger)categoryIndexForDocumentAtIndex:(NSUInteger)documentIndex;
 @end

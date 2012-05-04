@@ -21,8 +21,8 @@ enum AnnotationPathType {
 }
 @property (nonatomic, retain) NSMutableArray *penPaths;
 @property (nonatomic, retain) NSMutableArray *markerPaths;
+@property (nonatomic, retain) UIView *masterView;
 
-- (id)initWithFrame:(CGRect)frame andMasterView:(UIView *)masterView;
 - (void)startDrawing:(enum AnnotationPathType)pathType;
 - (void)finishDrawing;
 

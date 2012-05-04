@@ -98,6 +98,10 @@
     
     [webContentView loadRequest:[NSURLRequest requestWithURL:url]];
     webContentView.scalesPageToFit = YES;
+    
+    // Tracker stuff
+    [Brand trackContentWithType:HumalogContentReportTypeSlide andName:[[Brand sharedInstance].slides objectAtIndex:index]];
+    
     return webContentView;
 }
 

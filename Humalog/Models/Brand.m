@@ -7,6 +7,7 @@
 //
 
 #import "Brand.h"
+#import "GANTracker.h"
 
 @implementation Brand
 @synthesize brandName, brandURL;
@@ -78,6 +79,26 @@
     configurator.studies            = [[NSUserDefaults standardUserDefaults] objectForKey:@"EST"];
     configurator.references         = [[NSUserDefaults standardUserDefaults] objectForKey:@"REF"];
     configurator.IPPs               = [[NSUserDefaults standardUserDefaults] objectForKey:@"IPP"];
+}
+
++ (void)trackContentWithType:(enum HumalogContentReportType)type andName:(NSString *)string
+{
+    NSError *error;
+    NSString *cadena = [self sharedInstance].brandName;
+    switch (type) {
+        case HumalogContentReportTypeSlide:
+            cadena = [cadena stringByAppendingPathComponent:string];
+            break;
+        case HumalogContentReportTypePDF:
+        case HumalogContentReportTypePDFCategory:
+            cadena = [cadena stringByAppendingPathComponent:[@"PDF/" stringByAppendingString:string]];
+            break;
+    }
+//    NSLog(@"%@", [@"Track: " stringByAppendingString:cadena]);
+    if (![[GANTracker sharedTracker] trackPageview:cadena
+                                         withError:&error]) {
+        // Handle error here
+    }
 }
 
 @end

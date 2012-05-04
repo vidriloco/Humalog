@@ -58,7 +58,6 @@
     CGContextFillRect(context, rect);
     
     CGContextSaveGState(context);
-    
 
     CGContextTranslateCTM(context, 0, tmpRect.size.height * scale);
     CGContextScaleCTM(context, scale, -scale);
@@ -83,14 +82,14 @@
 
 - (UIImageView *)previewForDocumentAtIndex:(NSUInteger)index
 {
-    NSNumber    *indexNumber = [NSNumber numberWithUnsignedInteger:index];
-    UIImageView *imageView = [previewList objectForKey:indexNumber];
+    NSString    *key = [whitepaperList objectAtIndex:index];
+    UIImageView *imageView = [previewList objectForKey:key];
     if (imageView)
         return imageView;
     
     NSString *fileName = [self pathForDocumentAtIndex:index];
     imageView = [[UIImageView alloc] initWithImage:[self generatePreviewFor:fileName]];
-    [previewList setObject:imageView forKey:indexNumber];
+    [previewList setObject:imageView forKey:key];
     return imageView;
 }
 
@@ -103,6 +102,11 @@
 {
     NSString *path = [self pathForDocumentAtIndex:index];
     [webView loadRequest:[NSURLRequest requestWithURL:[NSURL fileURLWithPath:path]]];
+    
+    // Tracker stuff
+    NSString *pdfName = [[whitepaperList objectAtIndex:index] stringByAppendingString:@"_PDF"];
+    [Brand trackContentWithType:HumalogContentReportTypePDF andName:pdfName];
+    
     return webView;
 }
 
@@ -124,6 +128,33 @@
     previousKey = [self.whitepaperList objectAtIndex:index];
     
     return annotationView;
+}
+
+- (void)loadStudies
+{
+    whitepaperList = [Brand sharedInstance].studies;
+
+    // Tracker stuff
+    NSString *pdfName = @"Estudios_PDF";
+    [Brand trackContentWithType:HumalogContentReportTypePDFCategory andName:pdfName];
+}
+
+- (void)loadIPPs
+{
+    whitepaperList = [Brand sharedInstance].IPPs;
+    
+    // Tracker stuff
+    NSString *pdfName = @"IPP_PDF";
+    [Brand trackContentWithType:HumalogContentReportTypePDFCategory andName:pdfName];
+}
+
+- (void)loadReferences
+{
+    whitepaperList = [Brand sharedInstance].references;
+    
+    // Tracker stuff
+    NSString *pdfName = @"Referencias_PDF";
+    [Brand trackContentWithType:HumalogContentReportTypePDFCategory andName:pdfName];
 }
 
 #pragma mark - UIWebView delegate methods

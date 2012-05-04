@@ -8,10 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+enum HumalogContentReportType {
+    HumalogContentReportTypeSlide,
+    HumalogContentReportTypePDF,
+    HumalogContentReportTypePDFCategory
+};
+
 @interface Brand : NSObject
 
 + (Brand *)sharedInstance;
 + (void)updateElementsFromDefaults;
++ (void)trackContentWithType:(enum HumalogContentReportType)type andName:(NSString *)string;
 
 @property (atomic, strong) NSString *brandName;
 @property (atomic, strong) NSURL *brandURL;

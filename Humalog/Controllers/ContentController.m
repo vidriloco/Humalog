@@ -208,9 +208,6 @@
         [self.view insertSubview:annotationView aboveSubview:contentView];
     }];
     [self updateNavigationPosition];
-    
-    // Tracker
-    [self registerGA:TRUE withString:nil];
 }
 
 - (void)loadCustomContentWithProvider:(id<AnnotationDataSource, DocumentDataSource>)someProvider
@@ -231,31 +228,7 @@
     self.navigationPosition = NavigationPositionUndefined;
     self.currentCategoryIndex = 99;
     annotationView.masterView = [contentView contentSubview];
-    
-    // Tracker (Note that Custom = PDF for now, it may change in the future)
-    [self registerGA:NO withString:[whitepaperProvider.whitepaperList objectAtIndex:index]];
 }
-
-- (void)registerGA:(BOOL)isSlide withString:(NSString *)string
-{
-    NSError *error;
-    
-    NSString *cadena = [Brand sharedInstance].brandName;
-    
-    if (isSlide && string == nil) {
-        NSString *slide = [[Brand sharedInstance].slides objectAtIndex:currentSlide];
-        cadena = [cadena stringByAppendingPathComponent:slide];
-    } else if (!isSlide&&string != nil) {
-        cadena = [cadena stringByAppendingPathComponent:[@"PDF/" stringByAppendingString:string]];
-    } else {
-        cadena = [cadena stringByAppendingPathComponent:string];
-    }
-    if (![[GANTracker sharedTracker] trackPageview:cadena
-                                         withError:&error]) {
-        // Handle error here
-    }
-}
-
 
 - (void)loadPreviousDocument
 {
@@ -285,7 +258,7 @@
 {
     currentSlide = [slideProvider numberOfDocuments] - 2;
     [self loadContent];
-    [self registerGA:TRUE withString:@"Especial"];
+    [Brand trackContentWithType:HumalogContentReportTypeSlide andName:@"Especial"];
 }
 
 #pragma mark - iCarousel data source methods
@@ -508,19 +481,19 @@
 
 - (void)menubarViewDidPressEstudios
 {
-    whitepaperProvider.whitepaperList = [Brand sharedInstance].studies;
+    [whitepaperProvider loadStudies];
     [self whitepaperDisplayAction];
 }
 
 - (void)menubarViewDidPressReferencias
 {
-    whitepaperProvider.whitepaperList = [Brand sharedInstance].references;
+    [whitepaperProvider loadReferences];
     [self whitepaperDisplayAction];
 }
 
 - (void)menubarViewDidPressIPP
 {
-    whitepaperProvider.whitepaperList = [Brand sharedInstance].IPPs;
+    [whitepaperProvider loadIPPs];
     [self whitepaperDisplayAction];
 }
 

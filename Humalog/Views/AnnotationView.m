@@ -27,9 +27,9 @@ BOOL LineSegmentsIntersect(CGPoint p1, CGPoint p2, CGPoint p3, CGPoint p4);
 @end
 
 @implementation AnnotationView
-@synthesize penPaths, markerPaths;
+@synthesize penPaths, markerPaths, masterView;
 
-- (id)initWithFrame:(CGRect)frame andMasterView:(UIView *)masterView
+- (id)initWithFrame:(CGRect)frame
 {
     if ((self = [super initWithFrame:frame])) {
         // Init
@@ -38,19 +38,38 @@ BOOL LineSegmentsIntersect(CGPoint p1, CGPoint p2, CGPoint p3, CGPoint p4);
         creatingPathOfType = PathTypeNone;
         origin = CGPointZero;
         zoomScale = 1.0;
-        
-        // Observing the master view for content changes
-        [masterView addObserver:self
-                     forKeyPath:@"contentOffset"
-                        options:NSKeyValueObservingOptionNew
-                        context:NULL];
-                
-        [masterView addObserver:self
-                     forKeyPath:@"contentSize"
-                        options:NSKeyValueObservingOptionNew
-                        context:NULL];
     }
     return self;
+}
+
+- (void)setMasterView:(UIView *)aMasterView
+{
+    // Observing the master view for content changes
+    [masterView removeObserver:self
+                    forKeyPath:@"contentOffset"];
+    
+    [masterView removeObserver:self
+                    forKeyPath:@"contentSize"];
+    
+    [masterView removeObserver:self
+                    forKeyPath:@"frame"];
+    
+    masterView = aMasterView;
+    
+    [masterView addObserver:self
+                 forKeyPath:@"contentOffset"
+                    options:NSKeyValueObservingOptionNew
+                    context:NULL];
+    
+    [masterView addObserver:self
+                 forKeyPath:@"contentSize"
+                    options:NSKeyValueObservingOptionNew
+                    context:NULL];
+    
+    [masterView addObserver:self
+                 forKeyPath:@"frame"
+                    options:NSKeyValueObservingOptionNew
+                    context:NULL];
 }
 
 - (CGPoint)transformPoint:(CGPoint)point
@@ -131,6 +150,11 @@ BOOL LineSegmentsIntersect(CGPoint p1, CGPoint p2, CGPoint p3, CGPoint p4);
     else if (keyPath == @"contentSize") {
         CGSize newSize = [[change valueForKey:NSKeyValueChangeNewKey] CGSizeValue];
         zoomScale = newSize.width / self.frame.size.width;
+    }
+    // Size
+    else if (keyPath == @"frame") {
+        CGRect newFrame = [[change valueForKey:NSKeyValueChangeNewKey] CGRectValue];
+        self.frame = newFrame;
     }
     [self setNeedsDisplay];
 }

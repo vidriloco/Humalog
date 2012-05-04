@@ -9,14 +9,17 @@
 #import "AppDelegate.h"
 #import "MasterController.h"
 #import "Downloader.h"
+#import "Brand.h"
+#import "SplashscreenViewController.h"
+#import "GANTracker.h"
+
+static const NSInteger kGANDispatchPeriodSec = 10;
 
 @interface AppDelegate() {
-    Downloader           *download;
-    BOOL                flag;
-    BOOL                flag2;
-    UIViewController    *masterController;
-    UIProgressView      *progress;
-
+    SplashscreenViewController *splashController;
+    Downloader                 *download;
+    BOOL                        flag;
+    BOOL                        flag2;
 }
 @end
 
@@ -24,21 +27,26 @@
 
 @synthesize window = _window;
 
+- (void)loadMasterController
+{
+    [self.window setRootViewController:[[MasterController alloc] init]];  
+}
 
-
-- (void) settingsChanged:(NSNotification *)paramNotification{
+- (void)settingsChanged:(NSNotification *)paramNotification
+{
     NSLog(@"Settings changed");
     NSLog(@"Notification Object = %@", [paramNotification object]);
 }
 
-- (void) setDefaults{
-
+- (void)setDefaults
+{
+    
     [[NSNotificationCenter defaultCenter] addObserver:self 
                                              selector:@selector(settingsChanged:) 
                                                  name:NSUserDefaultsDidChangeNotification 
                                                object:nil];
     
-    if (![[NSUserDefaults standardUserDefaults] stringForKey:@"brand_preference"])  {
+    if (![[NSUserDefaults standardUserDefaults] stringForKey:@"brand_preference"]) {
         
         NSString  *mainBundlePath = [[NSBundle mainBundle] bundlePath];
         NSString  *settingsPropertyListPath = [mainBundlePath
@@ -50,7 +58,7 @@
         NSMutableArray      *preferenceArray = [settingsPropertyList objectForKey:@"PreferenceSpecifiers"];
         NSMutableDictionary *registerableDictionary = [NSMutableDictionary dictionary];
         
-        for (int i = 0; i < [preferenceArray count]; i++)  { 
+        for (int i = 0; i < [preferenceArray count]; ++i)  { 
             NSString  *key = [[preferenceArray objectAtIndex:i] objectForKey:@"Key"];
             
             if (key)  {
@@ -62,74 +70,68 @@
         [[NSUserDefaults standardUserDefaults] registerDefaults:registerableDictionary]; 
         [[NSUserDefaults standardUserDefaults] synchronize]; 
     }
-
 }
 
--(void) downloadContent
+- (void)downloadContent
 {
-    flag=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_interface_preference"];
-    flag2=[[NSUserDefaults standardUserDefaults] boolForKey:@"update_slides_preference"];
-        
+    flag  = [[NSUserDefaults standardUserDefaults] boolForKey:@"update_interface_preference"];
+    flag2 = [[NSUserDefaults standardUserDefaults] boolForKey:@"update_slides_preference"];
+    
     if (flag || flag2) {
-        NSString *brandId=[[NSUserDefaults standardUserDefaults] stringForKey:@"brand_preference"];  
-        download = [[Downloader alloc]init];
-        download.delegate=self;
+        NSString *brandId = [[NSUserDefaults standardUserDefaults] stringForKey:@"brand_preference"];  
+        download = [[Downloader alloc] init];
+        download.delegate = self;
         [download parseJSON:brandId];
-
         
-        NSUserDefaults *defaults = [[NSUserDefaults alloc]init];
+        NSUserDefaults *defaults = [[NSUserDefaults alloc] init];
         [defaults setBool:NO forKey:@"update_interface_preference"];
         [defaults setBool:NO forKey:@"update_slides_preference"];
         [[NSUserDefaults standardUserDefaults] synchronize];
-        
-    }   
+    }
+    
+    // Updates the singleton
+    [Brand updateElementsFromDefaults];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [[GANTracker sharedTracker] startTrackerWithAccountID:@"UA-31202291-1"
+                                           dispatchPeriod:kGANDispatchPeriodSec
+                                                 delegate:nil];
+    
+    NSError *error;
+    if (![[GANTracker sharedTracker] setCustomVariableAtIndex:1
+                                                         name:@"iPad3"
+                                                        value:@"ip1"
+                                                    withError:&error]) {
+        // Handle error here
+    }
 
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
-    self.window.backgroundColor = [UIColor clearColor];
-    
+    splashController = [[SplashscreenViewController alloc] init];
+    [self.window setRootViewController:splashController];
+    [self.window makeKeyAndVisible];
     
     [self setDefaults];
     [self downloadContent];
-   
     
     // Instance the master controller
-    masterController = [[MasterController alloc] init];
-    if(flag&&flag2)
-    {
-        progress = [[UIProgressView alloc] initWithProgressViewStyle:UIProgressViewStyleDefault];
+    if (!(flag && flag2))
+        [self loadMasterController];
 
-        
-        UIImageView *vista = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"splash.png"]];
-        [progress setFrame:CGRectMake(vista.frame.size.width/2.5, vista.frame.size.height/1.5, 200.0, 10.0)];
-        [vista addSubview:progress];
-        
-        [masterController.view addSubview:vista];
-    }
-    [self.window setRootViewController:masterController];  
-    [self.window makeKeyAndVisible];
     return YES;
-
 }
 
-
-
--(void)downloaderDidFinish
+- (void)downloaderDidFinish
 {
-    masterController = [[MasterController alloc] init];
-    [self.window setRootViewController:masterController];  
+    [self loadMasterController];
 }
 
--(void)downloaderIsDownloading
+- (void)downloaderIsDownloading
 {
-    progress.progress=download.advance;
+    splashController.progress.progress = download.advance;
 }
-
-
 
 - (void)applicationWillResignActive:(UIApplication *)application
 {
@@ -169,6 +171,7 @@
      See also applicationDidEnterBackground:.
      */
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[GANTracker sharedTracker] stopTracker];
 }
 
 @end

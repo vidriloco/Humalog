@@ -8,7 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+#define kMarkerPathsKey @"markers"
+#define kPenPathsKey    @"pens"
+
 @protocol AnnotationDataSource <NSObject>
-- (NSDictionary *)annotationsForDocumentAtIndex:(NSUInteger)index;
-- (void)setAnnotations:(NSDictionary *)annotations forDocumentAtIndex:(NSUInteger)index;
+//- (NSDictionary *)annotationsForDocumentAtIndex:(NSUInteger)index;
+//- (void)setAnnotations:(NSDictionary *)annotations forDocumentAtIndex:(NSUInteger)index;
+
+- (AnnotationView *)annotationViewForDocumentAtIndex:(NSUInteger)index;
+
 @end

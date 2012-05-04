@@ -9,45 +9,34 @@
 #import <Foundation/Foundation.h>
 
 @interface Brand : NSObject
-{
-    //Interface elements
-//    NSString *brandName;
-//    NSURL *brandURL; //Store logos, and brand related resources
-//    NSURL *backImagesURL;
-//    NSURL *navButtonsURL;
-//    NSURL *menuButtonsURL;    
-//    NSURL *overButtonsURL;
-    
-    //Structure elements
-//    NSMutableDictionary *categories;
-//    NSMutableDictionary *slidesByCategory;
-//    NSMutableArray *slide;
-    
-    //PDF URL
 
-}
++ (Brand *)sharedInstance;
++ (void)updateElementsFromDefaults;
 
-@property (nonatomic, strong) NSString *brandName;
-@property (nonatomic, strong) NSURL *brandURL;
-@property (nonatomic, assign) BOOL isUpdated;
-@property (nonatomic, assign) BOOL hasOpening;    
-@property (nonatomic, assign) BOOL hasClosing;
-@property (nonatomic, assign) BOOL hasIPP;
-@property (nonatomic, assign) BOOL hasStudies;
-@property (nonatomic, assign) BOOL hasSpecial;
-@property (nonatomic, assign) BOOL hasReferences;
-@property (nonatomic, assign) BOOL usesStackView;
-@property (nonatomic, assign) int numberOfMenus;
-@property (nonatomic, assign) int numberOfCategories;
-@property (nonatomic, assign) int numberOfIpps;
-@property (nonatomic, assign) int numberOfReferences;
-@property (nonatomic, assign) int numberOfStudies;
-@property (nonatomic, strong) NSArray *interfaceURL;
-@property (nonatomic, strong) NSString *editURL;
-@property (nonatomic, strong) NSArray *pdfs;
-@property (nonatomic, strong) NSArray *categories;
-@property (nonatomic, strong) NSArray *slides;
+@property (atomic, strong) NSString *brandName;
+@property (atomic, strong) NSURL *brandURL;
+@property (atomic, assign) BOOL isUpdated;
+@property (atomic, assign) BOOL hasOpening;    
+@property (atomic, assign) BOOL hasClosing;
+@property (atomic, assign) BOOL hasIPP;
+@property (atomic, assign) BOOL hasStudies;
+@property (atomic, assign) BOOL hasSpecial;
+@property (atomic, assign) BOOL hasReferences;
+@property (atomic, assign) BOOL usesStackView;
+@property (atomic, assign) int numberOfMenus;
+@property (atomic, assign) int numberOfCategories;
+@property (atomic, assign) int numberOfIpps;
+@property (atomic, assign) int numberOfReferences;
+@property (atomic, assign) int numberOfStudies;
+@property (atomic, strong) NSArray *interfaceURL;
+@property (atomic, strong) NSString *editURL;
+@property (atomic, strong) NSArray *pdfs;
+@property (atomic, strong) NSArray *categories;
+@property (atomic, strong) NSArray *slides;
 
-
+// New
+@property (atomic, strong) NSArray *studies;
+@property (atomic, strong) NSArray *IPPs;
+@property (atomic, strong) NSArray *references;
 
 @end
